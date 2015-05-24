@@ -1,0 +1,902 @@
+\documentclass[oneside, final, 14pt, draft]{article}
+
+\usepackage{a4wide}
+\usepackage{cmap}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{a4wide}
+\usepackage[crop=pdfcrop]{pstool}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+
+\sloppy
+
+\theoremstyle{definition}
+\newtheorem{problem}{Задача}[section]
+\newtheorem{ex}{Пример}[section]
+\theoremstyle{definition}
+\newtheorem{defin}{Определение}[section]
+\theoremstyle{remark}
+\newtheorem{rmk}{Замечание}[section]
+\theoremstyle{theorem}
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{lem}{Лемма}[section]
+\newtheorem{nxt}{Следствие}[section]
+
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\arc}{arctg}
+\DeclareMathOperator{\rg}{rg}
+\DeclareMathOperator{\opt}{opt}
+\DeclareMathOperator{\sign}{sign}
+
+
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\newcommand{\bigrint}{\hbox to 0.8em{\hss\scalebox{1.2}[1]
+	{\rotatebox[origin=c]{17}{$\displaystyle\int$}}\hss}}
+\newcommand{\rint}{\mathop{\bigrint}\displaylimits}
+
+
+
+\begin{document}
+\begin{titlepage}
+
+\thispagestyle{empty}
+
+\begin{center}
+\ \vspace{-3cm}
+
+\includegraphics[width=0.5\textwidth]{msu.eps}\\
+{\scshape Московский государственный университет имени М.~В.~Ломоносова}\\
+Факультет вычислительной математики и кибернетики\\
+Кафедра системного анализа
+
+\vfill
+
+
+
+\vspace{1cm}
+
+{\Huge\bfseries <<Оптимальное управление: нелинейные системы>>}
+
+\end{center}
+
+\vspace{1cm}
+
+
+\vfill
+\begin{center}
+Теоритический минимум, составленный Аксеновым К.~А., Широких И.~Ф. и Любимовым А.~И. на основе лекций, читаемых И.~В.~Рублевым в 6 семестре.
+\end{center}
+\begin{center}
+Москва, 2015
+\end{center}
+
+\end{titlepage}
+\tableofcontents
+\newpage
+\section{Постановка задачи оптимального управления}
+
+\begin{equation*}
+\begin{cases}
+\dot{x}(t) = f(x(t), u(t))\\
+J = \int\limits_{t_0}^{t_1} f^0(x(t),u(t)\,dt \longrightarrow \inf\\
+u(t) \in \mathcal{P}\\
+x(t_0) = x^0,\quad x(t_1) = x^1\\
+\end{cases}
+\end{equation*}
+Считаем, что $x_0,x_1,t_0,t_1$ фиксированны.
+\begin{rmk}
+В задаче быстродействия $f^0\equiv1$.
+\end{rmk}
+
+{\flushleft Приведем данную задачу к задаче с терминальным функционалом. Введем новую переменную:}
+\begin{equation*}
+	\begin{cases}
+		\dot x_0 = f^0(x,u)\\
+		x_0(0) = 0
+	\end{cases} \Rightarrow x_0(t_1) \equiv J.
+\end{equation*}
+
+{\flushleft Тогда, можно перейти к эквивалентной задаче:}
+
+\begin{equation}\label{fsystem}
+	\begin{cases}
+		\dot{\widetilde{x}}(t) = \widetilde{f}(\widetilde{x}(t),u(t))\\
+		x_0(t_1) \longrightarrow \inf\\
+		u(t) \in \mathcal{P}\\
+		x(t_0) = x^0,\quad x(t_1) = x^1
+	\end{cases}
+\end{equation}
+Где $\widetilde{x} = (x_0,x_1,\ldots,x_n),\; \widetilde{f} = (f_0,f_1,\ldots,f_n)$.
+
+{\flushleft Введем допольнительные обозначения.}
+
+\begin{itemize}
+\item $\widetilde{\psi} = (\psi_0,\underbrace{\psi_1,\ldots,\psi_n}_\psi) \text{ --- сопряженная переменная}.$
+\item $H = \langle \widetilde{\psi}, \widetilde{f}(x,u)\rangle = \psi_0 f^0(x,u) + \psi_1 f^1(x,u) + ... + \psi_n f^n(x,u)$ --- функция Гамильтона--Понтрягина.
+\item $\dot{\widetilde{\psi}}(t) = -\displaystyle \frac{\partial H}{\partial \widetilde{x}}$ --- сопряженная система.
+\end{itemize}
+
+Сделаем некоторые выводы:
+
+\begin{align*}
+&\dot{\psi_0} = 0 \Rightarrow \psi_0 = 0\\
+&\dot{\psi}_j = - \psi_0 \frac{\partial f^0}{\partial x_j} - \sum\limits_{i = 1}^{n} \psi_i \frac{\partial f^i}{\partial x_j}\\
+\end{align*}
+
+Из чего получаем вид для сопряженной системы.
+
+$$\dot{\psi} = - \psi_0 \frac{\partial f^0}{\partial x} - \left( \frac{\partial f}{\partial x}\right)^T \psi$$
+
+Где $\frac{\partial f}{\partial x}$ задается следующим образом:
+
+$$\frac{\partial f}{\partial x} =
+  \begin{pmatrix}
+        \frac{\partial f'}{\partial x_1} & \dots & \frac{\partial f'}{\partial x_n} \\
+        \vdots & \ddots & \vdots \\
+        \frac{\partial f^{(m)}}{\partial x_1} & \dots & \frac{\partial f^{(n)}}{\partial x_n}
+  \end{pmatrix}$$
+
+\begin{thm}[Принцип Максимума Понтрягина] \ \\
+    Пусть $\left( x^*(\cdot), u^*(.)\right)$ --- оптимальная пара для системы $\eqref{fsystem}$ $\Rightarrow \exists\:\psi^*\colon\left[t_0^*, t_1^*\right]\rightarrow \mathbb{R}^{n+1}\colon$
+    \begin{enumerate}
+    \item Условие нетривиальности $$\psi^*(t) \neq 0,\;\dot\forall\,t.$$ 
+    \item Сопряженная система
+    \begin{equation*}
+    \dot{\psi} = \left.-\frac{\partial H}{\partial \widetilde{x}}\middle|_{\substack{x = x^*(t) \\ u = u^*(t)}}\right. .
+    \end{equation*}
+    \item Условие максимума
+    \begin{equation*}
+    \left. H \middle |_{\substack{x = x^* \\ \psi = \psi^* \\ u = u^*}}\right. \stackrel{\text{п.в.}}{=}
+    \sup\limits_{u \in \mathcal{P}} \left.H\middle|_{\substack{x = x^* \\ \psi = \psi^*}}\right. =
+    \left. M \middle |_{\substack{x = x^* \\ \psi = \psi^*}}\right. .
+    \end{equation*}
+    \item $\psi_0 = const \leq 0$
+    \end{enumerate}
+\end{thm}
+
+\begin{rmk}
+\ \\
+\begin{enumerate}
+    \item
+    Сопряженная переменная определена с точностью умножения на константу. Эту свободу всегда пытаются ликвидировать. Например $\psi_0^* = -1$ --- нормальный случай.\\
+    \item $\widetilde{\psi}^* \neq 0$ в формулировке важно. Оно эквивалентно условию $\widetilde{\psi} \neq 0\ \dot \forall\ t$, т.~е. почти всюду (в силу теоремы о единственности решения однородной системы)
+\end{enumerate}
+\end{rmk}
+\section{Формулировка принципа максимума для автономной задачи с нефиксированным временем, задача быстродействия. Вывод из предыдущей формулировки формулировок задач с фиксированным временем, для неавтономной системы. Условия трансверсальности.}
+Для начала введем задачу быстродействия:
+
+\begin{equation*}
+\begin{cases}
+&\dot{x}(t) = f(x(t), u(t)),\quad u \in \mathcal{P}\\
+&x(t_0) = x_0\in\mathcal{X}^0,\quad x(t_1) = x_1\in\mathcal{X}^1
+\end{cases}
+\end{equation*}
+
+{\flushleftГде $ t_0, x_0, x_1$ -- дано, $t_1$ -- свободно. Функционал имеет вид:}
+
+$$J = \int\limits_{t_0}^{t_1} f^0 \left( x(t), u(t)\right) dt \rightarrow \inf.$$
+
+{\flushleft После замен, для приведения к обобщенному виду:}
+
+\begin{align*}
+&\widetilde{x} = (x_0, \ldots, x_n)^T, \quad \widetilde{f} = (f^0, \ldots, f^n)^T\\
+&H = \langle  \widetilde{\psi}, \widetilde{f}(x, u \rangle = \psi_0 f^0(x, u) + \langle  \psi, f(x, u) \rangle,\\
+&M = \sup\limits_{u \in \mathcal{P}}H
+\end{align*}
+
+И тогда верен следующий Принцип Максимума.
+
+\begin{thm}[Принцип Максимума Понтрягина] \ \\
+Пусть $\left( x^*(t), u^*(t)\right)$ --- оптимальная пара $\Rightarrow \exists\: \psi^*\colon \left[t_0^*, t_1^*\right] \rightarrow \mathbb{R}^{n+1}\colon$
+\begin{enumerate}
+\item Условие нетривиальности 
+$$\psi^*(t) \neq 0,\;\dot\forall\,t$$.
+\item Сопряженная система
+\begin{equation*}
+\dot{\psi} = \left.-\frac{\partial H}{\partial x}\middle|_{\substack{x = x* \\ u = u^*}}\right. .
+\end{equation*}
+\item Условие максимума
+\begin{equation*}
+\left. H \middle|_{\substack{x = x^* \\ \psi = \psi^* \\ u = u^*}}\right. =
+ \sup\limits_{u \in \mathcal{P}} \left.H\middle|_{\substack{x = x^* \\ \psi = \psi^*}}\right. =
+ \left. M \middle|_{\substack{x = x^* \\ \psi = \psi^*}}\right. .
+\end{equation*}
+\item $\psi_0 = \mathrm{const} \leq 0$
+\item Условие трансверсальности
+\begin{equation*}
+\psi (t_0^*)\: \bot \: T_{x^*(t_0^*)} \mathcal{X}^0;
+\end{equation*}
+\begin{equation*}
+\psi (t_1^*)\: \bot\: T_{x^*(t_1^*)} \mathcal{X}^1.
+\end{equation*}
+\end{enumerate}
+\end{thm}
+
+{\flushleft Рассмотрим неавтономный случай.}
+
+$$ \dot{x}(t) = f(t, x(t), u(t))$$
+$$ J = \int\limits_{t_0}^{t_1}f^0(t, x(t), u(t))dt$$
+
+Введем новую переменную $x_{n+1}$ такую, что
+
+\begin{equation*}
+\begin{cases}
+\dot x_{n+1}(t) =  1\\
+x_{n+1}(0) = t_0
+\end{cases}
+\end{equation*}
+
+То есть $x_{n+1} \equiv t$. После чего можно сделать еще одну замену и перейти к задаче в новых обозначениях:
+
+\begin{align*}
+&\overline{x} = (x_0, x_1, ..., x_{n+1})^T\\
+&\overline{f} = (f^0, f^1, ..., f^{n+1})^T\\
+&\overline{\psi} = (\psi_0, \psi_1, ..., \psi_{n+1})^T\\
+&\overline{H} = \psi_0 f^0 + \langle\psi, f\rangle + \psi_{n+1}\cdot 1 = H + \psi_{n+1}\\
+&\overline{M} = \sup\limits_{u \in \mathcal{P}} \overline{H} = M + \psi_{n+1}^*
+\end{align*}
+
+{\flushleft В итоге мы получили автономную систему. Далее рассмотрим задачу в нормальном случае, когда $\widetilde{\psi} \neq 0$. Принцип Максимума примет вид:} 
+
+\begin{enumerate}
+
+\item \textbf{Сопряженная система.}\\
+\begin{align*}
+&\dot{\psi}_0^* = 0\\
+&\dot{\psi}^* = -\frac{\partial H}{\partial x}\\
+&\dot{\psi}_{n+1}^* = - \psi_0^*\frac{\partial f^0}{\partial t} - \left\langle \psi^*, \frac{\partial f}{\partial t}\right\rangle
+\end{align*}
+
+\item \textbf{Условие максимума} остается без изменений.
+
+\item \textbf{К условию трансверсальности по $0$-й переменной}.
+\begin{align*}
+&\psi_0 = \mathrm{const} \leq 0\\
+&\overline{x} = (x_0,\widehat{x})^\mathrm{T} = (x_0,x_1,\ldots, x_{n+1})^\mathrm{T}\\
+&\widehat{x} (t_0) = (x^0,t_0)\in \mathcal{X}^0\times\mathbb{R} = \widehat{\mathcal{X}}^0\\
+&\widehat{x} (t_1) = (x^1,t_1) \in \mathcal{X}^1\times\mathbb{R}=\widehat{\mathcal{X}}^1\\
+\end{align*}
+Тогда имеем:
+$$T_{\widehat{x}} \widehat{\mathcal{X}}^1 = \mathcal{L}\{(0, ..., 0, 1)\}$$
+
+\item \textbf{Условие трансверсальности.} \\
+Из предыдущего $T_{\widehat{x}} \widehat{\mathcal{X}}^1 = T_x \mathcal{X}^1 \times T_x \mathbb{R}$, поэтому
+\begin{align*}
+&\psi_{n+1}^*(t_1^*) = 0\\
+&\psi_{n+1}^* (t) = \int\limits_t^{t_1^*}\left[ \psi_0^* + \frac{\partial f^0}{\partial t}(\tau, x^*(\tau), u^*(\tau)) + \left\langle \psi^*(t), \frac{\partial f}{\partial t}\right\rangle\right]d\tau\\
+&M \equiv \overline{M} - \int\limits_t^{t_1^*}\left[ \psi_0^* + \frac{\partial f^0}{\partial t}(\tau, x^*(\tau), u^*(\tau)) + \left\langle \psi^*(t), \frac{\partial f}{\partial t}\right\rangle\right]d\tau
+\end{align*}
+
+\end{enumerate}
+
+Теперь рассмотрим случай с фиксированным временем. Пусть $t_0,\,t_1$ фиксированы. Фиксация $t_1$ задается следующим образом:
+
+\begin{equation*}
+\begin{cases}
+&x_{n+1}(t_1) = t_1^*\\
+&t_1 = t_1^*
+\end{cases}
+\end{equation*}
+
+Из условий трансверсальности:
+
+$$ M \equiv \mathrm{const} - \int\limits_t^{t_1^*}\left[ \psi_0^* + \frac{\partial f^0}{\partial t}(\tau, x^*(\tau), u^*(\tau)) +\left\langle \psi^*(t), \frac{\partial f}{\partial t}\right\rangle\right]d\tau$$
+%\ \\
+%$$\dot{x}(t) = f(\ \cdot\ , x(t), u(t))$$
+%$$x(t_0) = x^0\ \rightarrow \ x(t_1) = x^1 \qquad t_0, t_1 \text{ --- фиксированные}$$
+%$$J = \int\limits_{t_0}^{t_1} f^0 (x(t), u(t))dt$$
+%$$\quad M|_{\substack{x = x^* \\ \widetilde{\psi} = \widetilde{\psi}^*}} \equiv const$$
+%\ \\
+Есть два существенно различных случая.
+\begin{itemize}
+\item Анормальный случай. $$\psi_0^* = 0$$
+\item Нормальный случай. $$\psi_0^* < 0$$
+В силу положительной однородности сопряженной системы можно считать $$\psi_0^* = -1$$
+\end{itemize}
+   
+Далле будут использоваться обозначения:
+\begin{align*}
+&\psi(t_0) = \psi^0\\
+&x^*[t] = x^* (t, t_0, x^0, \psi^0)\\
+&\psi^*[t] = \psi^*(t, t_0, x^0, \psi^0)
+\end{align*}
+\section{Общая задача ОУ с условиями типа равенств, вывод из нее формулировки ПМП для автономной задачи с нефиксированным временем. Вывод формулировки ПМП для задачи со свободным правым концом и интегрально-терминальным функционалом (задача Майера-Больца).}
+Для начала сформулируем общую задачу оптимального управления. Введем обозначение $(t_0, x^0, t_1, x^1) = e$, тогда задача формулируется следующим образом:
+\begin{equation*}
+\begin{cases}
+&\dot{x}(t) = f(x(t), u(t))\\
+&u(t) \in \mathcal{P}\\
+&\varphi_0(e) \rightarrow \inf\\
+&\varphi_1(e) = ... = \varphi_k(e) = 0\quad (*)
+\end{cases}
+\end{equation*}
+В данном случае имеется ввиду, что $x(t_0)$, $x(t_1)$ и $t_0$ фиксированны (за счет $\varphi_k(e)$). 
+\begin{rmk}
+В случае неавтономной системы, задача сводится к автономной одной заменой.
+\end{rmk}
+{\flushleft Выпишем вывод для автономной задачи с нефиксированным временем:}
+$$ t_0, x^0, x^1 \text{ --- фиксированные},\quad t_1 \text{ --- свободная.}$$
+Функционал имеет вид:
+$$ J = \int\limits_{t_0}^{t_1} f^0(x(t), u(t))dt \rightarrow \inf$$
+После, делавшейся уже ранее замены, имеем:
+\begin{equation*}
+\begin{cases}
+\dot{x}_0 = f^0(x, u)\\
+x_0(t_0) = 0
+\end{cases}
+\end{equation*}
+$$ x_0(t) = \int\limits_{t_0}^t f^0(x(t), u(t))dt$$
+Проведем некоторые переобозначения.
+\begin{align*}
+&\xi = (x_0,\, x_1,\ldots,\,x_n)^\mathrm{T}\\
+&g = (f^0,\,f^1,\ldots,\,f^n)^\mathrm{T}\\
+&\xi^0 = (0,\,x_1^0,\ldots,\,x_n^0)^\mathrm{T}\\
+&\xi^1 = (J,\,x_1^1,\ldots,\,x_n^1)^\mathrm{T}
+\end{align*}
+Далее нужно записать ограничения в виде $(*)$:
+$$
+\begin{aligned}
+    &\varphi_0 = \xi_1^1 \rightarrow \inf\\
+    &\varphi_1 = t_0 - \tau_0 = 0\\
+    &\varphi_2 = \xi_1^0 = 0\\
+    &\varphi_3 = \xi_2^0 - a_1^0 = 0\\
+    &\ldots \\
+    &\varphi_{n+1} = \xi_{n+1}^0 - a_n^0 = 0\\
+    &\varphi_{n+2} = \xi_2^1 - a_1^1 = 0\\
+    &\ldots \\
+    &\varphi_{2n+2} = \xi_{n+1}^1 - a_n^1 = 0   
+\end{aligned}
+$$
+\subsection{Вывод формулировки ПМП для задачи со свободным правым концом и интегрально-терминальным функционалом}
+\begin{align*}
+&x_0,\ t_0,\ t_1 \text{ --- фиксированные}\\
+&J = \int\limits_{t_0}^{t_1} f^0 (x(t), u(t))dt + g(x(t_1))
+\end{align*}
+Проводим стандартную замену:
+\begin{equation*}
+\begin{cases}
+\dot{x}_0 = f^0\\ 
+x_0(t_0) = 0
+\end{cases}
+\end{equation*}
+И получаем
+$$  J = x_0(t_1) + g(x(t_1)) = \varphi_0$$
+Остальные ограничения имеют вид:
+\begin{align*}
+&\varphi_1 = t_0 - \tau_0\\
+&\varphi_2 = t_1 - \tau_1\\
+&\varphi_{3 + 1} = \xi_2^0 - a_1^0\\
+&\ldots\\
+&\varphi_{3 + n} = \xi_{n + 1}^0 - a_n^0
+\end{align*}
+На левом конце:
+$$ \psi_0^* = -\lambda_3, \quad \psi^*(t_0) = -(\lambda_4,\ldots, \lambda_{n+3})^\mathrm{T}$$
+На правом конце:
+\begin{align*}
+&\left( \frac{\partial\varphi}{\partial \xi_1}\right)^* = \begin{pmatrix}
+	1 & \dots & 0 \\
+	\frac{\partial g}{\partial x_i}& \ddots & \vdots \\
+	\ldots & \dots & 0
+\end{pmatrix} \Rightarrow 
+\begin{cases}
+	\psi_0^*=\lambda_0\\
+	\psi^*(t_1^*) = \frac{\partial g}{\partial x} \lambda_0
+\end{cases}\\
+&H|_{t = t_0} = \lambda_1\\
+&H|_{t = t_1} = -\lambda_2\\
+&\frac{\partial H}{\partial t} \equiv 0\\
+&\psi_0^* \leq 0 \text{ --- const}
+\end{align*}
+В итоге получаем единственное информативное условие:
+$$\psi(t_1^*) = \psi_0^*\frac{\partial g}{\partial x}.$$
+
+\section{Теоремы о зависимости решения обыкновенного ДУ от параметра, непрерывность и дифференцируемость траектории по краевым условиям, уравнение в вариациях.}
+Рассмотрим дифференциальное уравнение:
+\begin{equation}
+ \dot{x} = g(t, x).
+ \label{DifEq}
+\end{equation}
+Пусть функция $g(t, x):$
+\begin{enumerate}
+\item $g: [t_0 - a, t_0+a] \times B_b (x^0) \rightarrow \mathbb{R}^n;$
+\item $g$ измерима по $t \quad \forall x \in B_b (x^0);$
+\item $g$ непрерывна по $x \quad \dot{\forall}t \in [t_0 - a, t_0+a];$
+\item $\| g(t, x)\| \leq m(t), \quad m(\cdot)$-- интегрируема по Лебегу, $t \in [t_0 - a, t_0+a];$
+\end{enumerate}
+Либо другой вариант, который мы обозначим $\spadesuit$:
+\begin{enumerate}
+\item $g: [t_0 - a, t_0+a] \times \mathbb{R}^n \rightarrow \mathbb{R}^n;$
+\item $g$ измерима по $t \quad \forall x \in \mathbb{R}^n;$
+\item $g$ непрерывна по $x \quad \dot{\forall} t \in [t_0 - a, t_0+a];$
+\item $\| g(t, x^1) - g(t, x^2)\| \leq L(t) \|x^1 - x^2\|$, где $L(t)$--- интегрируема по Лебегу.
+\end{enumerate}
+Далее выпишем условия продолжимости:
+\begin{enumerate}
+\item $\| g(t, x)\| \leq A(t)\|x(t)\| + B(t);$
+\item $\langle x, g(t, x) \rangle \leq \widetilde{A}(t)\|x(t)\|^2 + \widetilde{B}(t).$
+\end{enumerate}
+Далее в лекциях предложено доказательство того факта, что из $1 \Rightarrow 2$, но мы это доказательство опустим.
+\begin{thm} \ \\
+Пусть для $\mu \in \mathbb{R}^n$
+$$
+\left\{
+\begin{aligned}
+	&\dot{x}(t)=g(t, x, \mu);\\
+	&x(t_0) = x^0.\\
+\end{aligned}
+\right.
+$$
+Пусть также выполнены условия $\spadesuit$ и $x[t] = x(t, t_0, x^0, \mu)$, тогда $x(t, t_0, x^0, \mu)$ непрерывна по $x^0, \mu$.
+\end{thm}
+
+\begin{thm} \ \\
+Пусть выполнены условия $\spadesuit$, $\frac{\partial g}{\partial x}, \frac{\partial g}{\partial \mu} \in C \Rightarrow x(t, t_0, x^0, \mu)$ дифференцируема по $x^0, \mu$.
+Пусть $\frac{\partial x}{\partial x^0} = Y(t), \quad \frac{\partial x}{\partial \mu} = Z(t):$
+\begin{equation}
+\dot{Y}(t)  = \frac{\partial g}{\partial x} Y(t) \qquad Y(t_0) = E 
+\label{EqVar1}
+\end{equation}
+\begin{equation}
+\dot{Z}(t)  = \frac{\partial g}{\partial x} Z(t) +  \frac{\partial g}{\partial \mu}  \qquad Z(t_0) = 0
+\label{EqVar2}
+\end{equation}
+\end{thm}
+{\flushleft В данной теореме (\ref{EqVar1}) обозначает (УВ1), а (\ref{EqVar2}) --- (УВ2).
+Далее будет предложено определение $\epsilon$-решения, а также начальные сведения уравнений в вариациях.}
+\begin{defin}
+$x$ --- $\epsilon$-решение (\ref{DifEq}), если $x \in AC$ и 
+$$
+\| \dot{x} - g(t, x) \| \leq \epsilon \quad \dot{\forall} t.
+$$
+\end{defin}
+Сильная вариация. Изменим управление следующим образом:\\
+$$
+u^{\epsilon}(t) = 
+\left\{ 
+\begin{aligned}
+& u^*(t), \quad t \in \left[t_0, t_1\right]\backslash (\tau-\epsilon, \tau]\\
+& v, \quad t \in  [\tau-\epsilon, \tau)\\
+\end{aligned}
+\right.
+$$
+Тогда получим, что
+\begin{align*}
+&J(\epsilon) = J(u^{\epsilon}(\cdot)) \geq J(u^{*}(\cdot))\\
+&\lim\limits_{\epsilon \rightarrow +0} \frac{J(u^{\epsilon}(\cdot)) -J(u^{*}(\cdot))}{\epsilon} \geq 0\\
+\end{align*}
+При этом $u^{\epsilon}(\cdot) \mapsto x^{\epsilon}(\cdot)$ ($u^{\varepsilon}$ однозначно порождает $x^{\varepsilon}$).
+
+\begin{lem} При $t \geq \tau$ функция $x^{\varepsilon}$ имеет вид:
+$$x^{\epsilon}(t) = x^{*}(t) + \epsilon \delta x + \bar{\bar{o}}(\epsilon)$$
+Где
+\begin{equation*}
+\begin{cases}
+\delta x(\tau) = f(\tau, x^*(\tau), v) - f(\tau, x^*(\tau), u^*(\tau))\\
+\dfrac{d}{dt} (\delta x(\tau)) = \left. \dfrac{\partial f}{\partial x}\middle|_{\substack{x = x^* \\ u = u^*}} \delta x(t)\right.
+\end{cases}
+\end{equation*}
+\end{lem}
+\section{Вариация управления для задачи со свободным правым концом и интегрально-терминальным функционалом (задача Майера-Больца).}
+\begin{lem} Имеется система $\dot{x} [t] = f (t, x[t]\ |\ \overline{u}(t)),\;x(t_0) = x^0$. Если проварьировать управление $\overline{u}(t)\colon$
+$$\varepsilon > 0 \quad u^\varepsilon [t] = u[t] + \varepsilon \upsilon(t),$$
+то оно породит новую траекторию.
+$$u^\varepsilon [t] \mapsto x^\varepsilon [t] = x (t, t_0, x^0\ |\ \overline{u}^\varepsilon(t))$$
+Где
+\begin{align*}
+&x^\varepsilon [t] = x[t] + \varepsilon \delta x[t] + \bar{\bar{o}}(\varepsilon)\\
+&\begin{cases}
+\delta \dot{x} = \dfrac{\partial f}{\partial x} \delta x + \dfrac{\partial f}{\partial u}\upsilon\\
+\delta x[t_0]  = 0\\
+\end{cases}\\
+&\delta x = \left.\frac{\partial}{\partial \varepsilon} x^\varepsilon\right|_{\varepsilon = 0}.
+\end{align*}
+\end{lem}
+
+\begin{lem}  Имеется система $\dot{x} [t] = f (t, x[t]\ |\ \overline{u}(t)),\;x(t_0) = x^0$. В случае варьирования начального условия система принимает вид: 
+\begin{align*}
+&x^\varepsilon[t] = x[t] + \varepsilon \delta x[t] + \bar{\bar{o}}(t, \varepsilon)\\
+&\begin{cases}
+\dot{x}^\varepsilon [t] = f (t, x^\varepsilon[t], u(t))\\
+x^\varepsilon[t_0] = x^0 + \varepsilon y^0
+\end{cases}\\
+&\begin{cases}
+\delta \dot{x} = \dfrac{\partial f}{\partial x} \delta x\\
+\delta x[t_0] = y^0
+\end{cases}
+\end{align*}
+\end{lem}
+
+\begin{nxt} В случае преставления вариации начального условия в виде $M\rho$ имеем:
+\begin{align*}
+&x^\varepsilon[t] = x[t] + (\delta x)\rho +  \bar{\bar{o}}(\rho)\\
+&x^\varepsilon[t_0] = x^0 + M\rho\\
+&\begin{cases}
+\delta \dot{x} = \dfrac{\partial f}{\partial x} \delta x\\
+\delta x[t_0] = M
+\end{cases}
+\end{align*}
+\end{nxt}
+
+\section{Абстрактная задача нелинейного программирования с условиями типа равенства. Определение конического дифференциала функционала. Теорема об абстрактном правиле множителей Лагранжа для этой задачи нелинейного программирования.}
+Рассмотрим абстрактную задачу и запишем для нее Принцип Максимума Понтрягина:
+\begin{equation}\label{ssystem}
+\begin{cases}
+\dot{x} = f(t, x, u)\\
+%x(t_0) = x^0\\
+u(t) \in \mathcal{P}\\
+J = \phi(x(t_1)) \rightarrow \inf\\
+\end{cases}
+\end{equation}
+Функция Гамильтона--Понтрягина:
+$$H = \langle \psi,f(t, x, u)\rangle$$
+Обозначим ограничения:
+$$
+ \phi_0 = \phi,\quad \phi_1 = t_0 - \overline{t}_0,\quad \phi_2 = t_1 - \overline{t}_1, \quad \phi_{2+j} = x_j^0 - \overline{x}_j^0, \quad j=1,\ldots, n.
+$$
+Тогда, пусть:
+$$
+\Phi = \begin{bmatrix}
+			\phi_0\\
+			\phi_1\\
+			\vdots
+   \end{bmatrix}
+$$
+\begin{thm}[Принцип максимума Понтрягина] \ \\
+Пусть $\left( x^*(t), u^*(t)\right)$ --- оптимальная пара для задачи $\eqref{ssystem}$ $\Rightarrow \exists\; \psi: \left[t_0^*, t_1^*\right] \rightarrow \mathbb{R}^n\colon$
+\begin{enumerate}
+\item Условие невырожденности.
+$$\psi(t) \neq 0,\; \dot \forall\,t$$
+\item Сопряженная система
+\begin{equation*}
+\dot{\psi} = -\left(\frac{\partial f}{\partial x}\right)^\mathrm{T} \psi;
+\end{equation*}
+\item Условие максимума
+\begin{equation*}
+\langle \psi(t), f(t, x^*(t), u^*(t))\rangle \stackrel{\text{п.в. }}{=} \sup\limits_{u \in \mathcal{P}}\langle \psi(t), f(t, x^*(t), u)\rangle;
+\end{equation*}
+\item Условие трансверсальности
+\begin{equation*}
+\psi (t_0) = -\left(\frac{\partial \Phi}{\partial x^0}\right)^\mathrm{T} \lambda = -\sum\limits_{j=1}^n \lambda_{2+j} ;
+\end{equation*}
+\begin{equation*}
+\psi (t_1) = \left(\frac{\partial \Phi}{\partial x^1}\right)^\mathrm{T} \lambda = \lambda_0\frac{\partial \phi}{\partial x};
+\end{equation*}
+\item Условие трансверсальности по времени
+\begin{equation*}
+\left.H\right|_{t=t_0} = \left\langle \frac{\partial \Phi}{\partial t^0}, \lambda \right\rangle = \lambda_1;
+\end{equation*}
+\begin{equation*}
+\left.H\right|_{t=t_1} = -\left\langle \frac{\partial \Phi}{\partial t^1}, \lambda \right\rangle = -\lambda_2;
+\end{equation*}
+\end{enumerate}
+\end{thm}
+{\flushleft Далее введем понятие конического дифференциала, но для него нам понадобится несколько (не то чтобы совсем мало) дополнительных определений:}
+\begin{enumerate}
+\item $J = \phi_0(t_0, x(t_0), t_1, x(t_1));$
+\item Пусть $e = (t_0, x(t_0), t_1, x(t_1)) \Rightarrow \phi_1(e) = \ldots = \phi_k(e) = 0;$
+\item Пусть $S$--- множество четверок вида:
+$S = \{(t_0, t_1, x(t_0), u(\cdot))\};$
+\item 
+$\sigma \in S \rightarrow  \begin{bmatrix}
+			\phi_0(e)\\
+			\vdots \\
+			\phi_k(e)\\
+   \end{bmatrix} \in \mathbb{R}^{k+1};$
+\item $\hat{S} = S \bigcap \{\phi_1(e) = \ldots = \phi_k(e) = 0\};$
+\item $C = \conv \{0, l^1, \ldots, l^{k+1}\}, $ где $ l^j = (0, \ldots, 0, 1, 0, \ldots, 0)^T;$
+\item $\rho \in \eta C, \quad \eta>0, \quad \rho \text{--- параметр вариации};$
+\item $\zeta: \eta C \rightarrow S;$
+\item $\Phi: S \rightarrow \mathbb{R}^{k+1}$ (похоже, что подразумевается перевод из начальных условий в значения ограничивающих функций $\varphi$).
+\end{enumerate}
+Из предыдущих соображений вытекает, что:
+
+\begin{equation}\label{phivari}
+\Phi(\zeta (\rho)) =\Phi(\sigma^*) + M\rho +\bar{\bar{o}}(\rho).
+\end{equation}
+
+\begin{defin}[Конический дифференциал]\ \\
+$M$ --- конический дифференциал, соответствующий $\zeta^*, \quad M \in \mathbb{R}^{(k+1)\times(k+1)}.$
+\end{defin}
+\begin{defin}[Конус вариаций]\ \\
+$D\subseteq \mathbb{R}^{k+1}$ ---  выпуклый конус вариаций, если $\forall (d^1, \ldots, d^{k+1}) \in D, (d^1, \ldots, d^{k+1})$ --- ЛНЗ $\Rightarrow$
+$$\Rightarrow M = [d^1, \ldots, d^{k+1}]\text{--- конический дифференциал в } \sigma^*.$$
+\end{defin}
+{\flushleft Осталось только выписать теорему об абстрактном правиле множителей Лагранжа, чем мы и займемся:}
+\begin{thm}[Абстрактное правило множителей Лагранжа]\ \\
+Пусть $\sigma^*$ --- оптимум прайм (наиболее оптимальное: $\phi_0 \rightarrow \min)$, $\phi_1 =\ldots =\phi_k = 0,\quad \forall \sigma \in S.$ Пусть $D$ --- конус вариаций, то есть набор вектором из которых можно составить $M$ в $\eqref{phivari}$. Тогда:
+$$\exists \lambda = (\lambda_0, \lambda_1, \ldots, \lambda_k)^\mathrm{T} \neq 0: \quad \lambda_0 < 0, \quad \langle \lambda, d\rangle \leq 0 \quad \forall d \in D.$$
+\end{thm}
+\section{Выпуклый конус вариаций для общей задачи ОУ с условиями типа равенства, семейства векторов, порождающих конус. Лемма о вариации траектории в произвольный фиксированный момент времени, лемма о вариации траектории в левом и правом конце.}
+Ввод конуса вариаций был осуществлен в предыдущем билете, поэтому воздержимся от повторов и позволим читателю переместиться на предыдущую страницу, дабы в этом удостовериться. Всюду далее будут действовать обозначения, введеные ранее.
+\begin{thm}\ \\
+\begin{enumerate}
+\item $$\pm \left[ \frac{\partial \Phi}{\partial t_0} + \frac{\partial \Phi}{\partial x^0} f(t_0, x^0, u(t_0))\right]$$ 
+\item $$\pm \left[ \frac{\partial \Phi}{\partial t_1} + \frac{\partial \Phi}{\partial x^1} f(t_1, x^1, u(t_1))\right]$$
+\item \begin{align*}
+&\frac{\partial \Phi}{\partial x^0}\delta x[t_0] + \frac{\partial \Phi}{\partial x^1} \delta x[t_1], \qquad t\in[t_0, t_1]\\
+&\frac{d}{dt}\left(\delta x(t)\right) = \left( \frac{\partial f}{\partial x}\right) \delta x^1 \delta x[t_1]=\delta x^0
+\end{align*}
+\item
+$$\frac{\partial \Phi}{\partial x^1} \delta x[t_1]$$
+$$\frac{d}{dt}\left(\delta x(t)\right) = \left( \frac{\partial f}{\partial x}\right) \delta x^1 \delta x[\tau] = f(\tau, x[\tau], v) - f\left(\tau, x[\tau], u^*(\tau)\right), \quad t \in [\tau, t_1]$$
+\end{enumerate}
+$\Rightarrow D$ порожденный (1) - (4) --- конус вариаций.
+\label{conus}
+\end{thm}
+
+{\flushleft Далее будут две леммы, связанные с вариацией траектории:}
+
+\begin{lem}[о вариации траектории в произвольный фиксированный момент времени]\ \\
+\begin{align*}
+&x^{\rho}(t) = x(t) + \delta x(t)\rho + \bar{\bar{0}}(t, \rho)\\
+&\delta x(t) = \sum\limits_{j=0}^{S_m} \delta x^j(t), \quad m: \tau{S_m} \leq t\\
+&\frac{d}{dt}\delta x^j(t) = \frac{\partial f}{\partial x}\delta x^j(t)\\
+&\delta x^0(t_0) = N\\
+&\delta x^j(\tau_j) = [f(\tau_j, x(\tau_j), v_j) - f(\tau_j, x(\tau_j), u(\tau_j))]a^j
+\end{align*}
+\end{lem}
+
+\begin{lem}[о вариации траектории в левом и правом конце]\ \\
+\begin{align*}
+&x^{\rho}(t_0 + b^0\rho) = x(t_0) +N\rho +f(t_0, x(t_0), u(t_0))b^0\rho + \bar{\bar{o}}(\rho)\\
+&x^{\rho}(t_1 + b^1\rho) = x(t_1) +\delta x(t_1)  \rho +f(t_1, x(t_1), u(t_1))b^1\rho + \bar{\bar{o}}(\rho)
+\end{align*}
+\end{lem}
+
+\section{Основная идея док-ва ПМП для задачи ОУ с условиями типа равенства. Лемма об изменении по времени значения функции максимума по значениям управления в фиксированный момент времени, постоянство значения функции максимума при независимости функции, от которой берется максимум, от времени.}
+Для начала сформулируем сам ПМП:
+\begin{thm}[ПМП]
+\ \\
+    Пусть $\{ \xi^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара для задачи ОУ с ограничениями типа равенства ($\dot{x} = f(t, x, u)$), тогда 
+    $ \,\exists\; \psi^*: \left[t_0^*, t_1^*\right] \rightarrow \mathbb{R}^{n+1}, \quad \exists \lambda = (\lambda_0, \ldots, \lambda_k)^T \neq 0, \ \lambda_0\leq 0$:
+    \begin{enumerate}
+    	\item Условие нетривиальности
+    	$$\psi^* \neq 0,\; \dot\forall\, t$$
+        \item Сопряженная система
+        $$
+        \dot{\psi} = - \left. \frac{\partial f}{\partial x} \middle|_{\substack{\xi = \xi^*\\ u = u^*}}\psi\right.
+        $$
+        \item Условие максимума
+        $$
+        \sup\limits_{v \in \mathcal{P}} \langle \psi, f(\tau, x(\tau), v)\rangle = \langle \psi, f(\tau, x(\tau), u(\tau))\rangle
+        $$
+        \item 
+            \begin{enumerate}
+            \item Условие трансверсальности 1
+            $$
+            \psi(t_1) = \left(\frac{\partial \Phi}{\partial x^1}\right)^T \lambda;
+            $$
+            \item Условие трансверсальности 2
+            $$
+            \psi(t_0) = -\left(\frac{\partial \Phi}{\partial x^0}\right)^T \lambda;
+            $$
+            \item Условие трансверсальности 3
+            $$
+            \left. H \right|_{t=t_1} = -\left\langle \frac{\partial \Phi}{\partial t_1}, \lambda \right\rangle;
+            $$
+            \item Условие трансверсальности 4
+            $$
+            \left. H \right|_{t=t_0} = \left\langle \frac{\partial \Phi}{\partial t_0}, \lambda \right\rangle.
+            $$
+            \end{enumerate}
+    \end{enumerate}
+\end{thm}
+{\flushleft Далее в виде алгоритма будет описан ход доказательства:}
+\begin{enumerate}
+            \item Для начала введем конус вариаций по теореме (\ref{conus}), что позволит нам использовать дополнительные условия.
+            \item Определим $\forall d \in D$, так, чтобы $\langle \lambda, d \rangle \leq 0$, исходя из определения конуса: $$d = \frac{\partial \Phi}{\partial x^1} \delta x(t_1). $$
+            \item Определим сопряженную систему через условия $\mathit{1}$ и $\mathit{3a}$.
+            \item Пользуясь отдельными пунктами (\ref{conus}) выводим (УМ), (УТ1), (УТ2), (УТ3), (УТ4).
+            \item Как-то так и доказывается ПМП
+\end{enumerate}
+Введем лемму:
+\begin{lem}
+Пусть $h(t, u)$ --- непрерывна, $\frac{\partial h}{\partial t}$ --- непрерывна, $u(t)$ --- кусочно непрерывна(слева); $\max\limits_{v \in \mathcal{P}} h(t, v) = h(t, u(t)) \Rightarrow$
+$$
+\Rightarrow h(t, u(t)) \text{ --- непрерывна по } t \text{ и кусочно дифференцируема};
+$$
+$$
+\frac{d}{dt} h(t, u(t)) = \frac{\partial h}{\partial t}(t, u(t)) \quad \dot{\forall} t.
+$$
+\end{lem}
+Осталось рассмотреть систему, для которой функция Гамильтона-Понтрягина не зависит от времени:
+\begin{equation*}
+\begin{cases}
+\dot{x} = f(x, u), \quad u \in \mathcal{P}\\
+x(t_0) = x^0\\
+x(t_0) \rightarrow x^1\\
+\mathcal{X}[t] = \mathcal{X}(t, t_0, \mathcal{X}^0)\\
+t_1- t_0 \rightarrow \inf\
+\end{cases}
+\end{equation*}
+Введем функцию Гамильтона-Понтрягина:
+$$
+H(x, \psi, u) = \langle \psi, f(x, u) \rangle;
+$$
+$$
+M(x, \psi) = \sup\limits_{u \in \mathcal{P}}\langle \psi, f(x, u) \rangle;
+$$
+\begin{thm}[Принцип максимума Понтрягина] \ \\
+    Пусть $\left( x^*(\cdot), u^*(.)\right)$ --- оптимальная пара $\Rightarrow \exists\, \psi^*: \left[t_0^*, t_1^*\right] \rightarrow \mathbb{R}^{n+1}$:
+    \begin{enumerate}
+    \item Условие нетривиальности
+    $$\psi^* \neq 0,\;\dot\forall\,t$$
+    \item Сопряженная система
+    \begin{equation*}
+    \dot{\psi} = -\left.\left(\frac{\partial H}{\partial x}\right)\right|_{u=u^*} = -\left(\frac{\partial M}{\partial x}\right)
+    \end{equation*}
+    \item Условие максимума
+    \begin{equation*}
+    \left. H \middle|_{\substack{x = x^* \\ \psi = \psi^* \\ u = u^*}}\right. \stackrel{\text{п.в.}}{=}
+    \sup\limits_{u \in \mathcal{P}} \left.H\middle|_{\substack{x = x^* \\ \psi = \widetilde{\psi}^*}}\right. =
+    \left. M \middle|_{\substack{x = x^* \\ \psi = \widetilde{\psi}^*}}\right. .
+    \end{equation*}
+    \item $M = const \geq 0$
+    \end{enumerate}
+\end{thm}
+
+\section{Система ДУ при условиях Каратеодори. Решение Каратеодори. Теорема о существовании, единственности и продолжимости решения для системы ДУ при условиях Каратеодори. Условия на систему управления, гарантирующие существование, единственность и продолжимость траектории системы, отвечающей измеримому управлению.}
+Введем систему:
+\begin{equation}\label{thirdsystem}
+\begin{cases}
+\dot{x} = g(t, x)\\
+x(t_0) = x^0
+\end{cases}
+\end{equation}
+
+\begin{defin}
+$x(\cdot)$ --- решение по Каратеодори задачи Коши $\eqref{thirdsystem}$, если
+    \begin{enumerate}
+    \item $x(\cdot) \in A\ C\ [t_0, t_1]$ --- абсолютно непрерывная функция.
+    \item $x$ --- удовлетворяет $\eqref{thirdsystem}$ п.в. на $[t_0, t_1]$.
+    \end{enumerate}
+\end{defin}
+
+\begin{defin} [Абсолютно непрерывная функция]\ \\
+$x(t)$ --- абсолютно непрерывна на $[t_0,\,t_1]$, если
+   \begin{align*}
+    &\forall \varepsilon > 0\ \exists\, \delta (\varepsilon) > 0 : \forall\ a_j, b_j\ (t_0 \leq a_1 < b_1\ldots a_m<b_m\leq t_1) : \sum\limits_{j = 1}^{m}|b_j - a_j| < \delta\\
+    &\Rightarrow \sum\limits_{j = 1}^{m}\|x(b_j) - x(a_j)\| < \varepsilon
+   \end{align*}
+\end{defin}
+
+{\flushleft Введем обозначение:}
+$$
+\begin{cases}
+t \in [t_0 - a, t_0 + a],\; a > 0\\
+b > 0\,:\, \| x - x^0\| \leq b
+\end{cases}
+\Rightarrow \text{Пусть } \mathcal{D} = [t_0 - a, t_0 + a] \times B_b(x^0)
+$$
+
+\begin{thm}[Условия Каратеодори]\ 
+\begin{enumerate}
+    \item $g \text{ --- определена } \forall x \in B_b(x^0)\quad \dot\forall\, t \in [t_0 - a, t_0 + a]$
+    \item $g$ --- измеримо по $t\quad \dot\forall x \in B_b(x^0)$
+    \item $g \in C_x\quad \dot{\forall} t \in [t_0 - a, t_0 + a]$
+    \item $\| g(t, x)\| \leq m(t)\quad \dot{\forall} t,\; \forall x,\; m \in L [t_0 - a, t_0 + a]$
+\end{enumerate}
+\end{thm}
+
+\begin{thm}
+Пусть выполнены условия Каратеодори и 
+\begin{align*}
+&\exists\,d>0,\ d\leq a\colon \varphi(t_0\pm d) \leq b\\
+&\varphi(t) = \left|\int\limits_{t_0}^{t_1} m(s) ds \right|
+\end{align*}
+Тогда у задачи Коши $\eqref{thirdsystem}$ существует решение по Каратеодори на отрезке $[t_0-d,\,t_0+d]$.
+\end{thm}
+\begin{thm}
+Пусть выполнены условия Каратеодори и
+\begin{align*}
+\langle x^2 - x^1, g(t, x^2) - g(t, x^1)\rangle \leq L(t) \|x^2 - x^1\|^2\\
+\forall x^1, x^2 \in B_b(x^0)\quad \dot{\forall} t,\quad L(t) \in L[t_0 - a, t_0 + a]
+\end{align*}
+Тогда решение $\eqref{thirdsystem}$ единственно.
+\end{thm}
+%\includegraphics[scale=0.15]{9.jpg}
+\ \\
+\begin{rmk}
+Если $(t_0 + d, x(t_0 + d)) \in int D \Rightarrow $ можно продолжить.
+\end{rmk}
+\begin{defin}
+\ \\
+    $ \overline{\tau} = \sup \left\{ t \in [t_0 - a, t_0 + a]\,\middle|\,x(s) \in D\; \dot{\forall}\,s \in [t_0, t)\right\}.$
+\end{defin}
+\begin{defin}
+\ \\
+    $ \underline{\tau} = \inf \left\{ t \in [t_0 - a, t_0 + a]\,\middle|\,x(s) \in D\; \dot{\forall}\,s \in (t, t_0]\right\}.$
+\end{defin}
+\begin{thm}
+$
+(\overline{\tau}, x(\overline{\tau})) \in \partial D.
+$
+\end{thm}
+\section{Теорема существования ОУ для общей задачи управления с условиями типа равенства. Пример задачи, для которой ОУ не существует.}
+Введем обозначение: $(t_0, x^0, t_1, x^1) = e$.\\
+Сформулируем общую задачу оптимального управления c условиями типа равенство:
+$$
+\begin{cases}
+    \dot{x}(t) = f(t, x(t), u(t))\\
+    u(t) \in \mathcal{P}\\
+    J = \varphi_0(e) \rightarrow inf\\
+    \varphi_1(e) = ... = \varphi_k(e) = 0
+\end{cases}
+$$
+Рассмотрим дополнительные условия и обозначим их $\maltese$:
+$$
+\begin{aligned}
+    &f \in C_{x, u, t}\\
+    &\mathcal{P} \text{--- компакт}\\
+    &\|f(t, x, u)\| \leq A\|x\| +B\\
+    &\|f(t, x^1, u)- f(t, x^2, u)\| \leq L \|x^1 - x^2\|\\
+    &1) \ \exists M_1: \|x(t)\| \leq M_1(t_0, t_1) \quad \forall u(\cdot) \text{ --- измеримой}\\
+    &2)\  \exists M_2: \|x(t)- x(s)\| \leq M_2|t-s| \quad 
+\end{aligned}
+$$
+Введем дифференциальное включение: $$F(t, x) = \bigcup\limits_{u\in \mathcal{P}} \{f(t, x, u)\}\text{ --- вектор Грама}.$$ Тогда $\dot{x} \in F(t, x) .$
+Далее сформулируем теорему существования ОУ, но перед тем как ее сформулировать выпишем некоторые обозначения:
+\begin{enumerate}
+\item $E = \{\left. e \right| \phi_i(e) = 0\quad \forall i\}$.
+\item $S$ --- множество траекторий: $e \in E$.
+\end{enumerate}
+\begin{thm}[Существование ОУ]\ 
+\begin{enumerate}
+\item Пусть $S \neq \varnothing$;
+\item $E$ --- компакт;
+\item Выполнено $\maltese$, $\phi_0 \in C(E);$
+\item $F \in \conv \mathbb{R}^n$
+\end{enumerate}
+Тогда $\exists\, (x^*(t), u^*(t)),\; t_0^*,\, t_1^*$ --- решение задачи.
+\end{thm}
+И, наконец, вашему вниманию будет предложен пример задачи, для которой не существует оптимального управления:
+\begin{ex}
+$$
+\begin{aligned}
+    &\dot{x}(t) = u, \quad u \in \mathcal{P};\\
+    &J(x(\cdot)) = \int\limits_0^1 x^2(t) dt;\\
+    &x(0) = 1, \quad x(1) = 0.\\
+\end{aligned}
+$$
+$$
+u^j = 
+\left\{ 
+\begin{aligned}
+& -j, \quad t \in \left[0, \frac{1}{j}\right]; \\
+& 0, \quad t \in \left[\frac{1}{j}, 1\right]. \\
+\end{aligned}
+\right| \Rightarrow \text{решения } \ \nexists
+$$
+\end{ex}
+\begin{ex}[Контрпример на невыпуклость вектора Грама]
+\begin{align*}
+&\begin{cases}
+\dot{x}_1 = -(x_2)^2 + u^2\\
+\dot{x}_2 = u
+\end{cases},\quad |u| \leq 1\\
+&t_0 = 0,\quad t_1 \rightarrow \inf\\
+&x^0 = (-1,0)^\mathrm{T} \rightarrow \{x_1^2+x_2^2 = a^2 \,|\, 0<a<1 \}\\
+\end{align*}
+\end{ex}
+
+\begin{ex}[Контрпример на невыпуклость $E$]
+\begin{gather*}
+\dot{x} = u,\quad |u| \leq 1\\
+t_0 = 0,\quad t_1 > 0\\
+x^0 = 0 \rightarrow \frac{1}{t_1},\quad x(t_1) \rightarrow \inf
+\end{gather*}
+\end{ex}
+\newpage
+\begin{thebibliography}{0}
+  \bibitem{rublev} Рублёв~И.~В. \emph{Лекции по оптимальному управлению (нелинейные системы)}. 2015.
+\end{thebibliography}
+\end{document}
