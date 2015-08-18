@@ -1,0 +1,31 @@
+\subsubsection{Система с периодическими коэффициентами}
+
+Рассмотрим систему \eqref{linear_nonconst} (для простоты считаем $t_0 = 0$) с условием периодичности:
+\begin{equation}
+\label{period_cond}
+  \exists T > 0 \colon A(t + T) = A(t), B(t + T) = B(t) \quad \forall t.
+\end{equation}
+
+\begin{theorem}
+  Пусть выполнено условие \eqref{period_cond}. Пусть дополнительно $A(t)$ и $B(t)$
+  являются аналитическими функциями по $t$, то есть в окрестности каждой точки представляются
+  в виде сходящегося ряда Тейлора. Тогда, если
+	\begin{equation*} 
+		\rg \left[B(0) | X(T, 0) B(0) | \ldots | X^{n - 1}(T, 0) B(0)\right] = n, 
+	\end{equation*}
+	то система вполне управляема на любом промежутке времени.
+\end{theorem}
+
+\begin{proof}
+	Предположим обратное: существует такой ненулевой вектор $\ell$, что
+	\begin{equation*}
+	  \ell^\tran X(t_1, \tau) B(\tau) \equiv 0, \tau \in [0; t_1] \Rightarrow
+	  \ell^\tran X(t_1, \tau) B(\tau) \equiv 0 \quad \forall \tau \in \mathbb{R}.
+  \end{equation*}
+  Рассмотрим следующие значения по времени: $t_1 = T$, $\tau = -k T$, где $k = 0, 1, \ldots$, в таком случае
+  \begin{gather*}
+    X(T, -k T) = X^{k + 1}(T, 0),\\
+    0 = \ell^\tran X(T, -k T) B(-k T) = \ell^\tran X^{k + 1}(T, 0) B(0),
+  \end{gather*}
+  что противоречит условию полного ранга.
+\end{proof}

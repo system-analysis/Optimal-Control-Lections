@@ -1,0 +1,373 @@
+\subsection{Формула Коши и фундаментальные матрицы}
+
+\subsubsection{Формула Коши матричного дифференциального уравнения}
+Рассмотрим следующее матричное дифференциальное уравнение:
+\begin{equation}
+\label{MatEquCach1}
+  \begin{cases}
+    \dot{Z} = A(t)Z(t) + Z(t)B(t) + C(t),
+      \quad A, B, C, Z \in {\mathbb R}^{n \times n},\\
+    Z(t_{0})=Z^{0}.
+  \end{cases}
+\end{equation}
+
+Для данного уравнения рассмотрим два вспомогательных уравнения:
+\begin{multicols}{2}
+\begin{equation}
+\label{MatHelp1}
+  \begin{cases}
+    \dfrac{\partial{X(t, \tau)}}{\partial{t}} =
+      A(t)X(t, \tau),\\
+    X(\tau, \tau) = E,
+  \end{cases}
+\end{equation}
+\begin{equation}
+\label{MatHelp2}
+  \begin{cases}
+    \dfrac{\partial{\widetilde{X}(t, \tau)}}{\partial{t}} =
+      B^{T}(t)\widetilde{X}(t, \tau),\\
+    \widetilde{X}(\tau, \tau) = E.
+  \end{cases}
+\end{equation}
+\end{multicols}
+
+Сделаем замену переменных
+$Z(t) = X(t,t_{0})Y(t)$
+и подставим в \eqref{MatEquCach1}:
+\begin{gather*}
+  \dot{Z} = A(t)X(t, t_{0})Y + X(t, t_{0})\dot{Y} =
+            A(t)X(t, t_{0})Y + X(t,t_{0})YB + C,\text{ откуда:}\\
+  \dot{Y}(t) = Y(t)B(t) + X^{-1}(t, t_0)C.
+\end{gather*}
+
+Вновь сделаем замену: $Y(t) = U(t)\widetilde{X}^{T}(t, t_0)$,
+при подстановке получим:
+\begin{gather*}
+  \dot{Y} = YB + X^{-1}C =
+            \dot{U}\widetilde{X}^{T} +
+            U\widetilde{X}^{T}B,\text{ откуда:}
+\end{gather*}
+\begin{gather}
+  \label{MatEquCach2}
+  \dot{U}(t) = X^{-1}(t, t_0)C(t)\widetilde{X}^{T}(t, t_0),\\
+  \label{MatEquCach2Init}
+  U(t_0) = Y(t_0) = Z^{0}.
+\end{gather}
+
+Итак, итоговая замена имеет вид:
+\begin{equation*}
+  Z = X(t, t_0)Y(t) = X(t, t_0)U(t)\widetilde{X}^{T}(t, t_0).
+\end{equation*}
+
+Проинтегрируем уравнение \eqref{MatEquCach2} от $t_0$ до $t$,
+учитывая \eqref{MatEquCach2Init}:
+\begin{gather*}
+  U(t) = Z^{0} +
+         \int\limits_{t_0}^{t}
+           X^{-1}(\tau, t_0)C(\tau)\left(
+                                   \widetilde{X}^{-1}(\tau, t_0)
+                                   \right)^{T}d\tau,\\
+  \intertext{домножим сначала на $\widetilde{X}^{T}(t, t_0)$ справа,
+             затем на $X(t, t_0)$ слева:}
+  Y(t) = Z^{0}\widetilde{X}^{T}(t, t_0) +
+         \int\limits_{t_0}^{t}
+           X(t_0, \tau)C(\tau)
+           \widetilde{X}^{T}(t_0, \tau)\widetilde{X}^{T}(t, t_0)\,d\tau,\\
+  Z(t) = X(t, t_0)Z^{0}\widetilde{X}^{T}(t, t_0) +
+         \int\limits_{t_0}^{t}X(t, \tau)C(\tau)\widetilde{X}^{T}(t, \tau)\,d\tau.
+\end{gather*}
+
+В данных преобразованиях были использованы
+полугрупповое свойство и свойство транспонирования
+произведения матриц.
+В итоге получаем окончательную формулу Коши для матричного ОДУ:
+\begin{equation}
+\label{MatEquCach3}
+  Z(t) = X(t, t_0)Z^{0}\widetilde{X}^{T}(t, t_0) +
+         \int\limits_{t_0}^{t}X(t, \tau)C(\tau)\widetilde{X}^{T}(t, \tau)\,d\tau.
+\end{equation}
+
+\subsection{Поиск фундаментальных матриц}
+
+\subsubsection{Автономный случай}
+Рассмотрим случай,
+когда матрица $A = \const$ и $\dot{X} = AX$.
+Отметим, что из соотношения \eqref{IntroInvariant} следует,
+что $X(t, \tau) = X(t - \tau, 0) = X(t - \tau)$.
+  
+Рассмотрим теперь следующую задачу:
+\begin{equation*}
+  \begin{cases}
+    \dot{X}(t) = AX(t),\\
+    X(0) = E.
+  \end{cases}
+\end{equation*}
+
+Ясно, что решением данной задачи является
+матрица $X(t)$, равная \emph{матричной экспоненте},
+то есть $X(t) = e^{At}$, которая определяется,
+как и для обычной экспоненты, соответствующим рядом:
+\begin{equation}
+\label{MatExpDef}
+  X(t) = \sum\limits_{k = 0}^{\infty}\frac{A^{k}t^{k}}{k!}.
+\end{equation}
+
+Для корректности определения
+требуется равномерная сходимость данного ряда. 
+\begin{lemma}
+  Ряд в правой части \eqref{MatExpDef} сходится
+  равномерно на любом отрезке.
+\end{lemma}
+
+\begin{proof}
+Для простоты
+$\vphantom{\left(a_{ij}^{(k)}\right)}$
+дальнейших рассуждений
+обозначим коэффициенты матрицы $A^k$
+как $\left(a_{ij}^{(k)}\right),
+     \, i, j = \overline{1, n}$.
+Так как $A \in \mathbb R^{n\times n}$,
+то все степени матрицы $A$ будут иметь
+$\vphantom{\left(a_{ij}^{(k)}\right)}$ тот же размер.
+
+Нас интересует оценка для $\max\left|a_{ij}^{(k)}\right|$.
+Пусть $c = \max|a_{ij}|$.
+Запишем формулу для коэффициентов матрицы $A^{2}$:
+\begin{gather*}
+  a_{ij}^{(2)} = \sum\limits_{l = 1}^{n}a_{il}a_{lj} \Rightarrow
+  \left|a_{ij}^{(2)}\right| \leqslant
+  \sum\limits_{l = 1}^{n}|a_{il}| \cdot |a_{lj}|,\text{ откуда  }
+  \max\left|a_{ij}^{(2)}\right| \leqslant nc^{2}.
+\end{gather*}
+
+Применяя метод математической индукции,
+получаем оценку для любой степени матрицы $A$:
+\begin{equation*}
+  \max\left|a_{ij}^{(k)}\right| \leqslant n^{k - 1}c^{k},
+  \quad c = \max\left|a_{ij}\right|,\, i, j = \overline{1, n}.
+\end{equation*}
+
+Далее, $e^{At} = W_{ij}(t)$,
+где элементы матрицы $W_{ij}(t)$ вычисляются по формуле:
+\begin{equation*}
+  w_{ij}(t) =
+  \sum\limits_{k = 0}^{\infty}\frac{a_{ij}^{(k)} t^{k}}{k!} \leqslant
+  \sum\limits_{k = 0}^{\infty}\frac{n^{k - 1} (ct)^{k}}{k!} =
+  \frac{1}{n}e^{nct},
+\end{equation*}
+тем самым, по признаку Вейерштрасса,
+ряд \eqref{MatExpDef} сходится равномерно.
+\end{proof}
+
+Отметим, что $e^{A\cdot 0} = E$.
+Проверим свойство дифференцируемости:
+\begin{equation*}
+  \frac{d}{dt} \left(e^{At}\right) =
+  \sum_{k = 1}^{\infty}\frac{kA^{k}t^{k - 1}}{k!} =
+  A\sum_{k = 1}^{\infty}\frac{A^{k - 1}t^{k - 1}}{(k - 1)!} =
+  Ae^{At}.
+\end{equation*}
+
+Значит, фундаментальная матрица
+имеет вид $X(t, \tau) = e^{A(t - \tau)}$.
+Отметим, что для матричной экспоненты
+выполняются многие свойства обычной экспоненты,
+например, $e^{As} \cdot e^{At} = e^{A(t + s)}$.
+Данное свойство отражает полугрупповое
+свойство фундаментальной матрицы.
+
+Считать по определению матричную экспоненту
+достаточно трудно, что делать?
+Рассмотрим характеристическое
+уравнение матрицы $A$:
+\begin{gather*}
+  \det\left(A - \lambda E\right) = 0,\\
+  \lambda_1, \ldots, \lambda_\ell
+  \text{~--- собственные значения с кратностями }
+  k_1, \ldots, k_\ell, \, \sum\limits_{i = 1}^{\ell}k_i = n.\\
+  \text{Ищем фундаментальную систему решений:}
+\end{gather*}
+
+\begin{enumerate}
+  \item
+    $k_{j} = 1$
+	  \begin{enumerate} 
+		  \item
+		    $\lambda_j \in \mathbb R\, \Rightarrow
+		    \vphantom{
+		      \sum\limits_{i = 1}^{k_{j}}
+		      \dfrac{\upsilon_{i}t^{i - 1}}{(i - 1)!}
+		             }
+		    e^{\lambda_{j}t} \cdot \upsilon_j$
+		    (где $\upsilon_j$~--- собственный вектор);
+		  \item
+		    $\lambda_j \in \mathbb C \Rightarrow
+		    e^{\lambda_{j}t} \cdot \upsilon_j$
+		    с тем только учетом, что экспоненту
+		    надо раскладывать на вещественную и мнимую части,
+		    а также надо не забывать о том,
+		    что комплексные собственные значения
+		    могут появляться только одновременно со
+		    своим сопряженным $\overline{\lambda_j}$.
+	  \end{enumerate}
+  \item
+    $k_{j} \geqslant 2$
+	  \begin{enumerate}
+		  \item
+		    $\lambda_j \in \mathbb R$,
+		    тогда вклад имеет вид
+		    $e^{\lambda_{j}t}\cdot
+		     \sum\limits_{i = 1}^{k_{j}}
+		       \dfrac{\upsilon_{i}t^{i - 1}}{(i - 1)!}
+		    $;
+		  \item
+		    $\lambda_j \in \mathbb C$,
+		    тогда надо взять вещественные и мнимые части.
+	  \end{enumerate}
+\end{enumerate}
+
+Объединяя полученные решения
+в фундаментальную матрицу, получаем формулу
+$e^{At} = \Phi(t)\Phi^{-1}(0)$.
+
+\begin{ex}
+$$
+  A = 
+  \begin{pmatrix}
+    \phantom{-}3 & 5\\
+    -1 & 1
+  \end{pmatrix}.
+$$
+
+Посчитаем $\det{A}$ и найдём
+собственные значения:
+\begin{gather*}
+  (3 - \lambda)(1 - \lambda) + 5 = 0 \Rightarrow
+  \lambda^{2} - 4\lambda + 8 = 0 \Rightarrow
+  \lambda_{1, 2} = 2 \pm 2i.
+\end{gather*}
+
+Собственный вектор
+для собственного значения $\lambda_{1} = 2 + 2i$
+равен $(1 + 2i; -1)^{T}$.
+Умножаем найденный
+вектор на $e^{2t}(\cos2t + i\sin2t)$:
+\begin{equation*}
+  \begin{pmatrix}
+    1 + 2i\\
+    -1
+  \end{pmatrix}
+  \cdot e^{2t}(\cos2t + i\sin2t) =
+  e^{2t} \cdot
+  \begin{pmatrix}
+    \cos2t - 2\sin2t\\
+    -\cos2t
+  \end{pmatrix}
+  +
+  ie^{2t} \cdot
+  \begin{pmatrix}
+    2\cos2t + \sin2t\\
+    -\sin2t
+  \end{pmatrix}.
+\end{equation*}
+
+Теперь из соответствующих столбцов-коэффициентов
+при $e^{2t}$ составляем матрицу $M$,
+после этого составляем матрицу $B$ из
+коэффициентов при $\cos2t$ матрицы $M$,
+находим обратную к $B$ матрицу.
+Итоговая матрица $e^{At} = e^{2t} \cdot M \times B^{-1}$.
+\begin{gather*}
+  \vphantom{exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right)}
+  M =
+    \begin{pmatrix}
+      \cos2t - 2\sin2t & 2\cos2t + \sin2t\\
+      -\cos2t          & -\sin2t    
+    \end{pmatrix},\\
+  \vphantom{exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right)}  
+  B =
+    \begin{pmatrix}
+      \phantom{-}1 & 2\\
+      -1 & 0
+    \end{pmatrix},\quad
+  B^{-1} =
+    \begin{pmatrix}
+      0 & -1\\
+      \frac{1}{2} & \phantom{-}\frac{1}{2}
+    \end{pmatrix},\\
+  \vphantom{exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right)}
+  C = M \times B^{-1} =
+    \begin{pmatrix}
+      \cos2t + \frac{1}{2}\sin2t & \frac{5}{2}\sin2t\\
+      -\frac{1}{2}\sin2t & \cos2t - \frac{1}{2}\sin2t
+    \end{pmatrix},\text{ таким образом:}\\
+  \vphantom{exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right)}
+  e^{At} = e^{2t}
+    \begin{pmatrix}
+      \cos2t + \frac{1}{2}\sin2t & \frac{5}{2}\sin2t\\
+      -\frac{1}{2}\sin2t & \cos2t - \frac{1}{2}\sin2t
+    \end{pmatrix}.
+\end{gather*}
+
+\end{ex}
+
+К сожалению, для случая,
+когда $A \ne \const$ не придумано общих методов.
+Рассмотрим случай $n = 1$:
+\begin{gather*}
+  \dot{x}(t) = a(t)x(t),
+    \vphantom{\exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right)}\\
+  \frac{\partial X(t, \tau)}{\partial t} = a(t)X(t, \tau),
+    \vphantom{\exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right)}
+    \quad X(\tau, \tau) = 1,\quad \text{откуда}\\
+  X(t, \tau) = C \cdot \exp\left(\int\limits_{\tau}^{t} a(s)\,ds\right),
+    \text{ из начальных условий } C = 1.
+\end{gather*}
+
+Теперь будем считать, что $n > 1$.
+Интересен вопрос,
+при каких условиях фундаментальная матрица
+находится аналогичным выражением
+\begin{equation}
+\label{MatExpGen}
+  X(t, \tau) = \exp\left(\int\limits_{\tau}^{t} A(s)\,ds\right)?
+\end{equation}
+
+Проделаем некоторые преобразования:
+\begin{equation*}
+  \exp\left(\int\limits_{\tau}^{t} A(s)\,ds\right) = 
+  E +
+  \sum\limits_{k = 1}^{\infty}
+    \frac{\left(\int\limits_{\tau}^{t} A(s)\,ds\right)^{k}}{k!},
+    \text{ продифференцируем по $t$:}
+\end{equation*}
+
+\begin{multline}
+  \frac{\partial X(t, \tau)}{\partial t} =
+  \sum\limits_{k = 1}^{\infty} \frac{1}{k!}
+  \left\{
+	  A(t){\left(
+ 		       \int\limits_{\tau}^{t}A(s)\,ds
+ 	       \right)}^{k-1} +
+ 	  \int\limits_{\tau}^{t}A(s)\,ds\,\cdot
+ 	  A(t){\left(
+		       \int\limits_{\tau}^{t}A(s)\,ds
+	       \right)}^{k - 2} +\right.\\
+	\label{MatExpEx2}
+	\left.
+	  +\ldots +
+	  \left(
+		  \int\limits_{\tau}^{t}A(s)\,ds
+	  \right)^{k - 1}A(t)
+  \right\} =
+  \sum\limits_{k = 1}^{\infty}
+    \frac{k}{k!} A(t)\left(
+                           \int_{\tau}^{t}A(s)\,ds 
+                     \right)^{k - 1}.
+\end{multline}
+
+Тем самым, будет верна формула \eqref{MatExpGen}.
+Но когда справедлив последний
+переход в \eqref{MatExpEx2}?
+Только тогда, когда $A(t)A(s) = A(s)A(t)$
+верно $\forall s$ между $\tau$ и $t$.

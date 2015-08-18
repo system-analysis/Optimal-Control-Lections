@@ -1,0 +1,133 @@
+\subsubsection{Исследование разрешимости задачи моментов}
+
+Задача моментов \eqref{L2_moment_task} разрешима тогда и только тогда, когда
+\begin{equation}
+\label{L2_moment_task_solvable_1}
+  \forall \ell \neq 0 \Rightarrow
+  \scalar{\ell}{c} \leqslant \sufu{\ell}{\soa_\mu^0[t_1]} =
+  \mu \norm{h}_\LTwo,
+\end{equation}
+что эквивалентно неравенству
+\begin{equation}
+\label{L2_moment_task_solvable_2}
+  \mu \geqslant
+    \frac{\scalar{\ell}{c}}{\lefteqn{\norm{h}_\LTwo}\phantom{\norm{u}}} \Longleftrightarrow
+  \mu \geqslant \mu^0 = \sup\limits_{\ell \neq 0}
+    \frac{\scalar{\ell}{c}}{\lefteqn{\norm{h}_\LTwo}\phantom{\norm{u}}}.
+\end{equation}
+
+Имея в виду, что данный супремум конечен, распишем $\norm{h}_\LTwo$:
+\begin{equation*}
+	\norm{h}_\LTwo =
+	\left[
+	  \int\limits_{t_0}^{t_1} \scalar{H^\tran \ell}{H^\tran \ell} d\tau
+	\right]^{\tfrac{1}{2}} =
+	\left[
+	  \scalar{\ell}{\left(
+	    \int\limits_{t_0}^{t_1}H(t_1, \tau) H^\tran(t_1, \tau) \, d\tau
+	  \right) \ell}
+	\right]^{\tfrac{1}{2}}.
+\end{equation*}
+
+Обозначим через $W(t_1, t_0)$ следующее выражение:
+\begin{equation*}
+	W(t_1, t_0) = \int\limits_{t_0}^{t_1} H(t_1, \tau) H^\tran(t_1, \tau) \, d\tau.
+\end{equation*}
+
+\begin{note}
+  Для краткости обозначений, везде далее $W = W(t_1, t_0)$.
+\end{note}
+
+В новых обозначениях опорная функция множества \eqref{L2_moment_task_soa} принимает вид:
+\begin{equation}
+\label{L2_moment_sufu_soa}
+  \sufu{\ell}{\soa_\mu^0} = \mu \sqrt{\scalar{\ell}{W \ell}}.
+\end{equation}
+
+Следовательно, условие \eqref{L2_moment_task_solvable_2} можно записать следующим образом:
+\begin{equation}
+\label{L2_moment_task_solvable_3}
+  \mu \geqslant \mu^0 =
+    \sup_{\scriptscriptstyle\scalar{\ell}{W \ell} \neq 0}
+      \frac{\scalar{\ell}{c}}{\sqrt{\scalar{\ell}{W \ell}}} =
+    \sup_{\scriptscriptstyle\scalar{\ell}{W \ell} = 1} \scalar{\ell}{c} \Longleftrightarrow
+  \frac{1}{\mu_0} = \inf_{\scalar{\ell}{c} = 1} \sqrt{\scalar{\ell}{W \ell}}.
+\end{equation}
+
+Матрица $W$ называется матрицей управляемости.
+Рассмотрим различные случаи:
+
+\begin{enumerate}
+	\item $\abs{W} \neq 0$.
+
+	Заметим, что $W$~--- матрица Грамма строк матрицы $H$, а т.\,к. $\abs{W} \neq 0$,
+	то строки $H(t_1, \cdot)$ линейно независимы.
+
+	Для любого $\ell$ верно, что $\scalar{\ell}{W \ell} \neq 0$,
+	где $\sqrt{\scalar{\ell}{W \ell}}$~--- норма.
+
+	$\mu_0$~--- норма от $c$, сопряженная к $\sqrt{\scalar{\ell}{W \ell}}$, выпишем это явно:
+	\begin{equation*}
+		\mu_0 = \sup \set{\scalar{\ell}{c}}{\scalar{\ell}{W \ell} = 1} = \sqrt{\scalar{c}{W^{-1} c}}.
+	\end{equation*}
+
+	Максимум достигается на
+	$\ell^0 = \frac{W^{-1} c}{\sqrt{\scalar{c}{W^{-1} c}}}$,
+	тогда $h^0(t_1, \tau) = H^\tran(t_1, \tau) \ell^0$.
+
+	Используя то, что $\scalar{\ell^0}{W \ell^0} = 1$, найдём управление:
+	\begin{equation*}
+		u^0(\tau) = \mu^0 \frac{H^\tran(t_1, \tau) \ell^0}{\sqrt{\scalar{\ell^0}{W \ell^0}}} =
+		\sqrt{\scalar{c}{W^{-1} c}} H^\tran(t_1, \tau) \frac{W^{-1} c}{\sqrt{\scalar{c}{W^{-1} c}}} =
+		H^\tran(t_1, \tau) W^{-1}(t_1, \tau) c.
+	\end{equation*}
+
+	Для задачи моментов $\displaystyle\int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau) \, d\tau = c$
+	имеем $\varGamma u = c$, тогда $u = \varGamma^\tran \ell$
+	($\varGamma^\tran$~--- сопряженный оператор), отсюда $\varGamma \varGamma^\tran \ell = c$.
+
+	Множество достижимости для этого случая~--- невырожденный эллипсоид $\soa_\mu$.
+	Это случай полной управляемости,
+	то есть если мы решили задачу для $[a, b]$, то можем решить и на
+	$[c, d] \supset [a, b]$ (просто берём управление на $[c, a]$ и $[b, d]$ как угодно,
+	а на $[a, b]$ уже решаем).
+
+	\item $\abs{W} = 0$.
+
+  Задача в этом случае является не всегда разрешимой.
+  \begin{gather}
+	  \notag \sufu{\ell}{\soa_\mu^0} = \mu \sqrt{\scalar{\ell}{W \ell}},\\
+	  \notag \ell \in \ker W \Longleftrightarrow \sufu{\ell}{\soa_\mu^0} = 0,\\
+	  \scalar{\ell}{c} \leqslant \sufu{\ell}{\soa_\mu^0} \label{nerm}.
+  \end{gather}
+
+  Тогда, если левая часть неравенства \eqref{nerm} положительна, а правая равна нулю,
+  то \eqref{nerm} не выполнено, поэтому при любом $\mu \geqslant 0$ вектор
+  $c \notin \soa_\mu^0$.
+\end{enumerate}
+
+На самом деле, $c \in \soa_\mu^0 \Longleftrightarrow c \in (\ker W)^\perp$.
+% TODO: отредактировать то, что ниже
+Если мы покажем, что из соотношения $c \in (\ker W)^\perp$ следует
+$c \in \soa_\mu^0$,
+то $c \notin (\ker W)^\perp \Leftarrow c \notin \soa_\mu^0$.
+
+Если $c \in (\ker W)^\perp$,
+то $\scalar{\ell}{c} \leqslant \sufu{\ell}{\soa_\mu^0}$, надо проверить лишь,
+что $\ell \in (\ker W)^\perp$ (т.\,к. $\ell = \ell^1 + \ell^2$,
+где $\ell \in W$, $\ell^1 \in \ker W$, $\ell^2 \in (\ker W)^\perp$).
+\begin{gather*}
+	\scalar{\ell}{c} = \scalar{\ell^2}{c},\\
+	\sufu{\ell}{\soa_\mu^0} =
+	\mu \sqrt{\scalar{\ell^1 + \ell^2}{W \ell^2}} =
+	\mu \sqrt{\scalar{\ell^1}{W \ell^2} + \scalar{\ell^2}{W \ell^2}} ={}\\
+	\phantom{\sufu{\ell}{\soa_\mu^0}}{}= \mu \sqrt{\scalar{\ell^2}{W \ell^2}} =
+	\sufu{\ell^2}{\soa_\mu^0}.
+\end{gather*}
+
+Теперь находим $\mu_0$:
+\begin{equation*}
+	\mu_0 = \sup_{\ell \in (\ker W)^\perp}
+	  \dfrac{\scalar{\ell}{c}}{\sqrt{\scalar{\ell}{W \ell}}} =
+	\sup\set{\scalar{\ell}{c}}{\scalar{\ell}{W \ell} = 1, \ell \in (\ker W)^\perp}.
+\end{equation*}

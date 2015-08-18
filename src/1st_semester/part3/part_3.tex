@@ -1,0 +1,44 @@
+\section{Задача моментов в $\Lp$ и $\LInf$}
+
+Рассмотрим следующую задачу:
+\begin{gather*}
+	\dot{x}(t) = A(t)x(t) + B(t)u(t) + f(t),\\
+	x(t_0) = x^0 \longrightarrow x(t_1) = x^1,
+\end{gather*}
+где $t_0$, $t_1$, $x^0$, $x^1$~--- фиксированные константы.
+
+В предыдущей главе рассматривалось ограничение на управление по норме в пространстве $\LTwo[t_0; t_1]$,
+задаваемое соотношением \eqref{L2_control_conditions}. Однако, минимизирование данного функционала
+не имеет особого физического смысла. В данной главе будут рассмотрены другие ограничения на управление.
+
+\begin{df}
+  Существенным супремумом функции $f(t)$ на множестве $T$ называется следующее выражение:
+  \begin{equation*}
+    \esssup\limits_{T} f =
+    \left\lbrace\left.
+      \iinf_{Z \subseteq T \vphantom{T \backslash Z}} \sup_{t \in T \backslash Z} f(t) \right|
+      \mu(Z) = 0
+    \right\rbrace,\quad
+    \mu(\cdot)\text{~--- мера Лебега на множестве $T$.}
+  \end{equation*}
+\end{df}
+
+\begin{note}
+  Для непрерывных функций выполнено равенство $\sup f = \esssup f$.
+\end{note}
+
+Например, вместо функционала \eqref{L2_control_conditions} в некоторых задачах имеет смысл рассматривать
+следующее ограничение на управление:
+\begin{equation}
+  \label{Linf_control_conditions}
+  \esssup\limits_{[t_0; t_1]} \abs{u} \rightarrow \inf.
+\end{equation}
+
+В данной главе будут рассмотрены другие два функционала,
+один из которых задается соотношением \eqref{Linf_control_conditions}.
+Везде далее будем рассматривать функциональные пространства на отрезке $[t_0; t_1]$,
+отождествляя функции, имеющие различия на множестве меры $0$.
+
+\input{part3/part_3_1}
+\input{part3/part_3_2}
+\input{part3/part_3_3}

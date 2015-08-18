@@ -1,0 +1,39 @@
+\subsection{Постановка задачи}
+
+Рассмотрим следующую задачу
+\begin{gather}
+\label{L2_task}
+%\label{tMoment}
+	\begin{cases}
+	  \dot{x}(t) = A(t) x(t) + B(t) u(t) + f(t),\quad t \in [t_0, t_1], t_0 < t_1,\\
+	  A(t) \in \real^{n \times n}, B(t) \in \real^{n \times m}, f(t) \in \real^{n \times 1},\\
+	  x \in \real^{n \times 1}, u \in \real^{m \times 1}.
+	\end{cases}
+\end{gather}
+
+Будем полагать, что $A$, $B$ и $f$~--- непрерывные функции.
+Если же они измеримы, то задачу стоит понимать <<почти всюду>>, а решение~--- решением по Каратеодори.
+Систему, находящуюся в начальном состоянии, необходимо перевести в конечное состояние при некотором управлении $u(t)$:
+\begin{equation}
+\label{L2_conditions}
+%\label{tMoment2}
+	x(t_0) = x^0 \longrightarrow x(t_1)= x^1.
+\end{equation}
+
+Задача не имеет однозначного решения, пока не наложены какие-то условия на управление.
+Рассмотрим следующие ограничения на функцию управления $u(t)$:
+\begin{equation}
+\label{L2_control_conditions}
+%\label{ogr}
+	\norm{u}_{\LTwo} = \left(\int\limits_{t_0}^{t_1} \norm{u(t)}^2 dt\right)^{\frac{1}{2}} \rightarrow \inf.
+\end{equation}
+
+Введем константу $\mu \geqslant 0$ такую, что $\norm{u}_{\LTwo} \leqslant \mu$.
+Все последующие выкладки проводятся при фиксированном $\mu$.
+Однако, встает задача, при каком минимальном значении $\mu$ исходная задача
+\eqref{L2_task}, \eqref{L2_conditions} разрешима.
+%
+%\begin{problem}
+%  Найти минимальное $\mu$, при котором задача \eqref{L2_task},
+%  \eqref{L2_conditions} разрешима.
+%\end{problem}

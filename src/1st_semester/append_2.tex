@@ -1,0 +1,189 @@
+\subsection{Периодические матрицы}
+
+\begin{df}
+  Матрица $X(T, 0)$ называется \emph{матрицей монодромии},
+  а её собственные значения~--- \emph{мультипликаторами}.
+\end{df}
+
+\begin{stm}
+  Для того, чтобы $\rho$ являлся мультипликатором
+  системы \eqref{IntroPeriodicDiffeq},
+  необходимо и достаточно, чтобы нашлось
+  ненулевое решение $x(t)$ системы
+  \eqref{IntroPeriodicDiffeq},
+  удовлетворяющее соотношению $x(t + T) = \rho x(t)\;\forall t$.
+\end{stm}
+
+\begin{proof}
+\emph{Необходимость}:
+  Если $\rho$~--- собственное значение матрицы $X(T, 0)$,
+  то $\exists \upsilon \neq 0$~--- собственный вектор $X(T, 0)$: 
+  \begin{equation*}
+	  \Phi(T) \upsilon = \rho \upsilon.
+  \end{equation*}
+
+  Пусть $x(t)$~--- решение \eqref{IntroPeriodicDiffeq}
+  при условии $x(0) = \upsilon$. Тогда
+  \begin{equation*}
+	  x(t + T) = \Phi(t + T) \upsilon =
+	    \Phi(t)\Phi(T) \upsilon = \rho \Phi(t) \upsilon = \rho x(t).
+  \end{equation*}
+  
+\emph{Достаточность}:
+  Пусть $x(t + T) = \rho x(t)\;\forall t$. Тогда
+  \begin{gather*}
+	  x(t + T) = \Phi(t + T) x(0) = \Phi(t) \Phi(T) x(0),\\
+	  x(t + T) = \rho x(t) = \Phi(t) \rho x(0).
+  \end{gather*}
+  
+  $\Phi(t)$ невырождена, следовательно,
+  $x(0)$~--- собственный вектор $\Phi(T)$,
+  а $\rho$~--- собственное значение $\Phi(T)$.
+\end{proof}
+
+Отсюда следует, что периодическое решение
+системы \eqref{IntroPeriodicDiffeq} существует
+тогда и только тогда, когда у соответствующей
+матрицы монодромии существует единичный мультипликатор.
+
+\begin{theorem}[Флоке]
+  Для всякой системы \eqref{IntroPeriodicDiffeq}
+  с периодической матрицей найдутся такие
+  матрицы $\Psi(t)$ и $\bar{A} = \const$,
+  что
+  \begin{gather}
+    \Psi(t + T) = \Psi(t) \; \forall t,\notag\\
+    \abs{\Psi} \neq 0,\notag\\
+  \label{IntroFlockeEq} 
+	  \Phi(t) = \Psi(t) e^{\bar{A} t}.
+  \end{gather}
+\end{theorem}
+
+\begin{proof}
+  Конструктивно построим такие $\Psi(t)$ и $\bar{A}$.
+
+  Так как $\Phi(t) = X(t, 0)$,
+  то $\dot{\Phi} = A(t) \Phi$,
+  и, если равенство \eqref{IntroFlockeEq} выполняется, то
+  \begin{gather*}
+	  \dot{\Phi} = \dot{\Psi} e^{\bar{A} t} +
+	    \Psi(t) \bar{A} e^{\bar{A} t} =
+	    A(t) \Psi(t) e^{\bar{A} t},\text{ откуда}\\
+	  \dot{\Psi} = A(t) \Psi(t) - \Psi(t) \bar{A}.
+  \end{gather*}
+  
+  Потребуем, чтобы выполнялись соотношения
+  \begin{equation*}
+    \Phi(T) = \Psi(T) e^{\bar{A} T} = \Psi(0) e^{\bar{A}T}\qquad
+      \text{и} \qquad
+    \Psi(0) = E.
+  \end{equation*}
+
+  Тогда $\bar{A}$ найдётся из условия
+  $\Phi(T) = e^{\bar{A} T}$.
+
+  Таким образом, для того чтобы найти
+  матрицу $\bar{A}$ нам необходимо
+  \glqq прологарифмировать\grqq{} матрицу.
+  В курсе линейной алгебры такая операция не рассматривалась,
+  однако мы можем ввести её в полной аналогии с вещественными числами.
+  Например, логарифм вещественных чисел можно вводить как сумму ряда:
+  \begin{equation*}
+    \ln(1+z) = \sum_{k=1}^\infty \dfrac{(-1)^{k-1} z^k}{k}.
+  \end{equation*}
+  Соответственно для матриц положим по определению
+  \begin{equation*}
+	  \ln \Phi(t) \eqdef \sum_{k=1}^\infty \dfrac{(-1)^{k-1}}{k} (\Phi(t) - E).
+  \end{equation*}
+  Ниже будет показано, что этот ряд сходится.
+  Тот факт, что $e^{\ln z} = z$ легко проверяется
+  с использованием свойств вещественных рядов.
+
+  Итак, $\bar{A} = \dfrac{\ln{\Phi(T)}}{T}$.
+  Положим $\Psi(t) = \Phi(t) e^{-\bar{A}t}$.
+  Проверим периодичность матрицы $\Psi(t)$:
+  учитывая, что $\Phi(T)e^{-\bar{A}T} = \Psi(0) = E$, получим
+  \begin{equation*}
+	  \Psi(t+T) =
+	    \Phi(t+T) e^{-\bar{A} (t+T)} =
+	    \Phi(t) \Phi(T) e^{-\bar{A}T} e^{-\bar{A}t} =
+	    \Phi(t) e^{-\bar{A}t} = \Psi(t).
+  \end{equation*}
+  Требуемое в условии равенство тоже, очевидно, выполняется:
+  \begin{equation*}
+	  \Psi(t) e^{\bar{A}t} = \Phi(t)e^{-\bar{A}t}e^{\bar{A}t} = \Phi(t).
+  \end{equation*}
+  Таким образом, все утверждения теоремы справедливы, и теорема доказана.
+\end{proof}
+
+\subparagraph*{Сходимость матричного логарифма.}
+Покажем, что ряд в определении матричного логарифма всегда сходится:
+%Список смотрится не очень... Чего бы сюда запихнуть?
+%\begin{itemize}
+%\item 
+
+Если $A$~--- матрица простой структуры,
+т.\,е. $A = T^{-1}\Lambda T$, то $\ln A = T^{-1} \cdot \ln\Lambda \cdot T$, а 
+\begin{equation*}
+	\ln \left[
+	\begin{array}{rcl}
+		\lambda_1	& 		& 		\\
+ 					&\ddots & 		\\
+  					& 		& \lambda_n
+	\end{array}
+	\right] = \left[
+	\begin{array}{rcl}
+	\ln\lambda_1	& 		& 		\\
+					&\ddots	& 		\\
+  					& 		& \ln\lambda_n
+	\end{array}
+	\right],
+\end{equation*}
+где $\ln\lambda_k$, вообще говоря, комплексные числа.
+
+%\item 
+Если $A$~--- произвольная, то 
+\begin{equation*}
+	A = T^{-1} \left[
+	\begin{array}{rcl}
+		L_1(\lambda_1)	&		& 		\\
+						&\ddots & 		\\
+	  					& 		& L_n\lambda_n
+	\end{array}
+	\right] T,
+\end{equation*}
+где $L_j$~--- жордановы ящики; прологарифмируем поблочно: учитывая 
+\begin{equation*}
+	\ln (\lambda_j + x) = 
+	\ln\lambda_j + \sum_{k=1}^\infty {\dfrac{(-1)^{k-1}}{k\lambda_j^k} x^k},
+\end{equation*} 
+получим 
+\begin{equation*}
+	\ln L_j(\lambda_j) = 
+	\ln \left( \lambda_j E + L_j(\lambda_j) - \lambda_j E \right) = 
+	\ln\lambda_j E +
+	  \sum_{k=1}^\infty{\dfrac{(-1)^{k-1}}{k\lambda_j^k}
+	  \left[L_j(\lambda_j) - \lambda_j E \right]^k}.
+\end{equation*}
+Т.\,к $\left[L_j(\lambda_j) - \lambda_j E \right]$~--- нильпотентная матрица,
+то ряд в правой части обращается в~конечную сумму,
+а, следовательно, исходный ряд сходится, что и требовалось.
+%\end{itemize}
+
+\subparagraph{Сингулярное разложение матрицы.}	%% В этом абзаце всё друг на друга наезжает... надо как-то переделать. Это раз. 
+%я не понимаю, что этот абзац хочет нам сказать --- это два.
+Это представление нам нужно для выявления качественных свойств системы.
+Проведём сингулярное разложение матрицы $A$ из \eqref{IntroPeriodicDiffeq}:
+$A=U\Lambda V$. Тогда
+$$
+  e^A = \sum_{k=0}^\infty {\dfrac{A^k}{k!}} =
+  \sum_{k=0}^\infty {\dfrac{1}{k!} U\Lambda V U\Lambda V \dots U\Lambda V}.
+$$
+
+Если $A=A^T$, то $U = V^T$, т.\,к. $U^{-1} = U^T$,
+то $e^A = Ue^{\Lambda} U^T$ и о собственных
+значениях $e^A$ можно судить по $e^\Lambda$.
+В теории устойчивости и стабилизации это позволяет
+судить о поведении системы по собственным
+значениям $\Phi(t)$ при отсутствии необходимости
+знания самой $\Phi(t)$ в явном виде.

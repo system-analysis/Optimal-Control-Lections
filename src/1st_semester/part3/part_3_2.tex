@@ -1,0 +1,120 @@
+\subsection{Пространство $\LInf$}
+
+В зависимости от значения величины $p$, минимизация нормы управления
+следующим образом соотносится с физическими характеристиками:
+\begin{itemize}
+	\item $p = 1$~--- минимизируется топливо (данный случай не рассматривается в курсе,
+	потому что пространство $\LOne$ не рефлексивно, следовательно, задача может не иметь решения).
+	
+	\item $p = 2$~--- минимизируется энергия.
+	
+	\item $p = \infty$~--- минимизируется сила.
+\end{itemize}
+
+В данном разделе рассматривается последний случай.
+Норма в пространстве $\LInf$ определяется следующим образом:
+\begin{equation*}
+	\norm{u}_\LInf = \esssup_{[t_0; t_1]} \abs{u}.
+\end{equation*}
+
+По аналогии с введенными ранее множествами, рассмотрим множество достижимости
+$\soa_\mu^0$ для данного случая:
+\begin{equation}
+\label{LInf_moment_task_soa}
+	\soa_\mu^0 (t_1, t_0) = \soa_\mu^0 [t_1] =
+	\left\lbrace
+	  \alpha \in \mathbb{R}^n \colon \exists u(\cdot), \norm{u}_{\LInf} \leqslant \mu,	  
+	  \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau = \alpha
+	\right\rbrace.
+\end{equation}
+
+Сформулируем и докажем утверждение относительно множества достижимости.
+
+\begin{stm}
+	$\soa_\mu^0 \in \conv \mathbb{R}^n$, где $\conv \mathbb{R}^n$ есть множество
+	непустых выпуклых компактов в $\mathbb{R}^n$.
+\end{stm}
+
+\begin{proof}
+  Для доказательства исходного утверждения необходимо доказать
+  три свойства: выпуклость, ограниченность и замкнутость.
+  
+	\emph{Выпуклость}: Доказывается аналогично случаю $\Lp$.
+	
+	\emph{Ограниченность}: Доказывается аналогично случаю $\Lp$.
+	
+	\emph{Замкнутость}: Единичный шар в $\LInf$, вообще говоря, не является слабо компактным.
+	Рассмотрим последовательность функций $u^j$:
+	\begin{equation*}
+	  u^j \in \LInf, \quad \norm{u^j} \leqslant \mu, \quad
+	  c^j = \int\limits_{t_0}^{t_1} X(t_1, \tau) B(\tau) u^j(\tau) \, d\tau.
+	\end{equation*}
+
+	Тогда $u^j \in \LTwo$ и $\norm{u^j}_\LTwo \leqslant \mu \abs{t_1 - t_0}$.
+	В пространстве $\LTwo$ последовательность $u^j$ имеет слабый предел:
+	$u^j \xrightarrow[\LTwo, j \rightarrow \infty]{\text{слабо}}u^0$.
+	По теореме Лебега предел $u^0$ тоже ограничен: $\norm{u^0} \leqslant \mu$.
+	Ещё заметим, что произведение $X(t_1, \tau) B(\tau)$ непрерывно, если функция $B(\tau)$ непрерывна.
+	В итоге:
+	\begin{equation*}
+	  u^0 \in \LInf, \quad
+	  c^j \xrightarrow[j \rightarrow \infty]{} c = \displaystyle\int\limits_{t_0}^{t_1}
+		  X(t_1, \tau) B(\tau) u^0(\tau) \, d\tau.
+	\end{equation*}
+	
+	Таким образом, утверждение полностью доказано.
+\end{proof}
+
+Найдём опорную функцию множества достижимости (считаем, что внутренняя норма $\norm{u(\tau)}$ евклидова):
+\begin{gather*}
+	\sufu{\ell}{\soa^0_\mu[t_1]} =
+	  \sup\limits_{u} \int\limits_{t_0}^{t_1}
+	    \scalar{\underbrace{B^\tran(\tau) X^\tran(t_1, \tau) \ell}_{s(\tau)}}{u(\tau)} d \tau
+	  \stackrel{\text{К.--Б.}}{\leqslant} \sup_{u}
+	    \int\limits_{t_0}^{t_1} \norm{s(\tau)} \cdot \norm{u(\tau)} d\tau \leqslant{}\\
+	\phantom{\sufu{\ell}{\soa^0_\mu[t_1]}}
+	{}\leqslant \mu \int\limits_{t_0}^{t_1} \norm{s(\tau)} d\tau = \mu \norm{s(\cdot)}_\LOne.
+\end{gather*}
+
+Найдём максимизатор:
+\begin{equation*}
+	u^\ell(\tau) = \lambda(\tau) B^\tran(\tau) X^\tran(t_1, \tau) \ell, \quad \lambda(\tau) \geqslant 0.
+\end{equation*}
+
+Хотим показать, что для п.\,в. $\tau \in \set{t}{\norm{s(t)} \neq 0}$ верно,
+что $\norm{u(\tau)} = \mu$. Предположим обратное.
+Тогда $\exists A \subseteq \set{t}{\norm{s(t)} \neq 0} \colon \mu(A) \neq 0,
+\forall \tau \in A \norm{u(\tau)} \leqslant \mu - \varepsilon$.
+Разбиваем исходный интеграл на два: на множестве $A$ и на дополнении $A$.
+Тогда он на множестве меры $\mu(A)$ больше максимума.
+Получили противоречие.
+
+Итак, $u^\ell(\tau) = \mu \dfrac{B^\tran(\tau) X^\tran(t_1, \tau) \ell}{\norm{B^\tran(\tau) X^\tran(t_1, \tau) \ell}}$.
+
+В конечном счёте,
+\begin{equation*}
+	u^\ell(\tau) =
+	\begin{cases}
+	  \mu \dfrac{s(\tau)}{\norm{s(\tau)}}, & s(\tau) \neq 0,\\
+		\text{любое}, & s(\tau) = 0.
+	\end{cases}
+\end{equation*}
+
+Потенциально, максимум может достигаться не в одной точке.
+
+Тогда
+\begin{equation}
+  \mu^0 = \sup\limits_{\ell \neq 0}
+    \dfrac{\scalar{\ell}{c}}{\int\limits_{t_0}^{t_1} \norm{s(\tau)} d\tau}, \quad
+    \ell^0 \in \underset{\text{не $(\norm{s(\tau)} \stackrel{\text{п.\,в.}}{=} 0)$}}{\Argmax}
+    \dfrac{\scalar{l}{c}}{\int\limits_{t_0}^{t_1} \norm{s(\tau)} d \tau}.  
+\end{equation}
+% FIXME: если взглянуть на то, что выше в pdf-файле, то будет видна чёткая вертикаль, что не очень хорошо смотрится
+
+Необходимое условие оптимальности:
+$s^0(\tau) = B^\tran(\tau) X^\tran(t_1, \tau) \ell^0$.
+Если $u^*$ решает задачу, то $\forall \tau \colon s^0(\tau) \neq 0,
+u^*(\tau) = \dfrac{s^0(\tau)}{\mu \norm{s^0(\tau)}}$ (утверждение в обратную сторону, вообще говоря, неверно).
+Или же $u^*(\tau) \in \underset{\norm{u} \leqslant \mu}{\Argmax} \scalar{s^0(\tau)}{u}$,
+т.\,е. $\scalar{s^0(\tau)}{u^*(\tau)} = \max\limits_{\norm{u} \leqslant \mu} \scalar{s^0(\tau)}{u}$. 
+% почти что п.м.Понтрягина!!!

@@ -1,0 +1,313 @@
+\section{Введение}
+
+Рассмотрим некоторый объект,
+состояние которого в каждый момент времени описывает набор чисел
+$ x =\left(x_1,x_2,\ldots,x_n\right)^\tran$;
+пусть мы можем управлять этим объектом,
+т.\,е. выбирать некоторый параметр,
+так или иначе влияющий на состояние объекта.
+Пусть поведение объекта описывается некоторыми уравнениями, например:
+\begin{equation*}
+  x^{k + 1} = f\left(k, x^k, u^k\right),
+  \quad k \in \mathbb{Z}, \; u^k\text{~--- управление.}
+\end{equation*}
+
+Другим примером может служить система дифференциальных уравнений:
+\begin{equation*}
+  \dot{x} = f\left(t, x(t), u(t)\right),
+  \quad t \in \mathbb{R}, \; u(t)\text{~--- управление.}
+\end{equation*}
+
+Наложим геометрические ограничения на множества допустимых управлений:
+\begin{gather*}
+  u^k \in \mathcal P(k) \text{ в случае дискретного времени},\\
+  u(t)\in \mathcal P(t) \text{ в случае непрерывного времени}.
+\end{gather*}
+
+Рассмотрим функционал качества $J\left(u(\cdot)\right)$,
+который будет оценивать <<качество>>
+выбранного управления по некоторому критерию.
+Нас в дальнейшем будут интересовать задачи
+нахождения \emph{оптимального управления},
+т.\,е. такого управления, на котором функционал
+качества достигает экстремума.
+
+Например, в \emph{задаче Майера--Больца} функционал имеет вид 
+\begin{equation}
+\label{IntroMayerBolz}
+  J\left(u(\cdot); t_0, x^0\right) =
+    \int\limits_{t_0}^{t_1} L\left(t, x(t), u(t)\right)\,dt +
+    \varphi(t_1, x(t_1)).
+\end{equation}
+
+В дискретном случае функционал \eqref{IntroMayerBolz} принимает вид
+\begin{equation*}
+  J\left(\{u_k\}_{k = k_0}^{k_1}; k_0, x^{k_0}\right) =
+    \sum\limits_{k = k_0}^{k_1 - 1} L\left(k, x^k, u^k\right) +
+    \varphi(k_1, x^{k_1}).
+\end{equation*}
+
+\subsection{Сведения из дифференциальных уравнений}
+
+\subsubsection{Условия существования решений задачи Коши}
+Рассмотрим линейную систему дифференциальных уравнений
+\begin{equation}
+\label{IntroLinSys1}
+  \begin{cases}
+    \dot{x}= A(t)x(t) + B(t)u(t) + f(t),\\
+    x(t_0) = x^0. 
+  \end{cases}
+\end{equation}
+
+Как известно, для локального существования и единственности решения
+этой системы достаточно непрерывности и
+липшицевости правой части по переменной $x$.
+Кроме того, справедлива следующая
+\begin{theorem}
+Рассмотрим уравнение
+\begin{equation}
+\label{IntroSample1}
+  \dot{x} = f(x,t), 
+\end{equation}
+где $f(x,t)$ непрерывна в некоторой области $A$.
+Тогда для любой компактной области из $A$ существует решение уравнения
+\eqref{IntroSample1}, доходящее до её границы. 
+\end{theorem}
+
+\begin{note}
+Если управление в правой части \eqref{IntroLinSys1} лишь
+кусочно-непрерывная функция,
+то полученное решение лишь кусочно-дифференцируемая функция.
+В таком случае, задача сначала решается
+на одном промежутке непрерывности правой части,
+и значение решения в точке разрыва
+полагается начальным условием для задачи нахождения решения
+на примыкающем промежутке непрерывности.
+
+В самом широком случае,
+когда правая часть \eqref{IntroLinSys1} всего лишь измерима,
+решение понимается в смысле решения по Каратеодори.
+\end{note}
+
+Следующий пример показывает,
+что в условиях теоремы продолжимость решения невозможна.
+\begin{ex}
+Решением системы
+\begin{equation*}
+  \begin{cases}
+	  \dot{x} = x^2,\\
+	  x(0) = 1,
+  \end{cases}
+\end{equation*}
+является функция
+$x(t) = \frac{1}{1-t}$, которая является разрывной в точке $t = 1$.
+\end{ex}
+
+Понятно, что единственной причиной непродолжимости
+может быть уход траекторий решений за конечное время на бесконечность.
+Чтобы исключить подобные ситуации из рассмотрения потребуем,
+чтобы $\norm{x(t)}$ как функция от $t$ росла
+не быстрее известной ограниченной функции.
+Для этого оценим скорость роста $\norm{x(t)}^2$:
+\begin{equation*}
+  \frac{d}{dt}\left(\norm{x}^2\right) = 
+  \frac{d}{dt}\left(\vphantom{\norm{x}^2}\scalar{x(t)}{x(t)}\right) = 
+  2\scalar{x(t)}{f(t,x(t))}.
+\end{equation*}
+
+Для продолжимости решений вправо потребуем, чтобы 
+\begin{equation}
+\label{IntroExtend}
+  \scalar{x}{f(t, x)} \leqslant
+  C_1 \norm{x(t)}^2 + C_2, \quad C_1, C_2 > 0. 
+\end{equation}
+
+Обозначая $y = y(t) = \norm{x(t)}^2$, получаем:
+\begin{gather*}
+  \dot{y} \leqslant 2C_1y + 2C_2 \Longleftrightarrow
+  \dot{y} - 2C_1y \leqslant 2C_2 \quad
+    \left|\text{ домножим на $e^{-2C_1t}$:} \vphantom{\frac{d}{dt}}\right.\\
+  \dot{y} e^{-2C_1t} - 2 C_1 y e^{-2C_1t} \vphantom{\frac{d}{dt}}
+    \leqslant 2 C_2 e^{-2C_1t},\\
+  \frac{d}{dt}\left(y e^{-2C_1t}\right)
+    \leqslant 2 C_2 e^{-2C_1t} \quad
+    \left|\text{ интегрируем от $t_0$ до $t$:}\vphantom{\frac{d}{dt}}\right.\\
+  y(t) e^{-2C_1t} - y(t_0) e^{-2C_1t_0} \vphantom{\frac{d}{dt}}
+    \leqslant
+    \tfrac{C_2}{C_1}\left(e^{-2 C_1 t_0} - e^{-2 C_1 t}\right),\\
+  y(t) = \norm{x(t)}^2 \vphantom{\frac{d}{dt}}
+    \leqslant
+    e^{2 C_1 t}\left(
+      \tfrac{C_2}{C_1}\left(e^{-2 C_1 t_0} - e^{-2 C_1 t}\right) +
+      y(t_0) e^{-2 C_1 t_0}
+               \right),
+\end{gather*}
+что гарантирует продолжимость решения.
+
+Применяя неравенство Коши--Буняковского,
+условие \eqref{IntroExtend} можно усилить:
+\begin{equation}
+\label{IntroSubLin}
+\norm{f(t,x)} \leqslant C_3\norm{x} + C_4, \quad C_3, C_4 > 0.
+\end{equation}
+
+Условие \eqref{IntroExtend} называется \emph{условием продолжимости},
+а \eqref{IntroSubLin}~--- \emph{условием сублинейного роста},
+оно гарантирует продолжимость решений в обе стороны.
+
+\subsubsection{Формула Коши векторного дифференциального уравнения}
+Вернемся к рассмотрению задачи \eqref{IntroLinSys1}.
+Рассмотрим однородное уравнение
+\begin{equation}
+\label{IntroLinSys2}
+  \begin{cases}
+    \dot{x} = A(t)x(t),\\
+    x(t_{0}) = x^{0}.
+  \end{cases}
+\end{equation}
+
+\begin{df}
+  Матрица $X(t, \tau) \in \real^{n \times n}$ называется
+  фундаментальной матрицей для уравнения \eqref{IntroLinSys2}, если
+  \begin{equation*}
+    \begin{cases}
+      \dfrac{\partial{X}(t, \tau)}{\partial{t}} = A(t)X(t, \tau),\\
+      X(\tau,\tau) = E.
+    \end{cases}
+  \end{equation*}
+\end{df}
+
+Пусть вектор-столбцы $x^1, x^2, \ldots, x^n$~--- фундаментальная
+система решений уравнения \eqref{IntroLinSys2},
+составим из них матрицу $\Phi(t)$.
+При этом
+\begin{equation*}
+  \dfrac{d\Phi(t)}{dt} = A(t)\Phi(t).
+\end{equation*}
+
+Несложно показать, что $X(t, \tau) = \Phi(t)\Phi^{-1}(\tau)$.
+Поэтому решение задачи Коши \eqref{IntroLinSys2}
+представимо в виде $x(t) = X(t, t_{0})x^0$.
+Это выражение так же называется
+\emph{формулой Коши} для однородного уравнения.
+
+Отметим, что для матрицы $X(t, \tau)$ выполнено
+важное свойство, которым мы будем пользоваться
+в дальнейшем:
+\begin{equation}
+\label{IntroInvariant}
+  X(t + T, \tau + T) = X(t, \tau) \quad \forall T \in \mathbb{R}.
+\end{equation}
+
+Далее, рассмотрим неоднородное уравнение
+\begin{equation}
+\label{IntroLinSys3}
+  \begin{cases}
+    \dot{x} = A(t)x(t) + f(t),\\
+    x(t_0)= x^0.
+  \end{cases}
+\end{equation}
+
+Будем искать решения в виде $x(t) = F(t)y(t)$,
+где $F(t)$~--- некоторая матрица.\\
+Дифференцируя и подставляя в \eqref{IntroLinSys3}, получим:
+\begin{gather*}
+  \dot{x} = \dot{F}(t)y(t) + F(t) \dot{y}(t) = A(t)F(t)y(t) + f(t),\\
+  \dot{y} = F^{-1}(t)(A(t)F(t) - \dot{F}(t))y(t) + F^{-1}(t)f(t).
+\end{gather*}
+
+Выбирая $F(t) = X(t, t_0)$,
+мы сводим систему \eqref{IntroLinSys3} к системе
+\begin{equation*}
+  \begin{cases}
+    \dot{y} = X^{-1}(t, t_0) f(t),\\
+    y(t_0)= x^0.
+  \end{cases}
+\end{equation*}
+
+Таким образом, мы можем выписать в явном виде ответ:
+\begin{gather}
+  y(t) = x^0 +
+         \int\limits_{t_0}^{t} X^{-1}(\tau, t_0) f(\tau)\,d\tau, \notag\\
+\label{IntroVecAnswer}
+  x(t) = X(t, t_0) x^0 +
+         \int\limits_{t_0}^{t} X(t, t_0) X^{-1}(\tau, t_0) f(\tau)\,d\tau.
+\end{gather}
+
+Отметим, что $X(\tau, t_0)$ отображает $x^0$ в $x(\tau)$,
+а $X(t, \tau)$ отображает $x(\tau)$ в $x(t)$.
+В таком случае $x(t) = X(t, \tau) X(\tau, t_0) x^0$.
+Но в силу единственности решения верно,
+что $x(t) = X(t, t_0)x^0$.
+Из этих двух равенств получаем:
+\begin{equation}
+\label{IntroHalfGroup}
+  X(t, \tau) X(\tau, t_0) = X(t, t_0).
+\end{equation}
+
+Соотношение \eqref{IntroHalfGroup} называется
+\emph{полугрупповым свойством} фундаментальной матрицы.
+В частности, при $t = t_0$,
+получаем $X(t_0, \tau) X(\tau, t_0) = E$.
+Полугрупповое свойство позволяет записать
+соотношение \eqref{IntroVecAnswer} в виде
+\begin{equation*}
+  x(t) = X(t, t_0) x^0 + \int\limits_{t_0}^{t} X(t, \tau) f(\tau)\,d\tau,
+\end{equation*}
+называемом \emph{формулой Коши} для неоднородного уравнения.
+
+Конкретно для задачи \eqref{IntroLinSys1}, формула Коши имеет вид
+\begin{equation*}
+  x(t) = X(t, t_0)x ^0 +
+         \int\limits_{t_0}^{t} X(t, \tau) B(\tau) u(\tau)\,d\tau +
+         \int\limits_{t_0}^{t} X(t, \tau) f(\tau)\,d\tau.
+\end{equation*}
+
+Зададимся теперь вопросом,
+как найти $\frac{\partial{X}(t, \tau)}{\partial{\tau}}$?
+Для этого запишем:
+\begin{gather*}
+  E = X(t, \tau) \cdot X(\tau, t),\text{ продифференцируем по } \tau:\\
+  0 = \frac{\partial{X}(t, \tau)}{\partial{\tau}} X(\tau, t) +
+      X(t, \tau) A(\tau) X(\tau, t),\text{ откуда получаем:}\\
+  \begin{cases}
+    \frac{\partial{X}(t, \tau)}{\partial{\tau}} = -X(t, \tau) A(\tau),\\
+    X(t, t) = E.
+  \end{cases}
+\end{gather*}
+
+Если обозначить $S(t, \tau) = X^{T}(\tau, t)$, то получим:
+\begin{equation*}
+  \begin{cases}
+    \frac{\partial{S}(t, \tau)}{\partial{t}} = -A^{T}(t) S(t, \tau),\\
+    S(t, t) = E,
+  \end{cases}
+\end{equation*}
+если $X(t, \tau)$~--- фундаментальная матрица
+для задачи Коши \eqref{IntroLinSys2},
+то $S(t, \tau)$~--- фундаментальная матрица для задачи Коши
+\begin{equation}
+\label{IntroLinSys4}
+  \begin{cases}
+    \dot{s}(t) = -A^{T}(t) s(t),\\
+    s(t_{0}) = s^{0}.
+  \end{cases}
+\end{equation}
+
+Системы \eqref{IntroLinSys2} и \eqref{IntroLinSys4}
+называются сопряженными.
+
+\begin{problem}
+  Пусть задано уравнение
+  \begin{equation*}
+    \dot{x} = A(t) x(t) + f(t).
+  \end{equation*}
+  
+  Какая должна быть матрица $F$ в линейной
+  замене переменных, чтобы уравнение приняло вид
+  \begin{equation*}
+    \dot{y} = B(t)y(t) + g(t),
+  \end{equation*}
+  где $B(t)$~--- заданная матрица?
+\end{problem}
+

@@ -1,0 +1,203 @@
+\subsection{Принцип максимума Понтрягина}
+
+Рассмотрим $\psi(\tau) = X^\tran(t_1, \tau) \ell$, рассмотрим сопряжённую систему:
+\begin{equation*}
+  \begin{cases}
+    \dot{\psi} = -A^\tran(t) \psi,\\
+    \psi(t_1) = \ell.
+  \end{cases}
+\end{equation*}
+
+\begin{theorem}[Принцип максимума Понтрягина]
+	Если $u^*$ решает нашу задачу, то найдется ненулевой вектор $\ell^0$ и
+	функция $\psi^0 \ncong 0$, что:
+	\begin{equation*}
+	  \begin{cases}
+	    \dot{\psi^0} = -A^\tran \psi^0,\\
+	    \psi^0(t_1) = \ell^0,
+	  \end{cases}
+	\end{equation*}
+	и
+	\begin{equation*}
+	  \scalar{B^\tran(\tau) \psi^0(\tau)}{u^*(\tau)} \stackrel{\text{п.\,в.}}{=}
+	    \underset{\norm{u} \leqslant \mu}{\max} \scalar{B^\tran(\tau) \psi^0(\tau)}{u}.
+	\end{equation*}
+\end{theorem}
+
+Когда можно утверждать, что $s^0(\tau) \neq 0$ всюду?
+
+$B$, $X$~--- хорошие, непрерывные; рассмотрим, когда $s^0(\tau) = B^\tran(\tau) X^\tran(t_1, \tau) \ell^0 = 0$.
+% TODO: где-то здесь картинка
+Если $s^0(\tau) = 0$ при $\tau \in \left(\Tilde{t}_0, \Tilde{t}_1\right)$,
+то наша система не является вполне управляемой на $\left(\Tilde{t}_0, \Tilde{t}_1\right)$.
+Тогда ПМП превращается в достаточное условие путём требования полной управляемости на любом интервале.
+\begin{stm}
+	Пусть матрицы $A$ и $B$ не зависят от времени, пара $(A, B)$~--- управляема.
+	В таком случае $u^*$ решает нашу задачу тогда и только тогда, когда
+	$\scalar{s^0(\tau)}{u^*(\tau)} \stackrel{\text{п.\,в.}}{=}
+	  \underset{\norm{u} \leqslant \mu}{\max} \scalar{s^0(\tau)}{u}$.
+\end{stm}
+
+Рассмотрим два примера:
+\begin{ex}[Когда всё плохо (а может, несмотря ни на что, очень даже хорошо)]
+	\begin{equation*}
+	  \begin{cases}
+	    \dot{x}_1 = u,\\
+			\dot{x}_2 = u,
+	  \end{cases}
+		\quad \abs{u} \leqslant 1.
+	\end{equation*}
+	
+	\begin{equation*}
+	  x^0 =
+	  \begin{pmatrix}
+	    0\\
+	    0
+	  \end{pmatrix},
+	  \quad
+		x^1 =
+		\begin{pmatrix}
+		  1\\
+		  1
+		\end{pmatrix},
+		\quad
+		A = E, \quad
+		B =
+		\begin{pmatrix}
+		  1\\
+		  1
+		\end{pmatrix}
+	\end{equation*}
+	
+	Задача моментов для данной системы: 
+	$\int\limits_{t_0}^{t_1}
+	  \begin{pmatrix}
+	    1\\
+	    1
+	  \end{pmatrix}
+	  u(\tau) \, d\tau =
+	  \begin{pmatrix}
+	    1\\
+	    1
+	  \end{pmatrix} =
+	  \begin{pmatrix}
+	    1\\
+	    1
+	  \end{pmatrix},
+	  t_0 = 0, t_1 = 2$.
+
+	Скалярно умножим на $\ell(\ell_1, \ell_2)$ и максимизируем:
+	\begin{gather*}
+	  \underset{u(\cdot)}{\max} \int\limits_{t_0}^{t_1} (\ell_1 + \ell_2) u(\tau) \, d\tau = 2 \mu (\ell_1 + \ell_2),\\
+	  \sup\limits_{\ell_1 + \ell_2 \neq 0} \frac{\ell_1 + \ell_2}{2 \abs{\ell_1 + \ell_2}} = \frac{1}{2} = u.
+	\end{gather*}
+	
+	То есть сидим и ждём момента. % FIXME: прояснить
+	
+	Множество достижимости является отрезком.
+	% TODO: можно вставить картинку множества достижимости
+\end{ex}
+
+\begin{ex}[А вот здесь уже кажется и плохо бывает, и хорошо]
+	\begin{equation*}
+		\left\{
+		\begin{array}{rclcl}
+			\dot x_1 &=& u - 1,\\
+			\dot x_2 &=& u + 1,
+		\end{array}
+		\right.
+		\quad \abs{u} \leq 1.
+	\end{equation*}
+	\begin{equation*}
+		x^0 = \left(
+				\begin{array}{c}
+					0\\
+					0
+				\end{array}
+			  \right)
+		, \quad
+		x^1 = \left(
+				\begin{array}{c}
+					-1\\
+					1
+				\end{array}
+			  \right).
+	\end{equation*}
+	\begin{multline*}
+	\displaystyle\int\limits_{t_0}^{t_1} 
+	\left(
+		\begin{array}{c}
+			1\\
+			1
+		\end{array}
+	\right)
+	u d \tau = 
+	\left(
+		\begin{array}{c}
+			-1\\
+			1
+		\end{array}
+	\right)
+	- (t_1 - t_0)
+	\left(
+		\begin{array}{c}
+			-1\\
+			1
+		\end{array}
+	\right)
+	=
+	(1 + t_0 - t_1)
+	\left(
+		\begin{array}{c}
+			-1\\
+			1
+		\end{array}
+	\right)
+	={}\\
+	{}=\left\{ t_0 = 0; \text{Тогда при $t_1 \ne 1$ задача неразрешима; далее $t_1 = 1$}\right\} = 
+	\left(
+		\begin{array}{c}
+			0\\
+			0
+		\end{array}
+	\right).
+	\end{multline*}
+	То есть при $t_1 = 1$ задача разрешима.\\
+	Если же 
+	$x^1 = \left(
+		\begin{array}{c}
+			1\\
+			0
+		\end{array}
+	\right),$
+	то
+	$
+		\displaystyle\int\limits_{t_0}^{t_1} 
+	\left(
+		\begin{array}{c}
+			1\\
+			1
+		\end{array}
+	\right)
+	u d \tau = 
+	\left(
+		\begin{array}{c}
+			t_1 - t_0\\
+			1 + t_0 - t_1
+		\end{array}
+	\right).
+	$\\
+	Считаем, что $t_0 = 0$. Система разрешима только при $t_1 = 1 - t_1$, т.\,е. при $t_1 = \dfrac{1}{2}$.
+	Тогда интеграл равен 
+	$
+	\left(
+		\begin{array}{c}
+			1/2\\
+			1/2
+		\end{array}
+	\right)
+	$,
+	$
+		\mu^0 = \sup \dfrac{\frac{1}{2} (l_1 + l_2)}{\frac{1}{2} \abs{l_1 + l_2}}.
+	$
+\end{ex}

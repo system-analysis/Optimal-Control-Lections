@@ -1,0 +1,573 @@
+\section{Непрерывная задача моментов}
+
+\subsection{Постановка задачи}
+
+Рассмотрим следующую задачу
+\begin{gather}
+\label{tMoment}
+	\begin{cases}
+	  \dot{x}(t) = A(t) x(t) + B(t) u(t) + f(t),\\
+	  A(t) \in \real^{n \times n}, B(t) \in \real^{n \times m}, f(t) \in \real^{n \times 1},\\
+	  x \in \real^{n \times 1}, u \in \real^{m \times 1}.
+	\end{cases}
+\end{gather}
+
+Будем полагать, что $A$, $B$ и $f$~--- непрерывные функции.
+Если же они измеримы, то задачу стоит понимать <<почти всюду>>, а решение~--- решением по Каратеодори.
+Систему, находящуюся в начальном состоянии, необходимо привести в конечное состояние:
+\begin{equation}
+\label{tMoment2}
+	x(t_0) = x^0 \longrightarrow x(t_1)= x^1.
+\end{equation}
+
+Задача слишком <<свободная>>, поэтому поставим дополнительное условие:
+\begin{equation}
+\label{ogr}
+	\int\limits_{t_0}^{t_1} \norm{u(t)}^2 dt \leqslant \mu^2.
+\end{equation}
+
+Это ограничение также можно записать как $\norm{u}_\LTwo^2 \leqslant \mu^2$.
+
+\begin{problem}
+  Найти минимальное $\mu$, при котором задача \eqref{tMoment},
+  \eqref{tMoment2} разрешима.
+\end{problem}
+
+\subsection{Решение}
+
+По формуле Коши получим:
+\begin{equation*}
+	x^1 = X(t_1, t_0) x^0 + \int\limits_{t_0}^{t_1} X(t_1, \tau) B(\tau) u(\tau)\,d\tau +
+	\int\limits_{t_0}^{t_1} X(t_1, \tau) f(\tau)\,d\tau.
+\end{equation*}
+
+Это утверждение эквивалентно следующей задаче, называемой задачей моментов:
+\begin{gather}
+\label{ourTask}
+	\begin{cases}
+	  \displaystyle
+	  c = x^1 - X(t_1, t_0) x^0 - \int\limits_{t_0}^{t_1} X(t_1, \tau) f(\tau)\,d\tau,\\
+	  H(t_1, \tau) = X(t_1, \tau) B(\tau),\\
+	  \displaystyle
+	  \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau = c.
+	\end{cases}
+\end{gather}
+
+Введём множество достижимости:
+\begin{gather*}
+	\soa_\mu(t_1, t_0) = \soa_\mu[t_1] =
+	\left\lbrace\left.
+	  \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau \right| \norm{u}_\LTwo^2 \leqslant \mu^2
+	\right\rbrace.
+\end{gather*}
+
+\begin{stm}
+	$\soa_\mu \in \conv \mathbb{R}^n$.
+\end{stm}
+
+\begin{proof}
+	Для доказательства исходного утверждения необходимо доказать
+	три свойства: выпуклость, ограниченность и замкнутость.
+	
+	\emph{Выпуклость}:
+	\begin{gather*}
+	  c^1, c^2 \in \soa_\mu \Rightarrow
+	  c^j = \int\limits_{t_0}^{t_1} H(t_1, \tau) u^j(\tau)\,d\tau,
+	  \; \norm{u^j}_\LTwo \leqslant \mu.
+	\end{gather*}
+	Требуется показать, что:
+	\begin{equation*}
+		c = \lambda c^1 + (1 - \lambda) c^2 \in \soa_\mu,\quad \forall \lambda \in [0, 1].
+	\end{equation*}
+	
+	Если мы возьмем
+	\begin{equation*}
+	  u(t) = \lambda u^1(t) + (1 - \lambda) u^2(t),
+	\end{equation*}
+	то, в силу выпуклости нормы, имеем:
+	\begin{equation*}
+		\norm{u}_\LTwo \leqslant \lambda \norm{u^1}_\LTwo + (1 - \lambda) \norm{u^2}_\LTwo \leqslant \mu.
+	\end{equation*}
+	
+	Домножаем $c^1$ на $\lambda$, $c^2$ на $(1 - \lambda)$, складываем и получаем, что:
+	\begin{equation*}
+		c = \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau,\;
+		\norm{u}_\LTwo \leqslant \mu.
+	\end{equation*}
+	Таким образом, $c \in \soa_\mu$, что и требовалось доказать.
+
+	\emph{Ограниченность}: Воспользуемся неравенством Коши--Буняковского:
+	\begin{equation*}
+		\norm{\int\limits_{t_0}^{t_1} H(t_1,\tau) u(\tau)\,d\tau} \leqslant
+		\int\limits_{t_0}^{t_1}\norm{H(t_1, \tau)} \norm{u(\tau)}d\tau \stackrel{\text{К.--Б.}}{\leqslant}
+		\left(\int\limits_{t_0}^{t_1} \norm{H(t_1, \tau)}^2 d\tau\right)^{\tfrac{1}{2}} \mu \equiv \const.
+	\end{equation*}
+
+	\emph{Замкнутость}: По-человечески доказать это мы пока не сможем. Этот шар не компактен.
+	В~частности, это связано с~различием сходимости по~норме и покоординатной сходимостью.
+	Но всё-таки приведем доказательство замкнутости:
+	\begin{equation*}
+	  u^j\leftrightarrow c^j\in\soa_\mu.
+	\end{equation*}
+
+	\begin{df}
+	  $u^j \xrightarrow[j \rightarrow \infty]{\text{слабо}} u^0$,
+	  если $\forall g \in \LTwo \colon
+	  \displaystyle\int\limits_{t_0}^{t_1} g(t) u^j(t)\,dt \to
+	  \displaystyle\int\limits_{t_0}^{t_1} g(t) u^0(t)\,dt$.
+	\end{df}
+	
+	Так~как это слабый компакт, то без ограничения общности будем считать, что
+	\begin{gather*}
+		u^j \xrightarrow[j \rightarrow \infty]{\text{слабо}} u,\\
+		c^j = \int\limits_{t_0}^{t_1} H(t_1, \tau) u^j(\tau)\,d\tau,\\
+		H(t_1, \tau) =
+		  \begin{bmatrix}
+		    H_1(t_1, \tau)\\
+				\vdots\\
+				H_n(t_1, \tau)
+			\end{bmatrix}
+		\in \mathbb R^{n \times m}.
+	\end{gather*}
+	
+	Тогда получим:
+	\begin{equation*}
+		c_i^j = \int\limits_{t_0}^{t_1} H_i(t_1, \tau) u^j(\tau)\,d\tau
+		\xrightarrow[j \rightarrow\ infty]{}
+		\int\limits_{t_0}^{t_1} H_i(t_1, \tau) u(\tau)\,d\tau = c \in \soa_\mu.
+	\end{equation*}
+	
+	Найдём опорную функцию:
+	\begin{align*}
+	  \sufu{\ell}{\soa_\mu} & =
+	    \sup_C \set{\scalar{\ell}{c}}{c = \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau} =
+	    \sup_{u(\cdot) \colon \eqref{ogr}}
+	    \int\limits_{t_0}^{t_1} \scalar{\ell}{H(t_1, \tau) u(\tau)}\,d\tau = {}\\
+	  {} & = \sup_{u(\cdot) \colon \eqref{ogr}}
+	    \int\limits_{t_0}^{t_1} \scalar{H^\tran(t_1, \tau) \ell}{u(\tau)}\,d\tau
+	    \stackrel{\text{К.--Б.}}{\leqslant}
+	    \sup_{u(\cdot) \colon \eqref{ogr}}
+	    \left(
+	      \left[\int\limits_{t_0}^{t_1} \norm{h(t_1, \tau)}^2 d\tau \right]^{\tfrac{1}{2}} \norm{u}_\LTwo
+	    \right) = {}\\
+	  {} & = \mu \norm{h(t_1, \tau)}_\LTwo, \text{ где } h(t_1, \tau) = H^\tran(t_1, \tau).
+	\end{align*}
+	
+	Поэтому, $u(t) = \lambda h(t_1, \tau)$,
+	$\lambda = \const \geqslant 0$; супремум достигается на
+	$u^*(\tau) = \dfrac{h(t_1, \tau)}{\norm{h(t_1, \tau)}}$, если $h(t_1, \tau) \neq 0$.
+\end{proof}
+
+\subsubsection{Исследование разрешимости задачи моментов}
+
+\begin{align*}
+  \text{\eqref{ourTask} разрешима} &
+    \Leftrightarrow \forall \ell \neq 0 \Rightarrow
+    \scalar{\ell}{c} \leqslant \sufu{\ell}{\soa_\mu} =
+    \mu \norm{h}_\LTwo \Leftrightarrow
+    \mu \geqslant \frac{\scalar{\ell}{c}}{\norm{h}_\LTwo} \Leftrightarrow{}\\
+  {} & \Leftrightarrow \mu \geqslant \mu^0 =
+    \sup\limits_{\ell \neq 0} \frac{\scalar{\ell}{c}}{\norm{h}_\LTwo}.
+\end{align*}
+
+Имея в виду, что супремум конечен, распишем $\norm{h}_\LTwo$:
+\begin{equation*}
+	\norm{h}_\LTwo =
+	\left[
+	  \int\limits_{t_0}^{t_1} \scalar{H^\tran \ell}{H^\tran \ell} d\tau
+	\right]^{\tfrac{1}{2}} =
+	\left[
+	  \scalar{\ell}{\left(
+	    \int\limits_{t_0}^{t_1}H(t_1, \tau) H^\tran(t_1, \tau) \, d\tau
+	  \right) \ell}
+	\right]^{\tfrac{1}{2}}.
+\end{equation*}
+
+Обозначим через $W(t_1, \tau)$ следующее выражение:
+\begin{equation*}
+	W(t_1, \tau) = \int\limits_{t_0}^{t_1} H(t_1, \tau) H^\tran(t_1, \tau) \, d\tau.
+\end{equation*}
+
+Рассмотрим различные случаи:
+
+\begin{enumerate}
+	\item $\abs{W(t_1, t_0)} \neq 0$.
+
+	Заметим, что $W$~--- матрица Грамма строк матрицы $H$, а т.\,к. $\abs{W} \neq 0$,
+	то строки $H(t_1, \cdot)$ линейно независимы.
+
+	Для любого $\ell$ верно, что $\scalar{\ell}{W \ell} \neq 0$,
+	где $\sqrt{\scalar{\ell}{W \ell}}$~--- норма.
+
+	$\mu_0$~--- норма от $c$, сопряженная к $\sqrt{\scalar{\ell}{W \ell}}$, выпишем это явно:
+	\begin{equation*}
+		\mu_0 = \sup \set{\scalar{\ell}{c}}{\scalar{\ell}{W \ell} = 1} = \sqrt{\scalar{c}{W^{-1} c}}.
+	\end{equation*}
+
+	Максимум достигается на
+	$\ell^0 = \frac{W^{-1} c}{\sqrt{\scalar{c}{W^{-1} c}}}$,
+	тогда $h^0(t_1, \tau) = H^\tran(t_1, \tau) \ell^0$.
+
+	Используя то, что $\scalar{\ell^0}{W \ell^0} = 1$, найдём управление:
+	\begin{equation*}
+		u^0(\tau) = \mu^0 \frac{H^\tran(t_1, \tau) \ell^0}{\sqrt{\scalar{\ell^0}{W \ell^0}}} =
+		\sqrt{\scalar{c}{W^{-1} c}} H^\tran(t_1, \tau) \frac{W^{-1} c}{\sqrt{\scalar{c}{W^{-1} c}}} =
+		H^\tran(t_1, \tau) W^{-1}(t_1, \tau) c.
+	\end{equation*}
+
+	Для задачи моментов $\displaystyle\int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau) \, d\tau = c$
+	имеем $\varGamma u = c$, тогда $u = \varGamma^\tran \ell$
+	($\varGamma^\tran$~--- сопряженный оператор), отсюда $\varGamma \varGamma^\tran \ell = c$.
+
+	Множество достижимости для этого случая~--- невырожденный эллипсоид $\soa_\mu$.
+	$W$ называют матрицей управляемости. Это случай полной управляемости,
+	то есть если мы решили задачу для $[a, b]$, то можем решить и на
+	$[c, d] \supset [a, b]$ (просто берём управление на $[c, a]$ и $[b, d]$ как угодно,
+	а на $[a, b]$ уже решаем).
+
+	\item $\abs{W(t_1, t_0)} = 0$.
+
+  Задача в этом случае является не всегда разрешимой.
+  \begin{gather}
+	  \notag \sufu{\ell}{\soa_\mu} = \mu \sqrt{\scalar{\ell}{W \ell}},\\
+	  \notag \ell \in \ker W \Leftrightarrow \sufu{\ell}{\soa_\mu} = 0,\\
+	  \scalar{\ell}{c} \leqslant \sufu{\ell}{\soa_\mu} \label{nerm}.
+  \end{gather}
+
+  Тогда если левая часть неравенства \eqref{nerm} положительна, а правая равна нулю,
+  то \eqref{nerm} не выполнено, поэтому:
+  \begin{equation*}
+	  c \notin (\ker W)^\perp \Rightarrow c \notin \soa_\mu \forall \mu.
+  \end{equation*}
+
+\end{enumerate}
+
+На самом деле, $c \in \soa_\mu \Leftrightarrow c \in (\ker W)^\perp$.
+% TODO: отредактировать то, что ниже
+Если мы покажем, что
+$c \in \soa_\mu \Leftarrow c \in (\ker W)^\perp$,
+то $c \notin (\ker W)^\perp \Leftarrow c \notin \soa_\mu \forall\mu$.
+
+Если $c \in (\ker W)^\perp$,
+то $\scalar{\ell}{c} \leqslant \sufu{\ell}{\soa_\mu}$, надо проверить лишь,
+что $\ell \in (\ker W)^\perp$ (т.\,к. $\ell = \ell^1 + \ell^2$,
+где $\ell \in W$, $\ell^1 \in \ker W$, $\ell^2 \in (\ker W)^\perp$).
+\begin{gather*}
+	\scalar{\ell}{c} = \scalar{\ell^2}{c},\\
+	\sufu{\ell}{\soa_\mu} =
+	\mu \sqrt{\scalar{\ell^1 + \ell^2}{W \ell^2}} =
+	\sqrt{\scalar{\ell^1}{W \ell^2} + \scalar{\ell^2}{W \ell^2}} =
+	\sqrt{\scalar{\ell^2}{W \ell^2}} =
+	\sufu{\ell^2}{\soa_\mu}.
+\end{gather*}
+
+Теперь находим $\mu_0$:
+\begin{equation*}
+	\mu_0 = \sup_{\ell \in (\ker W)^\perp}
+	  \dfrac{\scalar{\ell}{c}}{\sqrt{\scalar{\ell}{W \ell}}} =
+	\sup\set{\scalar{\ell}{c}}{\scalar{ell}{W \ell} = 1, \ell \in (\ker W)^\perp}.
+\end{equation*}
+
+{\newcommand{\rang}{\mathop{\mathrm{rang}}}
+
+%Заменить | на что-нить более адекватное.. На \mid?
+
+%Как лучше - \begin{gather*}
+%	M=[B| AB| \dots| A^{n-1}B] \\
+%\intertext{или}
+%	M= \left[B\mid AB\mid \dots\mid A^{n-1}B\right] \ ?
+%\end{gather*}
+
+%Убрать матрицу M = [B|\dots|A^{n-1}B] совсем, или  наоборот именно её везде поставить?
+% $$->begin/end{equation}
+
+\subsection{Непрерывная задача оптимального управления}
+
+\subsubsection{Система с постоянными коэффициентами}
+Рассмотрим систему
+\begin{equation}
+\label{ConstKoefContSys}
+  \begin{cases}
+    \dot{x}(t) = A x(t) + B u(t),\\
+    A = \const,\\
+    B = \const.
+  \end{cases}
+\end{equation}
+
+Для неё наша матрица $W$ имеет вид
+\begin{equation*}
+	W(t_1, t_0) = \int_{t_0}^{t_1} X(t_1, \tau) B B^\tran X^\tran(t_1, \tau) \, d\tau =
+	\int_{t_0}^{t_1} e^{A(t_1 - \tau)} B B^\tran e^{A^\tran(t_1 - \tau)} \, d\tau.
+\end{equation*}
+
+Изучим $\Ker W$:
+	%$l\in \Ker W \Leftrightarrow B^T e^{A^T(t_1-\tau)}l = 0 \ \forall \tau$
+т.\,к. $W = W^\tran \geqslant 0$, то
+\begin{multline*}
+	\ell \in \Ker W \Leftrightarrow 
+	\ell^\tran W \ell = 0 =
+	\int_{t_0}^{t_1} (B^\tran e^{A^\tran(t_1 - \tau)} \ell)^\tran B^\tran e^{A^\tran(t_1 - \tau)} \ell \, d\tau =\\
+	\int_{t_0}^{t_1} \norm{B^\tran e^{A^\tran(t_1 - \tau)} \ell} \, d\tau
+	\Leftrightarrow \ell^\tran e^{A(t_1 - \tau)} B \equiv 0.
+\end{multline*}
+	
+Последнее равенство следует, вообще говоря, понимать как равенство почти всюду,
+но мы будем считать, что у нас все функции достаточно хорошие,
+и оно выполняется вообще везде.
+
+%переформулировать, заменить стрелочки на Необходимо и Достаточно...
+\begin{stm}
+  $\abs{W} \neq = 0 \Leftrightarrow \rang M = n$,
+  где $M = [B | AB | \ldots | A^{n - 1} B]$~--- матрица,
+  составленная из матриц $B$, $AB$, $\ldots$, $A^{n - 1} B$,
+  поставленных в плотную друг к другу.
+  $M \in \real^{n \times m n}$.
+\end{stm}
+
+\begin{proof}
+  $\Longleftarrow$ (\emph{Достаточность}). Предположим обратное:
+  пусть $M$~--- матрица полного ранга, но найдётся ненулевой вектор $\ell \in \Ker W$.
+  Тогда $\ell^\tran e^{A(t_1 - \tau)} B \equiv 0$.
+  Продифференцируем это равенство $n - 1$ раз по переменной $\tau$: 
+  %Криво написана система?
+  \begin{equation}
+	  \begin{array}{r@{}cl}
+		  -l^T e^{A(t_1-\tau)} &AB &\equiv 0,\\
+		  \dots\\
+		  (-1)^{n-1} l^T e^{A(t_1-\tau)} &A^{n-1}B &\equiv 0.
+	  \end{array}
+  \end{equation}
+  Но тогда $l^Te^{A(t_1-\tau)} \perp B, AB, \ldots, A^{n-1}B$, что противоречит предположению.
+  %тут нужно указать, что l^Te^{A(t_1-\tau)} \not= 0, но откуда это следует???
+  
+  $\Longrightarrow$ (\emph{Необходимость}).
+  Предположим обратное, т.\,е. $\abs{W} \neq = 0$, но $\rang M < n$.
+  Тогда найдётся вектор $\ell \neq = 0$,
+  что $\ell^\tran B = \dots = \ell^\tran A^{n - 1} B = 0$.
+  Из теоремы Гамильтона--Кэли следует, что любая степень матрицы является
+  линейной комбинацией её первых $n-1$ степеней.
+
+  $\ell^\tran A^k B \equiv 0 \forall k \geqslant 0$,
+  а следовательно $\ell^\tran e^{A(t_1 - \tau)} B \equiv 0$,
+  и $\abs{W} = 0$, что противоречит предположению.
+\end{proof}
+	
+\begin{stm}
+  $\Im W = \Im M$, или, что то же, $\Ker W = \left\lbrace \ell \colon \ell \perp \Im M\right\rbrace$.
+\end{stm}
+%Слишком много кванторов
+\begin{proof}
+	Доказательство идёт по той же самой схеме, что и предыдущее: %поэтому мы опускаем большую его часть.
+	
+	$l\perp \Im M$ $\ \Rightarrow\ $ $l \perp B,AB,\dots A^{n-1}B$ $\ \stackrel{\text{нер. Гамильтона--Кели}}{\Rightarrow}\ $  $l^T e^{A(t-\tau)}B\equiv0$ $\ \Rightarrow\ $ $l \in \Ker W$.
+	
+	Обратно: %первому пункту предыдущего утверждения.
+	%хотя, по-хорошему, стоит расписать...
+	
+	$ y \in \Ker W \Rightarrow l^Te^{A(t_1-\tau)} \perp B, AB,\dots,A^{n-1}B \Rightarrow l\perp \Im [B|AB|\dots|A^{n-1}B]. $
+\end{proof}
+
+Чем непрерывный случай принципиально отличается от дискретного? Тем, что в дискретном случае матрица $M$ выглядела как $[B|\dots|A^{min(k_1-k_0,n)}B]$, ибо у нас было лишь ограниченное число шагов, и их могло просто не хватить.
+
+\begin{df}
+Пара матриц $A,B$ называется \emph{[полностью(?)] управляемой}, если $\rang[B|AB|\dots|A^{n-1}B]=n$.
+\end{df}
+
+\begin{ex}%[полностью управляемой системы].
+	Рассмотрим маятник: $\ddot{x} + \omega^2 x = u$. $x$ --- координата маятника, $u$ --- сила, которую мы к нему прилагаем.
+	
+	Управляема ли эта система? Сейчас узнаем.
+	
+	Обозначим $x_1=x, x_2 = \dot{x}$. Тогда
+	\begin{equation} \label{PendulumSystem}
+		\left\{
+		\begin{aligned}
+			\dot{x}_1 &=x_2, \\
+			\dot{x}_2 &=-\omega^2 x_1 +u,
+		\end{aligned}
+		\right.
+	\end{equation}
+	и тогда наши матрицы имеют вид
+	%array?
+	\begin{equation*}
+		A=\begin{bmatrix}
+			0 & 1 \\ -\omega^2 & 0
+		\end{bmatrix}, \ 
+		B=\begin{bmatrix}
+			0\\1
+		\end{bmatrix}.
+	\end{equation*}
+	\begin{equation*}
+		[B|AB] = \begin{bmatrix} 0&1\\1&0 \end{bmatrix}.
+	\end{equation*}
+	То есть наша система управляема, что в общем-то согласуется с бытовыми представлениями --- с помощью сколь угодно большой силы можно поставить маятник в любое положение и придать ему любую скорость за сколь угодно малое время
+	%"можно перевести маятник в любое стстояние"?
+
+%переформулировать нормально надо бы... Много слов...
+Ещё стоит заметить, что, казалось бы, в \eqref{PendulumSystem} координата маятника не зависит от управления, поэтому на неё нельзя влиять управлением, но, на самом деле, это не так, ибо она зависит от скорости, которая в свою очередь зависит от управления очень даже.
+\end{ex}
+%Может быть, стоит привести пример не полностью управляемой системы? Например маятник в пространстве, на который мы можем влиять только по одной координате, но это нефизично, да и неинтересно - как будто кроме маятников ничего нету.
+%В общем, требуется пример неуправляемой системы.
+
+Если система не полностью управляема, то
+%комментарий в тетрадке "Мы такое раньше не рассматривали". Почему? потому что начальное состояние - не точка, а множество точек. Надо включить как-то.
+%вообще, к чему этот текст?... привязать жёстче надо
+%multline?
+%много символов. получается каша. Структуризовать.
+\begin{multline*}
+	\soa[t_1] = \soa(t,t_0,x^0) = \{x^1 \mid \exists\, u(\cdot), \exists\, x^0 \in \soa^0 : x(t_1,t_0,x^0|u(\cdot)) = x^1 \}  ={}\\{}= e^{A(t_1 - t_0)}\soa^0 + \Im [B|\dots|A^{n-1}B],
+\end{multline*}
+$x^1 \in \soa[t_1]$ $\Leftrightarrow$ $\exists\,\mu, \exists\, x^0 \in \soa^0: x^1-e^{A(t_1-t_0)}x^0 = c \in \soa_\mu[t_1]$, а $\mathop{\cup}\limits_\mu \soa_\mu = \Im[B|\dots|A^{n-1}B]$.
+%непонятная фраза:
+Так вот, если $\soa^0 = \{x^0\}$, то $\soa[t_1]$ --- есть линейное многообразие, и можно сказать, что $e^{A(t_1-t_0)}x^0$ --- есть центр сплющенного эллипсоида $\soa_\mu$, а в остальном всё (???) то же самое. (то же самое, как и что? наборщик недоумевает\ldots).
+
+%нужно привязать этот абзац к тексту про то, что координата "как бы" не зависит от управления, или тот текст к этому абзацу.
+Приведём следующую немаловажную теорему:
+\begin{theorem}[о декомпозиции] %в лекциях оформлена как Утверждение...
+Для любой линейной системы с постоянными коэффициентами \eqref{ConstKoefContSys}  найдётся такое [невырожденное] преобразование координат $y=Tx$ $T\not = 0$, что $y=(y^1,y^2)$, $y^1\in\real^k$, $y^2\in\real^{n-k}$, где $k=\rang[B|AB|\dots|A^{n-1}B]$, и система преобразуется к виду
+\begin{equation*}
+	\begin{array}{l}
+		\dot{y}^1 = A_{11} y^1 + A_{12} y^2 + B_1 u, \\
+		\dot{y}^2 = A_{22}y^2,
+	\end{array}
+\end{equation*}
+причём $(A_{11},B)$ --- полностью управляема.
+\end{theorem}
+Собственно, это теорема (как следует из названия) о декомпозиции системы на полностью управляемую и неуправляемую части. $y^2$ \glqqq плывёт\grqqq{} сам по себе, а $y^1$ можно привести куда угодно (даже несмотря на добавку $A_{12}y^2$, ибо система для $y^1$ полностью управляема).
+
+% Первый набросок лекции №8
+
+Мы рассматриваем непрерывную систему с постоянными коэффициентами без свободного члена:
+
+% Тут если нужно - вставить ещё раз систему.
+% Вступление - будем формализовывать результат предыдущей лекции.
+
+\begin{theorem}[(о декомпозиции состояния)]
+Существует замена
+\begin{equation*}
+\begin{array}{l}
+    \exists T \in \real ^{n \times n};  y = Tx \\
+	y = (y^1; y^2)^T, y^1 \in \real ^k, y^2 \in \real ^{n-k}, \text{где} \\
+	k = \rg [B|AB| \ldots |A^{n-1}B],
+\end{array}
+\end{equation*}
+
+обладающая свойством:
+\begin{multline}
+	\dot{y} = T \dot{x} = TAT^{-1} y + TBu \\
+	TAT^{-1} =  \\ %Тут матрица блочная TB = %И тут матрица блочная	
+\end{multline}
+
+То есть, систему можно записать в виде
+%% Тут делается нормальная СЛАУ
+\begin{multline}
+	\dot{y}^1 = A_{11} y^1 + A_{12} y^2 + B_1 u \\ % Полностью управляемая часть
+	\dot{y}^2 = A_{22} y^2 % Управление вообще отсутствует
+\end{multline}
+\end{theorem}
+
+%%%%%%%%%%%%
+\subsection{О декомпозиции состояния нелинейной системы (отступление)}
+Рассмотрим более общую систему, линейную по управлению.
+\begin{equation*}
+	\dot{x}(t) = f(x(t)) + g_1 (x(t))u_1 + \ldots + g_m (x(t))u_m
+\end{equation*}
+
+В линейном случае
+\begin{gather*}
+	f(x) = Ax	\\
+	g_j(x) = B^j % Это столбец!
+\end{gather*}
+
+\begin{df}
+	Будем называть {\it скобкой Ли} двух векторных полей следующее ?поле?:
+	\begin{equation*}
+		[f_1(\cdot), f_2(\cdot)] = \frac {\partial f_1}{\partial x} f_2 - 
+								   \frac {\partial f_2}{\partial x} f_1. 
+	\end{equation*}
+	Если $[f_1, f_2] = 0$, то говорят, что поля $f_1$ и $f_2$ коммутируют.
+
+\end{df}
+
+В линейном случае
+\begin{gather*}
+	[f, g_j] = AB_j \\
+	[f, [f, g_j]] = A_2 B_j
+\end{gather*}
+и коммутируемость полей равносильна коммутируемости (перестановочности) матриц.
+
+Прикладной смысл скобки Ли:
+% Про графичек с последовательным применением и разность путей / эпсилон при стремлении к нулю
+
+% Про возможность сдвинуться туда, сюда и смысл - определение ещё движений. Так, на машине можно парковаться (двигаться вбок) путем повторения чередующихся шагов различных управлений (вперёд-назад) и поворота.
+
+%%%%%%%%%%%%
+\subsection{Доказательство теоремы для случая постоянных коэффициентов}
+Рассмотрим пространство $L = \Im (B|AB| \ldots A^{n-1}B)$. Докажем
+
+\begin{lemma}
+	L инвариантно относительно нашей линейной системы с постоянными коэффициентами ?Ссылка?
+\end{lemma}
+\begin{proof}
+	Пусть $x^0 \in L$. Это верно, если $x^0$ имеет вид
+	\begin{equation}
+		x^0 = B v^0 + AB v^1 + \ldots + A^{n-1} B v^{n-1} \label{elemL}
+	\end{equation}
+
+	Выпишем формулу Коши и разложим матричную экспоненту в ряд.
+	%Тут формула коши + разложение в ряд
+	
+	Из теоремы Гамильтона--Кэли следует, что любую степень матрицы можно представить в виде линейной комбинации
+	%Тут линейная комбинация для A^k
+	
+	Подставим, соберём коэффициенты и получим, что $x(t)$ также представим в виде \eqref{elemL}, следовательно $x(t) \in L$, что и означает инвариантность L относительно нашей системы.
+\end{proof}
+
+Далее приведем достаточные условия управляемости для различных систем.
+
+%%%%%%%%%%%%
+\subsection{Случай непрерывных систем с переменными коэффициентами}
+Важное отличие непрерывных систем с переменными коэффициентами от непрерывных с постоянными коэффициентами и рассмотренных дискретных в том, что в этом случае управляемость может зависеть от рассматриваемого промежутка времени. В то время, как в случае постоянных коэффициентов или дискретном, если система управляема на некотором промежутке, то она управляема и на любом меньшем. Только берите управление побольше.
+
+Рассмотрим однородную систему с переменными коэффициентами
+%Тут система + ограничение на гладкость A и B
+
+Обозначим
+%Наверное, тут не гадер а что-то выравниваемое...
+\begin{gather*}
+	L_1	= B(t)  \\
+	L_k = A(t) L_{k-1}(t) - \frac{d L_{k-1}}{dt}, k = 2, \ldots, n.
+\end{gather*}
+
+\begin{theorem}[(достаточное условие управляемости для непр. системы)]
+	Если $\exists \bar{t} \in [t_0, t_1]$ такой, что
+	\begin{equation*} \rg [L_1(\bar{t})| \ldots | L_n(\bar{t})] = n, \end{equation*}
+	то система полностью управляема на $[t_0, t_1]$ (и больших - ??очевидно??).
+\end{theorem}
+\begin{proof}
+	Вспомним наш критерий управляемости. 
+	%%% Вот это надо хорошенько связать с 4й и осмыслить...
+\end{proof}
+
+\subsection{Случай непрерывных систем с периодическими коэффициентами}
+Мы рассматриваем ту же систему
+% система,
+но уже когда $A(t)$ и $B(t)$ периодические с периодом T.
+
+Потребуем аналитичности $A(t)$ и $B(t)$. %Надо написать определение или сослаться куда-нить...
+
+\begin{theorem}[(достаточное условие управляемости для непр. системы с периодич. коэффициентами)]
+	Если 
+	\begin{equation*} 
+		\rg [B(t_0)| X(T,0)B(t_0) | \ldots | X^{n-1} (T,0)B(t_0)] = n, 
+	\end{equation*}
+	то система полностью управляема на ?любом? промежутке времени.
+\end{theorem}
+
+\begin{proof}
+	%%%% как тождественное равенство делать??? \equiv
+	Предположим противное. Пусть $\exists\ l \neq 0$ т.ч. $l^T X(t_1,\tau)B(\tau) = 0$
+	
+	Посмотрим на это равенство в точках	$t_0, t_0 - T, \ldots, t_0 - (n-1)T$
+\end{proof}
+

@@ -1,0 +1,59 @@
+\subsubsection{Система с переменными коэффициентами}
+
+Важное отличие непрерывных систем с переменными коэффициентами от непрерывных систем
+с постоянными коэффициентами в том, что в этом случае управляемость может зависеть от
+рассматриваемого промежутка времени. В то время как в случае постоянных коэффициентов,
+если система управляема на некотором промежутке, то она управляема и на любом меньшем.
+
+Рассмотрим однородную систему с переменными коэффициентами:
+\begin{equation}
+\label{linear_nonconst}
+  \begin{cases}
+    \dot{x}(t) = A(t) x(t) + B(t) u(t),\\
+    A(t) \in \mathbb{R}^{n \times n}, B(t) \in \mathbb{R}^{n \times m}.
+  \end{cases}
+\end{equation}
+
+Согласно полученному ранее результату, система \eqref{linear_nonconst}
+является вполне управляемой тогда и только тогда, когда выполнено соотношение
+\begin{equation*}
+  \abs{W} \neq 0 \Leftrightarrow
+  \forall \ell \neq 0 \Rightarrow H^\tran(t_1, \tau) \ell \neq 0 \Leftrightarrow
+  \forall \ell \neq 0 \Rightarrow \ell^\tran X(t_1, \tau) B(\tau) \neq 0.
+\end{equation*}
+
+\begin{theorem}
+  Пусть $t^* \in [t_0; t_1]$, матрицы $A(t)$ и $B(t)$ дифференцируемы $(n - 1)$ раз
+  в окрестности $t^*$. Рассмотрим следующий набор матриц:
+  \begin{equation*}
+    \begin{cases}
+      L_1(t) = B(t),\\
+      L_{k}(t) = A(t) L_{k - 1}(t) - \frac{d L_{k - 1}(t)}{d t}, k = 2, \ldots, n.
+    \end{cases}
+  \end{equation*}
+  
+  Если $\rg\left[L_{1}(t^*) | L_{2}(t^*) | \ldots | L_{n}(t^*) \right] = n$,
+  то система \eqref{linear_nonconst} вполне управляема.
+\end{theorem}
+
+\begin{note}
+  Если матрицы $A(t)$ и $B(t)$ не зависят от времени, то $L_{k} = A^{k - 1} B$.
+\end{note}
+
+\begin{proof}
+	Предположим обратное: существует такой ненулевой вектор $\ell$, что
+	\begin{equation*}
+	  \ell^\tran X(t_1, \tau) B(\tau) = \ell^\tran X(t_1, \tau) L_{1}(\tau) \equiv 0.
+	\end{equation*}
+	Продифференцируем данное равенство по $\tau$, учитывая, что
+	$\frac{\partial X(t_1, \tau)}{\partial \tau} = -X(t_1, \tau) A(\tau)$:
+	\begin{equation*}
+	  -\ell^\tran X(t_1, \tau) A(\tau) B(\tau) + \ell^\tran X(t_1, \tau) \frac{\partial B(\tau)}{\partial \tau} \equiv 0
+	  \Leftrightarrow
+	  -\ell^\tran X(t_1, \tau) L_2(\tau) \equiv 0.
+	\end{equation*}
+	
+	Используя метод математической индукции, получаем, что $\ell^\tran X(t_1, \tau) L_n(\tau) \equiv 0$
+	в окрестности точки $t^*$. Вектор $\widetilde{\ell} = X^\tran(t_1, \tau) \ell$ при $\tau = t^*$ ортогонален
+	всем $L_1, \ldots, L_n$, что противоречит условию полного ранга.
+\end{proof}

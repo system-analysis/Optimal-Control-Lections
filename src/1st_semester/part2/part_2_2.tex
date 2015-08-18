@@ -1,0 +1,151 @@
+\subsection{Решение}
+
+Запишем формулу Коши для уравнения \eqref{L2_task}:
+\begin{equation*}
+	x^1 = X(t_1, t_0) x^0 + \int\limits_{t_0}^{t_1} X(t_1, \tau) B(\tau) u(\tau)\,d\tau +
+	\int\limits_{t_0}^{t_1} X(t_1, \tau) f(\tau)\,d\tau.
+\end{equation*}
+
+Данное равенство можно переписать в следующем виде:
+\begin{gather}
+\label{L2_moment_task}
+%\label{ourTask}
+	\begin{cases}
+	  %\displaystyle
+	  c = x^1 - X(t_1, t_0) x^0 - \int\limits_{t_0}^{t_1} X(t_1, \tau) f(\tau)\,d\tau,\\
+	  H(t, \tau) = X(t, \tau) B(\tau),\\
+	  %\displaystyle
+	  \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau = c.
+	\end{cases}
+\end{gather}
+
+Полученная система уравнений \eqref{L2_moment_task} называется задачей моментов.
+Рассмотрим множество достижимости данной задачи:
+\begin{equation}
+\label{L2_moment_task_soa}
+	\soa_\mu^0 (t_1, t_0) = \soa_\mu^0 [t_1] =
+	\left\lbrace
+	  \alpha \in \mathbb{R}^n \colon \exists u(\cdot), \norm{u}_{\LTwo} \leqslant \mu,	  
+	  \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau = \alpha
+	\right\rbrace.
+\end{equation}
+
+\begin{note}
+  Если взять $x^0 = 0$, $f \equiv 0$, то $\soa_\mu^0 (t_1, t_0)$ есть множество концов траекторий
+  системы \eqref{L2_task} в момент времени $t_1$.
+\end{note}
+
+Требуется найти минимальное положительное значение $\mu$, при котором $c \in \soa_\mu^0$.
+Сформулируем и докажем утверждение относительно введенного множества \eqref{L2_moment_task_soa}.
+
+\begin{stm}
+	$\soa_\mu^0 \in \conv \mathbb{R}^n$, где $\conv \mathbb{R}^n$ есть множество
+	непустых выпуклых компактов в $\mathbb{R}^n$.
+\end{stm}
+
+\begin{proof}
+	Для доказательства исходного утверждения необходимо доказать
+	три свойства: выпуклость, ограниченность и замкнутость.
+	
+	\emph{Выпуклость}:
+	
+	Пусть $c^1, c^2 \in \soa_\mu^0$, тогда найдутся соответствующие им допустимые
+	управления $u^1(\cdot)$ и $u^2(\cdot)$ такие, что выполнены равенства
+	\begin{equation}
+	\label{L2_soa_proof_convex}
+	  c^j = \int\limits_{t_0}^{t_1} H(t_1, \tau) u^j(\tau)\,d\tau.
+	\end{equation}
+	
+	Пусть $c = \lambda c^1 + (1 - \lambda) c^2$ для некоторого $\lambda \in [0, 1]$.
+	Требуется выяснить, принадлежит ли вектор $c$ множеству достижимости $\soa_\mu^0$.
+	
+	Рассмотрим управление $u(t) = \lambda u^1(t) + (1 - \lambda) u^2(t)$.
+	В силу линейности по управлению интегральных соотношений \eqref{L2_soa_proof_convex},
+	соответствующее интегральное равенство выполнено также для вектора $c$. Осталось проверить, что
+	управление $u(t)$ является допустимым, а именно, что выполнено неравенство
+	$\norm{u}_\LTwo \leqslant \mu$:
+	\begin{equation*}
+		\norm{u}_\LTwo \leqslant \lambda \norm{u^1}_\LTwo + (1 - \lambda) \norm{u^2}_\LTwo \leqslant \mu.
+	\end{equation*}
+
+	\emph{Ограниченность}:
+	
+	Рассмотрим следующую цепочку неравенств:
+	\begin{gather*}
+		\norm{\int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau} \leqslant
+		\int\limits_{t_0}^{t_1} \norm{H(t_1, \tau) u(\tau)} d\tau \leqslant
+		\int\limits_{t_0}^{t_1} \norm{H(t_1, \tau)} \cdot \norm{u(\tau)} d\tau \leqslant{}\\
+		\intertext{по неравенству Коши--Буняковского:}
+		{}\leqslant
+		\left(\int\limits_{t_0}^{t_1} \norm{H(t_1, \tau)}^2 d\tau\right)^{\frac{1}{2}} \cdot \norm{u}_\LTwo =
+		\norm{H(t_1, \cdot)}_\LTwo \cdot \norm{u}_\LTwo \leqslant
+		\mu \cdot \norm{H(t_1, \cdot)}_\LTwo \leqslant M,
+	\end{gather*}
+	где $M$~--- некоторая константа. Таким образом, множество $\soa_\mu^0$ лежит в шаре с радиусом
+	$M$, следовательно, ограничено.
+
+	\emph{Замкнутость}:
+	
+	Пусть имеется некоторая сходящаяся последовательность $\left\lbrace c^j \right\rbrace \in \soa_\mu^0$:
+	$c^j \to c$. Требуется доказать замкнутость множества $\soa_\mu^0$, то есть доказать принадлежность
+	вектора $c$ данному множеству. Для каждого вектора $c^j$ определено соответствующее ему допустимое управление:
+	\begin{equation*}
+	  c^j = \int\limits_{t_0}^{t_1} H(t_1, \tau) u^j(\tau)\,d\tau.
+	\end{equation*}
+	
+	Множество допустимых управлений является шаром в функциональном пространстве $\LTwo$,
+	следовательно, не является компактным множеством. Поэтому, управление $u(t)$,
+	соответствующее вектору $c$, не может являться пределом (по норме) функций $u^j(t)$.
+	Введем понятие слабой сходимости.
+	
+	\begin{df}
+	  Последовательность функций $u^j(t)$ называется слабо сходящейся к $u(t)$
+	  в пространстве $\LTwo$,
+	  если $\forall g(t) \in \LTwo \Rightarrow
+	  \int\limits_{t_0}^{t_1} g(t) u^j(t)\,dt \to
+	  \int\limits_{t_0}^{t_1} g(t) u(t)\,dt$.
+	\end{df}
+	
+	Отметим, что множество допустимых управлений является слабым компактом в пространстве $\LTwo$.
+	Следовательно, без ограничения общности, будем считать, что последовательность $u^j(t)$ имеет слабый
+	предел $u(t)$. В таком случае получаем:
+	\begin{equation*}
+		c^j = \int\limits_{t_0}^{t_1} H(t_1, \tau) u^j(\tau)\,d\tau
+		\xrightarrow[j \rightarrow \infty]{}
+		\int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau = c \in \soa_\mu^0.
+	\end{equation*}
+	
+	Таким образом, утверждение полностью доказано.
+\end{proof}
+	
+Найдём опорную функцию множества \eqref{L2_moment_task_soa}:
+\begin{gather*}
+  \sufu{\ell}{\soa_\mu^0[t_1]} =
+    \sup_{c \in \soa_\mu^0[t_1]} \scalar{\ell}{c} =
+    \sup_{u} \int\limits_{t_0}^{t_1} \scalar{\ell}{H(t_1, \tau) u(\tau)} d\tau = {}\\
+  {} = \sup_{u} \int\limits_{t_0}^{t_1} \scalar{H^\tran(t_1, \tau) \ell}{u(\tau)} d\tau \leqslant
+    \sup_{u} \int\limits_{t_0}^{t_1} \norm{h(\tau)} \cdot \norm{u(\tau)} d\tau \leqslant{}\\
+  {} \leqslant \sup_{u}
+    \left(
+      \left[\int\limits_{t_0}^{t_1} \norm{h(t_1, \tau)}^2 d\tau \right]^{\tfrac{1}{2}} \cdot
+      \left[\int\limits_{t_0}^{t_1} \norm{u(\tau)}^2 d\tau \right]^{\tfrac{1}{2}}
+    \right) = {}\\
+  {} = \sup_{u} \left( \norm{h}_{\LTwo} \cdot \norm{u}_{\LTwo} \right) =
+    \mu \cdot \norm{h}_{\LTwo},
+\end{gather*}
+где $h(\tau) = H^\tran(t_1, \tau) \ell$.
+
+Покажем, что данная верхняя оценка опорной функции достижима при некотором управлении.
+Зная, при каких условиях в приведенных неравенствах достигаются равенства,
+получаем вид функции управления:
+\begin{equation*}
+  u(t) = \lambda H^\tran(t_1, t) \ell,\quad \lambda = \const \geqslant 0,
+\end{equation*}
+при этом константа $\lambda$ такова, что $\norm{u}_{\LTwo} = \mu$.
+Если данная норма ненулевая, то параметр $\lambda$ определяется однозначно.
+В таком случае функцию $u(t)$ можно записать в следующем виде:
+\begin{equation*}
+  u(t) = u_{\ell}^{*}(t) = \mu \frac{H^\tran(t_1, t) \ell}{\norm{H^\tran(t_1, \cdot) \ell}_{\LTwo}}.
+\end{equation*}
+
+\input{part2/part_2_2_1}

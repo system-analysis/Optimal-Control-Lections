@@ -1,0 +1,61 @@
+\subsubsection{Сведения из выпуклого анализа}
+
+\begin{df}
+  Пусть $X$~--- пространство с введённым скалярным произведением,
+  $\ell \in X$, $A \subset X$.
+  Тогда \emph{опорной функцией множества $A$}
+  называется функция
+  \begin{equation*}
+    \sufu{\ell}{A} = \sup_{x \in A}\scalar{\ell}{x}.
+  \end{equation*}
+\end{df}
+
+Геометрический смысл опорной функции достаточно прост:
+при фиксированном $\ell$ множество
+$\left\lbrace \ell \mid \scalar{\ell}{z} = c = \const \right\rbrace$
+есть гиперплоскости, ортогональные $\ell$,
+сдвинутые от начала координат вдоль $\ell$ на $\frac{c}{\norm{\ell}}$.
+
+Если $\norm{\ell} = 1$, то $c = \scalar{\ell}{z}$ есть
+расстояние от начала координат до гиперплоскости,
+ортогональной $\ell$ и проходящей через $z$.
+
+Получается, что опорная функция множества показывает
+максимальное расстояние от начала координат до гиперплоскости
+заданной ориентации, ещё имеющей какие-то общие точки с нашим множеством.
+Эта наиболее удалённая гиперплоскость
+называется \emph{опорной гиперплоскостью}
+$\pi_\ell = \left\lbrace z \mid \scalar{\ell}{z} = \sufu{\ell}{Z} \right\rbrace,
+(\ell \not = 0)$.
+
+Опорная функция обладает следующими свойствами:
+
+\begin{enumerate}
+	\item
+	Она \emph{положительно-однородна}:
+	$\sufu{\alpha \ell}{Z} = \alpha \sufu{\ell}{Z}$, $\alpha \geqslant 0$.
+
+	\item
+	Она \emph{полуаддитивна}:
+	$\sufu{\ell^1 + \ell^2}{Z} \leqslant \sufu{\ell^1}{Z} + \sufu{\ell^2}{Z}$
+	(неравенство треугольника).
+
+	\item Из первого и второго пунктов следует, что она \emph{выпукла}.
+
+	\item Между выпуклыми компактами и $\sufu{\ell}{Z}$
+	существует взаимнооднозначное соответствие.
+
+Действительно, прямо из определения следует, что $\forall z\in Z$ имеет место неравенство 
+\begin{equation}
+  \label{supportFuncIneq}
+	\scalar{\ell}{z} \leqslant \sufu{\ell}{Z},\quad \forall \ell \in \real^n.
+\end{equation}
+
+Если же $Z \in \conv \real^n$ (является выпуклым компактом),
+то справедливо и обратное утверждение, то есть из \eqref{supportFuncIneq}
+следует, что $z \in Z$. Тогда
+\begin{equation*}
+  Z = \bigcap\limits_{\ell \in real^n}{\pi^{-}_\ell},\quad
+    \pi^{-}_\ell = \left\lbrace z \mid  z \leqslant \sufu{\ell}{X} \right\rbrace.
+\end{equation*}
+\end{enumerate}

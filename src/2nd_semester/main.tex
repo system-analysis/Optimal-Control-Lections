@@ -40,7 +40,7 @@
 \renewcommand{\leq}{\leqslant}
 \renewcommand{\geq}{\geqslant}
 \newcommand{\bigrint}{\hbox to 0.8em{\hss\scalebox{1.2}[1]
-	{\rotatebox[origin=c]{17}{$\displaystyle\int$}}\hss}}
+    {\rotatebox[origin=c]{17}{$\displaystyle\int$}}\hss}}
 \newcommand{\rint}{\mathop{\bigrint}\displaylimits}
 
 
@@ -99,21 +99,21 @@ x(t_0) = x^0,\quad x(t_1) = x^1\\
 
 {\flushleft Приведем данную задачу к задаче с терминальным функционалом. Введем новую переменную:}
 \begin{equation*}
-	\begin{cases}
-		\dot x_0 = f^0(x,u)\\
-		x_0(0) = 0
-	\end{cases} \Rightarrow x_0(t_1) \equiv J.
+    \begin{cases}
+        \dot x_0 = f^0(x,u)\\
+        x_0(0) = 0
+    \end{cases} \Rightarrow x_0(t_1) \equiv J.
 \end{equation*}
 
 {\flushleft Тогда, можно перейти к эквивалентной задаче:}
 
 \begin{equation}\label{fsystem}
-	\begin{cases}
-		\dot{\widetilde{x}}(t) = \widetilde{f}(\widetilde{x}(t),u(t))\\
-		x_0(t_1) \longrightarrow \inf\\
-		u(t) \in \mathcal{P}\\
-		x(t_0) = x^0,\quad x(t_1) = x^1
-	\end{cases}
+    \begin{cases}
+        \dot{\widetilde{x}}(t) = \widetilde{f}(\widetilde{x}(t),u(t))\\
+        x_0(t_1) \longrightarrow \inf\\
+        u(t) \in \mathcal{P}\\
+        x(t_0) = x^0,\quad x(t_1) = x^1
+    \end{cases}
 \end{equation}
 Где $\widetilde{x} = (x_0,x_1,\ldots,x_n),\; \widetilde{f} = (f_0,f_1,\ldots,f_n)$.
 
@@ -383,13 +383,13 @@ $$ \psi_0^* = -\lambda_3, \quad \psi^*(t_0) = -(\lambda_4,\ldots, \lambda_{n+3})
 На правом конце:
 \begin{align*}
 &\left( \frac{\partial\varphi}{\partial \xi_1}\right)^* = \begin{pmatrix}
-	1 & \dots & 0 \\
-	\frac{\partial g}{\partial x_i}& \ddots & \vdots \\
-	\ldots & \dots & 0
+    1 & \dots & 0 \\
+    \frac{\partial g}{\partial x_i}& \ddots & \vdots \\
+    \ldots & \dots & 0
 \end{pmatrix} \Rightarrow 
 \begin{cases}
-	\psi_0^*=\lambda_0\\
-	\psi^*(t_1^*) = \frac{\partial g}{\partial x} \lambda_0
+    \psi_0^*=\lambda_0\\
+    \psi^*(t_1^*) = \frac{\partial g}{\partial x} \lambda_0
 \end{cases}\\
 &H|_{t = t_0} = \lambda_1\\
 &H|_{t = t_1} = -\lambda_2\\
@@ -430,8 +430,8 @@ $$\psi(t_1^*) = \psi_0^*\frac{\partial g}{\partial x}.$$
 $$
 \left\{
 \begin{aligned}
-	&\dot{x}(t)=g(t, x, \mu);\\
-	&x(t_0) = x^0.\\
+    &\dot{x}(t)=g(t, x, \mu);\\
+    &x(t_0) = x^0.\\
 \end{aligned}
 \right.
 $$
@@ -545,9 +545,9 @@ $$
 Тогда, пусть:
 $$
 \Phi = \begin{bmatrix}
-			\phi_0\\
-			\phi_1\\
-			\vdots
+            \phi_0\\
+            \phi_1\\
+            \vdots
    \end{bmatrix}
 $$
 \begin{thm}[Принцип максимума Понтрягина] \ \\
@@ -587,9 +587,9 @@ $$\psi(t) \neq 0,\; \dot \forall\,t$$
 $S = \{(t_0, t_1, x(t_0), u(\cdot))\};$
 \item 
 $\sigma \in S \rightarrow  \begin{bmatrix}
-			\phi_0(e)\\
-			\vdots \\
-			\phi_k(e)\\
+            \phi_0(e)\\
+            \vdots \\
+            \phi_k(e)\\
    \end{bmatrix} \in \mathbb{R}^{k+1};$
 \item $\hat{S} = S \bigcap \{\phi_1(e) = \ldots = \phi_k(e) = 0\};$
 \item $C = \conv \{0, l^1, \ldots, l^{k+1}\}, $ где $ l^j = (0, \ldots, 0, 1, 0, \ldots, 0)^T;$
@@ -659,8 +659,8 @@ $\Rightarrow D$ порожденный (1) - (4) --- конус вариаций
     Пусть $\{ \xi^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара для задачи ОУ с ограничениями типа равенства ($\dot{x} = f(t, x, u)$), тогда 
     $ \,\exists\; \psi^*: \left[t_0^*, t_1^*\right] \rightarrow \mathbb{R}^{n+1}, \quad \exists \lambda = (\lambda_0, \ldots, \lambda_k)^T \neq 0, \ \lambda_0\leq 0$:
     \begin{enumerate}
-    	\item Условие нетривиальности
-    	$$\psi^* \neq 0,\; \dot\forall\, t$$
+        \item Условие нетривиальности
+        $$\psi^* \neq 0,\; \dot\forall\, t$$
         \item Сопряженная система
         $$
         \dot{\psi} = - \left. \frac{\partial f}{\partial x} \middle|_{\substack{\xi = \xi^*\\ u = u^*}}\psi\right.

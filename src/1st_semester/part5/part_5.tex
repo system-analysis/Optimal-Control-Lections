@@ -1,0 +1,180 @@
+\section{Задача из множества во множество}
+\subsection{Постановка задачи}
+%FIXME: странности с названием лекции осталась, так как тут кусок стоит отнести к прошлой лекции. Оставим пока так
+Хочется сказать, что множество $\omega$, на котором условие нормальности не выполняется, имеет меру нуль.
+Рассмотрим иные множества ограничений:
+\begin{stm}
+	Если $\mathcal P$ строго выпукло, $\Int \mathcal P\neq \varnothing$, $\rg\left[B\middle|AB\middle|\ldots\left|\right.A^{n-1}B\right]=n$, то $u^l(\tau)$ выделяется из условия максимума единственным образом.
+\end{stm}
+
+\begin{proof}
+	Максимум достигается в единственной точке в силу выпуклости. Надо лишь доказать, что $B^T\psi(t)\neq 0$ на любом интервале.
+
+	Предположим противное:
+	$B^T\psi(t)\equiv 0, \forall t$, тогда:
+	$l^Te^{A(t_1-t)}B\equiv 0.$
+
+	Продифференцируем обе части $(n-1)$ раз:
+	\begin{gather*}
+		-l^{T}e^{A(t_1-t)}AB\equiv 0,\\
+		\vdots\\
+		(-1)^{n-1}l^T e^{A(t_1-t)}A^{n-1}B\equiv 0.
+	\end{gather*}
+	Положим $t = t_1$, тогда ненулевой вектор ортогонален всем столбцам, получили противоречие с условием полной управляемости. %кривое предложение(а может быть и неправильное)%
+\end{proof}
+
+Перейдём к задачам оптимального управления при переходе из множества в множество. Расширим понятие множества достижимости:
+\begin{gather*}
+	\soa[\tau] = \soa\left(\tau,t_0, \soa^0\right) = \left\{x: \exists\, u(\cdot), \exists\, x^0\in\soa:x = x\left(\tau, t_0, x^0\left|\right.u(\cdot)\right)\right\}.
+\end{gather*}
+А также множества разрешимости:
+\begin{multline*}
+	\mathcal{W}[\tau] = \mathcal{W}(\tau, t_1, M) = \left\{x:\exists\, u(\cdot),\exists\, x^1\in M:x = x\left(\tau, t_1, x^1\left|\right.u(\cdot)\right)\right\} ={}\\{}= \left\{x:\exists\, u(\cdot), x\left(t_1, \tau, x\left|\right.u(\cdot)\right)\in M\right\}.
+\end{multline*}
+%здесь надо улучшить форматирование
+\subsection{Вспомогательные утверждения}
+\begin{problem}
+	$\dot x(t) = A(t)x(t) + B(t)u(t) + f(t)$, $x(t_0) = x^0\in\soa^0$, $x(t_1) = x^1\in\soa^1$, где $\soa^0, \soa^1\in\conv\mathbb R^n$.
+	$x^0$ переходит в $x^1$;$t_1-t_0\rightarrow\inf$, $t_0$ --- фиксировано, $t_1$ --- свободно (или наоборот), а $x^0, x^1$ --- свободны (их тоже надо указать). Требуется найти $t^{*}_{1}$:
+
+	$t^{*}_{1} = \inf\left\{t\geqslant t_0: \soa\left(\tau, t_0, \soa^0\right)\cap\soa^1\neq\varnothing\right\}$
+\end{problem}
+Отметим, что $\soa\left(\tau, t_0, \soa^0\right)\cap\soa^1\neq\varnothing\Leftrightarrow d(\soa[\tau], \soa^1) = 0$.
+
+$d(z_1, z_2) = \inf\left\{\norm{z_1-z_2},\ z_i\in Z_j,\ j = 1, 2\right\}$.
+
+Введём $\varepsilon\left[\tau\right] = d\left(\soa[\tau], \soa^1\right)$.
+\begin{theorem}
+	$t^{*}_1 - t_0$ --- время оптимального быстродействия $\Leftrightarrow t_1^*$ --- наименьший корень  $t_1^*\geqslant t_0$ уравнения $\varepsilon(\tau) = 0, x(t_0) = x^0\in\soa^0$.
+\end{theorem}
+Докажем следующее утверждение:
+\begin{stm}
+	$\soa[\tau]\in\conv\mathbb R^n$.
+\end{stm}
+\begin{note}
+	$\soa[\tau]$ --- выпуклый компакт, но наиболее существенным является именно то, что он компакт.
+\end{note}
+\begin{proof}
+	\emph{Выпуклость} доказывается как обычно. \emph{Ограниченность} --- из аналогичной теоремы об интеграле. \emph{Замкнутость} --- чуть сложнее, надо выбрать подпоследовательность из начальных точек.
+\end{proof}
+Формула расстояний между компактами:
+\begin{gather*}
+	\sufu{l}{Z_1} < -\sufu{-l}{Z_2}\Leftrightarrow\max_{z_1\in Z_1}\scalar{l}{z_1} < \min_{z_2\in Z_2}\scalar{l}{z_2}\text{, значит:}\\
+	Z_1\cap Z_2 = \varnothing, Z_1,Z_2\in\conv\mathbb R^n\Leftrightarrow \max_{\norm{l}=1}\left[-\sufu{l}{Z_1}-\sufu{-l}{Z_2}\right]>0.
+\end{gather*}
+Если множество $Z_2=\{z_2\}$, то:
+\begin{gather*}
+	\sufu{-l}{Z_2} = - \scalar{l}{z_2}. % \max_{\norm{l}=1}[\scalar{l}{z_2}-\rho(l\left|\right.Z_1)]?????
+\end{gather*}
+Воспользуемся индикаторными функциями из выпуклого анализа:
+\begin{equation*}
+	\delta_{Z_1\cap Z_2}(z) = \delta_{Z_1}(z)+\delta_{Z_2}(z)\text{, при этом знаем, что }\sufu{\cdot}{z_j}=(\delta_{z_j}(\cdot))^*.
+\end{equation*}
+\begin{stm}
+	$d(z,Z) = \sup\limits_{\norm{l}=1}[\scalar{l}{z}-\sufu{l}{Z}]$.
+\end{stm}
+
+\begin{proof}
+	Найдём сопряжённую к расстоянию:
+	\begin{multline*}
+		\sup_Z[\scalar{l}{z}-d(z, Z)] = \sup_Z[\scalar{l}{z}-\inf_{\zeta\in Z}\norm{z-\zeta}]=\sup_Z\sup_{\zeta\in Z}[\scalar{l}{z}-\norm{z-\zeta}]=\\=\{\text{пусть }z-\zeta = y\}=\sup_{\zeta\in Z}\sup_y[\scalar{l}{z+y}-\norm{y}]={}\\{}=\sufu{l}{Z}+\sup\limits_y[\scalar{l}{y}-\norm{y}] = \sufu{l}{Z}+\delta(l\left|\right.B_1(0)).
+	\end{multline*}
+	По теореме Фенхеля--Моро это действительно расстояние. % FIXME: навести справки на людей :)
+\end{proof}
+
+\begin{stm}
+	$d(z_1,Z_2) = \min\limits_{z_1\in Z_1}d(z_1,Z_2) = \min\limits_{z_1\in Z_1}\sup\limits_{\norm{l}=1}[\scalar{l}{z_1}-\sufu{l}{Z_2}].$
+\end{stm}
+Для доказательства потребуется следующая теорема: %о минимаксе?
+\begin{theorem}[Джон фон Нойманн] % FIXME: все мы знаем, что на самом деле правильно будет Янош фон Нойманн :)
+	Пусть $f\colon X\times Y\rightarrow \mathbb R$, $X, Y$ --- выпуклые компакты, $f(x, \cdot)$ --- вогнута, $f(\cdot, y)$ полунепрерывна снизу, $f(x,\cdot)$ полунепрерывна сверху, тогда:
+	\begin{equation*}
+		\inf\limits_{x\in X}\sup\limits_{y\in Y} = \sup\limits_{y\in Y}\inf_{x\in X}f(x, y).
+	\end{equation*}
+\end{theorem}
+Оставим эту теорему без доказательства.
+\begin{equation*}
+	\varepsilon[\tau] = \sup\limits_{\norm{l}\leqslant 1}\left[-\sufu{l}{\soa[\tau]}-\sufu{-l}{\soa^1}\right];\\
+\end{equation*}
+Найдем опорную функцию:
+\begin{equation*}
+	\scalar{l}{x(t)} = \scalar{l}{X(t_1, t_0)x^0}+\int\limits_{t_0}^t\scalar{l}{X(t,\tau)B(\tau)u(\tau)}d\tau+\int\limits_{t_0}^{t_1}\scalar{l}{X(t,\tau)f(\tau)}d\tau;
+\end{equation*}
+Из предыдущего пункта имеем:
+\begin{multline*}
+	\sufu{l}{\soa[t]}=\sufu{X^T(t,t_0)l}{\soa^0}+\int\limits_{t_0}^t\scalar{X^t(t,\tau)l}{f(\tau)}d\tau+\int\limits_{t_0}^{t}\sufu{B^T X^T(t,\tau)l}{\mathcal{P}(\tau)}d\tau ={}\\{}=\sufu{\psi(t_0)}{\soa^0}+\int\limits_{t_0}^t\scalar{\psi(\tau)}{f(\tau)}d\tau+\int\limits_{t_0}^{t}\sufu{B^T\psi(\tau)}{\mathcal{P}(\tau)}d\tau;
+\end{multline*}
+\begin{equation*}
+	\varepsilon\left[t\right] = \sup\limits_{\norm{\psi(t_1)}\leqslant 1}\left[\sufu{\psi(t_0)}{\soa^0}-\int\limits_{t_0}^t\sufu{B^T\psi}{\mathcal{P}}d\tau-\sufu{-\psi(t_1)}{\soa^1}\right]\text{, где }\psi(\tau) = X^T(t, \tau)l.
+\end{equation*}
+Допустим, что $t_1^*$ численно найдено. Тогда максимизатор $l^*$ --- одно из тех направлений, по которым происходит отделение множеств, поэтому $l$ --- нормаль.
+% рисунок про условие трансверсальности
+
+\subsection{Решение задачи}
+Покажем, что в задаче в обратном времени те же $\ell^*$ и там перпендикуляр.
+Покажем это, честно выписав опорную функцию:
+\begin{gather*}
+  \sufu{\ell}{W[t]} = \sufu{\ell}{W(t, t_2^*, \mathcal{X}^1)} =
+  \sup_{x^1, u(\cdot)}
+    \left[\scalar{\ell}{x\left(t,t_1^*,x_2 \,\middle|\, u\left(\cdot\right)\right)}|
+  u(\tau) \in \mathcal{P}(\tau), x^1\in\mathcal {X}^1\right],
+\end{gather*}
+\begin{gather*}
+  x\left(t, t_1^*, x^1 \,\middle|\, u(\cdot)\right) =
+    X(t, t_1^*)x^1 + \int_{t_1^*}^t X(t, \tau) B(\tau) u(\tau) d\tau =\\
+    = X(t_1, t_1^*)x^1 - \int_t^{t_1^*}X(t, \tau) B(\tau) u(\tau) d\tau.
+\end{gather*}
+
+Подставим это в опорную функцию:
+\begin{gather*}
+  \sufu{\ell}{W[t]} = \sup_{x^1, u(\cdot)}
+    \left[\scalar{\tilde{\ell}}{X(t, t_1^*)x^1} +
+    \int_t^{t_1^*}\scalar{-\tilde{\ell}}{X(t, \tau)B(\tau)u(\tau)}d\tau\right] =\\
+    =\sufu{X^T(t,t_1^*)\tilde{\ell}}{\mathcal{X}^1} +
+    \int_t^{t_1}\sufu{-B^TX^T(t, \tau)\tilde{\ell}}{\mathcal{P}(\tau)}d\tau,
+\end{gather*}
+$$
+X^T(t,\tau)l=\tilde{\psi}(\tau),\quad \dot{\tilde{\psi}}=-A^T\tilde{\psi}(t)=\tilde{l},
+$$
+$$
+\ldots=\sufu{\tilde{\psi}(t_1^*)}{\mathcal{X}^1}+\int_{t}^{t_1}\sufu{-B^T(\tau)\tilde{\psi}(\tau)}{\mathcal{P}(\tau)}d\tau,
+$$
+$$
+\mathcal{X}^0\cap W[t_0]\ne \varnothing.
+$$
+%$\psi (t_0)$ --- внешняя нормаль к $\mathcal{X}^0,$ $-\psi(t_0)$ -- к $W(t_0)$
+%$u^*(\cdot) \equiv u^{l^*}(\cdot)$ -- управления, которое доставляет максимум найденной опоной функции.
+%$$
+%\scalar{B^T\psi(\tau)}{u^*(\tau)}=\max_{u\in \mathcal{P}(\tau)}\scalar {B^T\psi(\tau)}{u},
+%$$
+%для почти всех $\tau.$
+Итак, у нас было
+$$
+\sup_{\norm{\psi_1(t)}=1}\left[-\sufu{\psi(t_0)}{\mathcal{X}^0}-\int_t^{t_1^*}
+\sufu{B^T(\tau)\psi(\tau)}{\mathcal{P}(\tau)}d\tau -\sufu{-\psi(t_1)}{\mathcal{X}^1}\right]=0
+$$
+Легко видеть, что $$[\ldots] = -\sufu{\psi(t_0)}{\mathcal{X}^0}-\sufu{-\psi(t_0)}{W[t_0]}
+$$
+(Положим $\tilde{l}=-l \Rightarrow \tilde\psi = -\psi$)
+Равенство $\sup [\ldots] = 0$ говорит, что $\mathcal{X}^0\cap W[t_0]\ne \varnothing,$ т.\,к. это можно записать как 
+$$
+\sup_{\psi(t_0):\norm{X^T(t_0,t_1^*)\psi(t_0)}=1}\left[-\sufu{\psi(t_0)}{\mathcal{X}^0}-
+\sufu{-\psi(t_0)}{W[t_0]}\right]=0.
+$$
+ И нам без разницы, по чему перебирать, главное, чтобы везде было $<0$ и в одной точке $=0.$ Итак, действительно 
+$\mathcal{X}^0\cap W[t_0]\ne \varnothing;$ $\psi(t_0)$ --- внешняя нормаль к $\mathcal{X}^0,$ $-\psi(t_0)$ --- внешняя 
+нормаль к $W[t_0].$ Осталось найти оптимальные управление и траекторию; $u^*(\tau)\equiv u^{l^*}(\cdot)$ --- управление, 
+доставляющее максимум в опорной функции, что равносильно принципу максимума:
+$$
+\scalar{B^T\psi(\tau)}{u^*(\tau)=\max_{u\in\mathcal {P}(\tau)}\scalar{B^T\psi(\tau)}{u}}
+$$   
+почти всюду. Ситуация с необходимыми и достаточными условиями та же, что и в предыдущей задаче. Тогда при достаточности (?) 
+принципа максимума множество сильно выпукло. Польза условия трансверсальности: при гладком начальном множестве $\psi$ 
+однозначно определяется по начальной точке.
+Оказывается, что задача некорректна: $t_1^*$ не непрерывно зависит от $\mathcal{X}^0.$
+\begin{problem}
+Приведите пример, когда время $t_1^*$ разрывно зависит от $\mathcal{X}^0.$
+\end{problem}
+\begin{tproblem} 
+Рассмотрите $\dot{x}=Ax+u$ на $\mathbb{R}^2$.
+\end{tproblem}

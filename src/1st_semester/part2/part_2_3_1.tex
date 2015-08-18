@@ -1,0 +1,187 @@
+\subsubsection{Система с постоянными коэффициентами}
+
+Рассмотрим систему
+\begin{equation}
+\label{const_coef_lin_sys}
+  \begin{cases}
+    \dot{x}(t) = A x(t) + B u(t),\\
+    A = \const \in \mathbb{R}^{n \times n},\\
+    B = \const \in \mathbb{R}^{n \times m}.
+  \end{cases}
+\end{equation}
+
+Для неё наша матрица $W$ имеет вид
+\begin{equation*}
+	W(t_1, t_0) = \int\limits_{t_0}^{t_1} X(t_1, \tau) B B^\tran X^\tran(t_1, \tau) \, d\tau =
+	\int\limits_{t_0}^{t_1} e^{A(t_1 - \tau)} B B^\tran e^{A^\tran(t_1 - \tau)} \, d\tau.
+\end{equation*}
+
+Изучим $\Ker W$: т.\,к. $W = W^\tran \geqslant 0$, то
+\begin{gather*}
+	\ell \in \Ker W \Leftrightarrow
+	\ell^\tran W \ell = 0 =
+	\int\limits_{t_0}^{t_1}
+	  (B^\tran e^{A^\tran(t_1 - \tau)} \ell)^\tran B^\tran e^{A^\tran(t_1 - \tau)} \ell \, d\tau ={}\\
+	{}= \int\limits_{t_0}^{t_1} \norm{B^\tran e^{A^\tran(t_1 - \tau)} \ell} \, d\tau
+	\Leftrightarrow \ell^\tran e^{A(t_1 - \tau)} B \equiv 0.
+\end{gather*}
+	
+Последнее равенство следует, вообще говоря, понимать как равенство почти всюду,
+но мы будем считать, что все функции достаточно хорошие,
+и оно выполняется вообще везде.
+
+\begin{stm}
+  Система с постоянными коэффициентами \eqref{const_coef_lin_sys} вполне управляема (то есть $\abs{W} \neq 0$)
+  тогда и только тогда, когда $\rg M = n$,
+  где $M$~--- матрица,
+  составленная из матриц $B, AB, \ldots, A^{n - 1} B$:
+  $M = [B | AB | \ldots | A^{n - 1} B] \in \real^{n \times m n}$.
+\end{stm}
+
+\begin{proof}
+  Докажем достаточность условия полного ранга. Предположим обратное:
+  пусть $M$~--- матрица полного ранга, но найдётся ненулевой вектор $\ell \in \Ker W$.
+  Тогда $\ell^\tran e^{A(t_1 - \tau)} B \equiv 0$.
+  Продифференцируем данное равенство $(n - 1)$ раз по $\tau$: 
+  \begin{gather*}
+    -\ell^\tran e^{A(t_1 - \tau)} A B \equiv 0,\\
+    \ldots\ldots\ldots\ldots\ldots\ldots\ldots\ldots\\
+    (-1)^{n - 1} \ell^\tran e^{A(t_1 - \tau)} A^{n - 1} B \equiv 0.
+  \end{gather*}
+
+  Следовательно, вектор $\ell^\tran e^{A(t_1 - \tau)}$ ортогонален
+  $B, AB, \ldots, A^{n - 1}B$, что противоречит условию полного ранга.
+  
+  Докажем необходимость условия полного ранга.
+  Предположим обратное: пусть $\abs{W} \neq 0$ и $\rg M < n$.
+  Тогда найдётся вектор $\ell \neq 0$ такой,
+  что $\ell^\tran \left[ B | A B | \ldots | A^{n - 1} B \right] = 0$.
+  Рассмотрим представление матричной экспоненты в виде ряда:
+  \begin{equation*}
+    e^{A(t_1 - \tau)} = \sum\limits_{k = 0}^{\infty} \frac{A^k (t_1 - \tau)^k}{k!}.
+  \end{equation*}
+  
+  Из теоремы Гамильтона--Кэли следует, что любая степень матрицы является
+  линейной комбинацией её первых $(n - 1)$ степеней. Следовательно, данная матричная экспонента
+  тождественно равна нулю, что противоречит условию вырожденности ядра оператора $W$.
+\end{proof}
+
+\begin{df}
+  Пара матриц $A \in \mathbb{R}^{n \times n}$ и $B \in \mathbb{R}^{n \times m}$
+  называется \emph{полностью управляемой},
+  если $\rg [B | A B | \ldots | A^{n - 1} B ] = n$.
+\end{df}
+
+\begin{ex}
+	Рассмотрим математический маятник, задаваемый уравнением
+	\begin{equation*}
+	  \ddot{x} + \omega^2 x = u,
+	\end{equation*}
+	где $x$~--- координата маятника, $u$~--- управление.
+	
+	Выясним, управляема ли данная система. Введем следующие обозначения:
+	$x_1 = x$, $x_2 = \dot{x}$. В таком случае исходное уравнение записывается в виде системы
+	\begin{equation}
+	\label{pendulum_system}
+	  \begin{cases}
+	    \dot{x}_1 = x_2,\\
+			\dot{x}_2 = -\omega^2 x_1 + u.
+	  \end{cases}
+	\end{equation}
+	
+	В матричном виде \eqref{const_coef_lin_sys} система такова:
+	\begin{equation*}
+	  A =
+	  \begin{pmatrix}
+	    0 & 1\\
+	    -\omega^2 & 0
+	  \end{pmatrix}, 
+		B =
+	  \begin{pmatrix}
+	    0\\
+	    1
+	  \end{pmatrix}
+	  \Rightarrow
+	  \left[ B | A B \right] =
+	  \begin{pmatrix}
+	    0 & 1\\
+	    1 & 0
+	  \end{pmatrix}.
+	\end{equation*}
+	
+	Следовательно, данная система управляема, что согласуется с бытовыми представлениями~--- с помощью
+	сколь угодно большой силы можно перевести маятник в любое положение и придать ему любую скорость
+	за сколь угодно малое время.
+\end{ex}
+
+\begin{lemma}
+  Пусть $L = \Im\left([B | A B | \ldots | A^{n - 1} B]\right)$. Тогда $L$ инвариантно относительно
+  системы \eqref{const_coef_lin_sys}, то есть выполнено следующее соотношение:
+  \begin{equation*}
+    \forall x^0 \in L \Rightarrow x(t) \in L \quad \forall t, \forall u(\cdot).
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  Рассмотрим любой вектор $h$, ортогональный $L$. Так как $h \in L^\perp$, то
+  $\scalar{x^0}{h} = 0$. Запишем формулу Коши, затем домножим обе части равенство скалярно на $h$:
+  \begin{gather*}
+    x(t) = X(t, t_0) x^0 + \int\limits_{t_0}^{t_1} X(t, \tau) B u(\tau)\,d\tau =
+      e^{A(t - t_0)} x^0 + \int\limits_{t_0}^{t_1} e^{A(t - \tau)} B u(\tau)\,d\tau,\\
+    \scalar{x(t)}{h} = \scalar{e^{A(t - t_0)} x^0}{h} +
+      \int\limits_{t_0}^{t_1} \scalar{e^{A(t - \tau)} B u(\tau)}{h}\,d\tau,
+  \end{gather*}
+  представим матричную экспоненту в виде ряда, затем скалярно умножим на $h$:
+  \begin{gather*}
+    e^{A(t - t_0)} = E + \sum\limits_{k = 0}^\infty \frac{A^k (t - t_0)^k}{k!},\\
+    \scalar{e^{A(t - t_0)} x^0}{h} =
+      \underbrace{\scalar{x^0}{h}}_{0} + \sum\limits_{k = 1}^\infty \scalar{\frac{A^k (t - t_0)^k}{k!} x^0}{h}.
+  \end{gather*}
+  
+  Так как $x^0 \in L$, то, по теорема Гамильтона--Кэли, $A^k x^0 \in L$ при любом неотрицательном $k$.
+  Следовательно, скалярное произведение $x(t)$ и $h$ равно нулю, что влечет инвариантность $L$.
+\end{proof}
+
+\begin{theorem}[О декомпозиции]
+  Пусть $\rg \left[ B | A B | \ldots | A^{n - 1} B \right] = r$. Тогда существует невырожденная матрица
+  $T \in \mathbb{R}^{n \times n}$ такая, что при замене $y = T x$ система \eqref{const_coef_lin_sys}
+  перейдет в систему
+  \begin{equation*}
+    \begin{cases}
+      \dot{y}_1 = A_{11} y_1 + A_{12} y_2 + B_1 u,\\
+      \dot{y}_2 = A_{22} y_2,\\
+      A_{11} \in \mathbb{R}^{r \times r}, A_{12} \in \mathbb{R}^{r \times (n - r)},
+      A_{22} \in \mathbb{R}^{(n - r) \times (n - r)},
+      B_1 \in \mathbb{R}^{r \times m},\\
+      \rg \left[ B_1 | A_{11} B_1 | \ldots | A_{11}^{r - 1} B_1 \right] = r,
+    \end{cases}
+  \end{equation*}
+  где вектор-столбец $y$ составлен из $y_1$ и $y_2$.
+\end{theorem}
+
+\begin{note}
+  Отметим, что пара матриц $A_{11}$ и $B_1$ является полностью управляемой.
+  Вообще, данная теорема говорит о том, что исходную систему можно представить в виде совокупности
+  управляемой и неуправляемой частей.
+\end{note}
+
+\begin{proof}
+  Рассмотрим пространство $L$ из леммы, приведенной выше. Размерность $L$ равна $r$.
+  Пусть $e_1, e_2, \ldots, e_r$~--- базис в $L$. Дополним его векторами $e_{r + 1}, \ldots, e_n$
+  до базиса $\mathbb{R}^n$. В качестве $T^{-1}$ возьмем матрицу, составленную из векторов-столбцов $e_k$.
+  Покажем, что выполнены следующие равенства:
+  \begin{equation*}
+    T A T^{-1} =
+    \begin{pmatrix}
+      A_{11} & A_{12}\\
+      \Theta & A_{22}
+    \end{pmatrix},
+    \quad
+    T B =
+    \begin{pmatrix}
+      B_{1}\\
+      \Theta
+    \end{pmatrix},
+  \end{equation*}
+  нулевые матрицы $\Theta$ имеют соответствующие размерности.
+\end{proof}

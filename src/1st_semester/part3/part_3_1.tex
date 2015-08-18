@@ -1,0 +1,120 @@
+\subsection{Пространство $\Lp$, $1 < p < \infty$}
+
+Для начала рассмотрим функциональное пространство $\Lp$ при $p > 1$ и $p < \infty$.
+Норма (в случае отождествления функций с точностью до меры $0$) функции $f$ в данном
+пространстве задается следующим образом:
+\begin{equation}
+\label{Lp_norm}
+  \norm{f}_{\Lp} =
+    \left(\int\limits_{t_0}^{t_1} \norm{f(t)}^p dt\right)^{\frac{1}{p}}.
+\end{equation}
+Ограничение на управление введем аналогично задаче в пространстве $\LTwo$:
+$\norm{u}_\Lp \leqslant \mu$.
+
+Аналогично задаче моментов \eqref{L2_moment_task}, получаем задачу моментов в данном случае.
+Введем множество достижимости для данного случая:
+\begin{equation}
+\label{Lp_moment_task_soa}
+	\soa_\mu^0 (t_1, t_0) = \soa_\mu^0 [t_1] =
+	\left\lbrace
+	  \alpha \in \mathbb{R}^n \colon \exists u(\cdot), \norm{u}_{\Lp} \leqslant \mu,	  
+	  \int\limits_{t_0}^{t_1} H(t_1, \tau) u(\tau)\,d\tau = \alpha
+	\right\rbrace.
+\end{equation}
+
+Сформулируем и докажем утверждение относительно множества достижимости.
+
+\begin{stm}
+	$\soa_\mu^0 \in \conv \mathbb{R}^n$, где $\conv \mathbb{R}^n$ есть множество
+	непустых выпуклых компактов в $\mathbb{R}^n$.
+\end{stm}
+
+\begin{proof}
+  Для доказательства исходного утверждения необходимо доказать
+  три свойства: выпуклость, ограниченность и замкнутость.
+	
+	Все три свойства доказываются аналогично случаю пространства $\LTwo$.
+	Отметим, что в силу рефлексивности пространства $\Lp$, единичный ша является слабым
+	компактом, откуда следует замкнутость введенного множества $\soa_\mu^0$.
+\end{proof}
+
+Найдём опорную функцию множества $\soa_\mu^0$:
+\begin{gather*}
+  \sufu{\ell}{\soa_\mu^0[t_1]} =
+    \sup_{c \in \soa_\mu^0[t_1]} \scalar{\ell}{c} =
+    \sup_{u} \int\limits_{t_0}^{t_1} \scalar{\ell}{H(t_1, \tau) u(\tau)} d\tau = {}\\
+  {} = \sup_{u} \int\limits_{t_0}^{t_1} \scalar{H^\tran(t_1, \tau) \ell}{u(\tau)} d\tau \leqslant
+    \sup_{u} \int\limits_{t_0}^{t_1} \norm{h(\tau)} \cdot \norm{u(\tau)} d\tau \leqslant{}\\
+  {} \leqslant \sup_{u}
+    \left(
+      \left[\int\limits_{t_0}^{t_1} \norm{h(t_1, \tau)}^q d\tau \right]^{\tfrac{1}{q}} \cdot
+      \left[\int\limits_{t_0}^{t_1} \norm{u(\tau)}^p d\tau \right]^{\tfrac{1}{p}}
+    \right) = {}\\
+  {} = \sup_{u} \left( \norm{h}_{\Lq} \cdot \norm{u}_{\Lp} \right) =
+    \mu \cdot \norm{h}_{\Lq},
+\end{gather*}
+где $h(\tau) = H^\tran(t_1, \tau) \ell$, значение $q$ определяется из соотношения $\frac{1}{p} + \frac{1}{q} = 1$.
+
+\begin{note}
+  При вычислении опорной функции были использованы неравенства Гёльдера
+  и Коши--Буняковского.
+\end{note}
+
+%Неравенство Коши--Буняковского превращается в равенство ровно в том случае, когда
+%$\norm{u(\tau)} = \lambda(\tau) \norm{H^T(t_1, \tau) l}$, где $\lambda(\tau) \ne \const$. 
+%может лучше написать "не обязательно является постоянной"?
+%Неравенство Гёльдера превращается в равенство ровно в том случае, когда
+%$\norm{u(\tau)}^p = \Tilde \lambda \norm{H^T(t_1, \tau) l}^q, \Tilde \lambda = \const, \Tilde \lambda \geq 0$,
+%т.\,е. налицо линейная зависимость двух величин. Осталось выявить зависимость
+%между $\lambda(\tau), \Tilde \lambda$ и $\mu$ (а она должна быть,
+%поскольку все неравенства можно превратить в равенства и наша
+%цель по вычислению опорной функции будет достигнута, т.\,к. мы получим точную верхнюю грань):
+%\begin{gather*}
+%	\norm{u(\tau)} = \lambda(\tau) \norm{H^T(t_1, \tau) l},\\
+%	\norm{u(\tau)}^p = \lambda^p(\tau) \norm{H^T(t_1, \tau) l}^p = \Tilde \lambda \norm{H^T(t_1, \tau) l}^q,\\
+%	\lambda^p = \Tilde \lambda \norm{H^T(t_1, \tau) l}^{q-p} =
+%	  \Tilde \lambda \norm{H^T(t_1, \tau) l}^{\frac{2p - p^2}{p - 1}},\\
+%	\displaystyle\int\limits_{t_0}^{t_1} \norm{u(\tau)}^p d \tau =
+%	  \Tilde \lambda \displaystyle\int\limits_{t_0}^{t_1} \norm{H^T(t_1, \tau) l}^q d \tau,\\
+%	\mu^p = \Tilde \lambda \norm{H^T(t_1, \cdot) l}^q_\Lq,\\
+%	\lambda^p = \mu^p \left[\dfrac{\norm{H^T(t_1, \tau) l}}{\norm{H^T(t_1, \cdot) l}_\Lq} \right]^{\frac{2p - p^2}{p - 1}}.
+%\end{gather*}
+%
+%Тогда управление, на котором достигается максимум опорной функции в направлении $l$ вычисляется как
+%$$
+%	u^l(\tau) =
+%  \mu \left[\dfrac{\norm{H^T(t_1, \tau) l}}{\norm{H^T(t_1, \cdot) l}_\Lq} \right]^%
+%  {\frac{2p - p^2}{p - 1}} %H^T(t_1, \tau) l.
+%$$
+
+Используя условия, при которых в промежуточных неравенствах достигаются равенства, получаем
+функцию $u_\ell^*(t)$, реализующую супремум:
+\begin{equation*}
+  u_{\ell}^{*}(t) = \mu \frac{H^\tran(t_1, t) \ell}{\norm{H^\tran(t_1, \cdot) \ell}_{\Lp}^{\frac{q}{p}}} \cdot
+    \norm{H^\tran(t_1, t) \ell}^{\frac{q - p}{p}}.
+\end{equation*}
+
+Отметим, что множество $\soa_\mu^0$ строго выпукло, так как максимизатор $u_\ell^*(t)$ единственный,
+правда, данное множество не является эллипсоидом, в отличие от случая пространства $\LTwo$.
+
+Минимальное значение параметра $\mu$, при котором задача моментов разрешима,
+находится аналогично случаю пространства $\LTwo$:
+\begin{gather*}
+	\scalar{\ell}{c} \leqslant \mu \norm{H^\tran(t_1, \cdot) \ell}_{\Lq},\\
+	\mu^0 = \sup\limits_{\ell \neq 0}
+	  \frac{\scalar{\ell}{c}}{\lefteqn{\norm{H^\tran(t_1, \cdot) \ell}_\Lq}\phantom{\norm{H^\tran(t_1, \cdot) \ell}_0}} =
+	\sup \left\lbrace \scalar{\ell}{c} \left| \norm{H^\tran(t_1, \cdot) \ell}_{\Lq} = 1 \right. \right\rbrace.
+\end{gather*}
+%
+% !
+%
+Если система вполне управляема, то $\mu^0$~--- сопряжённая норма; если нет, то есть условие разрешимости
+(заметим, что сопряжённая норма в $\Lq$~--- это норма в $\Lp$). % может лучше сопряжённое пространство?
+
+\begin{ex}[Пример разрешимой системы]
+	\begin{equation*}
+		A = 0, B = \const, \abs{B} \neq 0; \mu^0 = \norm{B^{-1} c}_\Lp.
+	\end{equation*}
+	Найдём $\ell^0$ такое, что $\ell^0 \in \Argmax \set{\scalar{\ell}{c}}{\norm{H^\tran \ell}_\Lq = 1}$.
+	Тогда $u^0(\tau) = u^{\ell^0}(\tau)$.
+\end{ex}

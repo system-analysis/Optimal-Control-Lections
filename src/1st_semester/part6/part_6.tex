@@ -1,0 +1,137 @@
+\section{Линейно--выпуклые задачи}
+\subsection{Постановка задачи (начало)}
+\par В этой лекции мы рассмотрим уже нелинейные задачи, в которых, однако, принцип максимума Понтрягина все еще является необходимым и достаточным условием оптимальности.
+\par Итак, рассмотрим задачи вида:
+\begin{equation}
+	\dot{x}(t)=A(t)x(t)+B(t)u(t);
+\end{equation}
+
+\begin{equation}
+	u \in \mathcal{P};
+\end{equation}
+
+\begin{equation}
+	x(t_0)=x_0;
+\end{equation}
+
+\begin{equation}\label{J}
+	J(u(\cdot)) =
+	  \int\limits_{t_0}^{t_1}[g(t,x(t))+h(t,u(t))]dt+\varphi(x(t_1)) \rightarrow \inf.
+\end{equation}
+
+Здесь $ t_1 $ фиксировано, $x(t_1)$ свободно, $g(t,\cdot),h(t,\cdot),\varphi(\cdot)$~---~выпуклые функции, $A,B$~-~непрерывны, $\mathcal{P}$~---~непрерывное многозначное отображение, $g$ непрерывно по $(t,x)$, $h$ непрерывно по $(t,u)$, $\varphi$ конечна (т.\,е. непрерывна).
+\subsection{Решение задачи}
+\par По теореме Фенхеля--Моро
+\begin{equation}\label{g}
+g(t,x)=\sup_{\lambda(t)}\left[\left< x(t),\lambda(t) \right> - g^*(t,\lambda(t) )\right];
+\end{equation}
+\begin{equation}\label{phi}
+\varphi(x)=\sup_{l}\left[\left<x,l\right> - \varphi^*(l)\right];
+\end{equation}
+подставим \eqref{g}, \eqref{phi} в выражение для минимизируемого функционала \eqref{J}:
+\begin{multline}\label{JJ}
+J=\int\limits_{t_0}^{t_1}\sup_{\lambda(t)}\left[\left< x(t),\lambda(t) \right> - g^*(t,\lambda(t)) +h(t,u(t))\right] dt + \sup_{l}\left[\left<x,l\right> - \varphi(l)\right]=\\=\sup_{\lambda(t),l}\left\lbrace \int\limits_{t_0}^{t_1}\left[\left< x(t),\lambda(t) \right> - g^*(t,\lambda(t)) +h(t,u(t))\right] dt + \left<x,l\right> - \varphi^*(l)\right\rbrace.
+\end{multline}
+
+Распишем $x(t)$ по формуле Коши и подставим в \eqref{JJ}:
+
+\begin{multline}\label{JK}
+J=\sup_{\lambda(t),l}\left\lbrace \int\limits_{t_0}^{t_1}\left[\left< X(t,t_0)x^0+\int\limits_{t_0}^{t}X(t,\tau)B(\tau)u(\tau)d\tau ,\lambda(t) \right> - g^*(t,\lambda(t)) +h(t,u(t))\right] dt +\right.\\ \left. + \left<l,X(t,t_0)x^0+\int\limits_{t_0}^{t_1}X(t_1,\tau)B(\tau)u(\tau)d\tau\right> - \varphi^*(l)\right\rbrace.
+\end{multline}
+
+Поменяем в \eqref{JK} последовательность интегрирования и перепишем скалярные произведения в виде  $ \left<x^0, \cdot\right>$ и $ \left<u(t), \cdot\right>$:
+
+\begin{multline}
+J=\sup_{\lambda(t),l}\left\lbrace \left<x^0,X^{T}(t_1,t_0) + \int\limits_{t_0}^{t_1}X^{T}(t,t_0)\lambda(t)dt \right> + \int\limits_{t_0}^{t_1}\left< B^{T}(\tau)\left( X^{T}(t_1,\tau)l + \right. \right. \right. \\ \left. \left. \left. + \int\limits_{\tau}^{t_1}X^{T}(t,\tau)\lambda(t)dt \right),u(t) \right> + \int\limits^{t_0}_{t^1}\left( -g^*(t,\lambda)+h(t,u(t))\right)dt - \varphi^*(l) \right\rbrace.
+\end{multline}
+
+Введём следующее обозначения:
+\begin{equation*}
+\psi(\tau)= X^{T}(t_1,\tau)l + \int\limits_{\tau}^{t_1}X^{T}(t,\tau)\lambda(t)dt;
+\end{equation*}
+тогда $\psi(t)$ удовлетворяет сопряженной системе
+\begin{equation}
+\left\lbrace \begin{array}{rcl}
+		\dot{\psi}(t)&=&-A^{T}\psi(t)+\lambda(t),\\
+		\psi(t_1)&=&l.
+	   \end{array}
+	   \right.
+\end{equation}
+
+С учетом этих обозначений получим
+\begin{equation}
+J=\sup_{\lambda(t),l}\left\lbrace \left<x^0,\psi(t_0) \right> + \int\limits_{t_0}^{t_1}\left(\left< B^{T}(\tau)\psi(\tau),u(t) \right>  -g^*(t,\lambda)+h(t,u(t))\right)dt - \varphi^*(l) \right\rbrace.
+\end{equation}
+\subsection{Теория минимаксов}
+Обозначим то, что стоит в фигурных скобках, за $ \Phi $, тогда 
+\begin{equation*} J=\sup_{\lambda(t),l}\Phi ,~ J^*=\inf_{u(\cdot)}J=\inf_{u(\cdot)}\sup_{\lambda(t),l}\Phi .
+\end{equation*}
+\par Функция $\Phi$ выпукла по $u$. Так как функция $\psi$ линейна по $l$ и $\lambda$,
+функция $g^*$ выпукла (значит $-g^*$ вогнута), то $\Phi$ вогнута по $l,\lambda$.
+
+\begin{theorem} Пусть функция $\Phi(x,y)$ выпукла по $x$ и вогнута по $y$, тогда 
+\begin{equation*} \inf_{x}\sup_{y}\Phi(x,y)=\sup_{y}\inf_{x}\Phi(x,y). \end{equation*}
+\end{theorem}
+
+Для нашей задачи получим:
+\begin{equation*}
+J^*=\sup_{\lambda(t),l}\left\lbrace  \int\limits_{t_0}^{t_1}\left(\min_{u\in \mathcal{P} }\left[\left< B^{T}(\tau)\psi(\tau),u(t) \right>  +h(t,u(t)) \right] -g^*(t,\lambda)\right)dt  + \left<x^0,\psi(t_0) \right> - \varphi^*(l) \right\rbrace.
+\end{equation*}
+
+\df{($ x^0,y^0 $) называется седловой точкой функции $ f(x,y) $, если $ f(x^0,y) \leqslant f(x^0,y^0) \leqslant f(x,y^0) $ $ \forall x,y $.}
+\begin{theorem}\begin{enumerate}
+		\item Если $ \exists (x^0,y^0) $ - седловая точка, то \begin{equation*}\min_{x}\sup_{y}f(x,y)=\max_{y}\inf_{x}f(x,y)=f(x^0,y^0).\end{equation*}
+		\item Если
+		\begin{equation*} \min_{x} \sup_{y} f(x,y)= \max_{y} \inf_{x} f(x,y), 
+		\end{equation*} то $ \exists (x^0,y^0) $ --- седловая точка, причем 
+		\begin{equation*}x^0 \in \Arg\!\min_{x}\sup_{y}f(x,y) ,~  y^0\in \Arg\!\max_{y}\inf_{x}f(x,y). \end{equation*}
+	 \end{enumerate}
+\end{theorem}
+\subsection{Решение задачи (окончание)}
+\par Вернёмся к нашей задаче:
+\begin{equation*}
+J^*=\inf_{u(\cdot)}\sup_{\lambda(\cdot),l}\Phi=\sup_{\lambda(\cdot),l}\inf_{u(\cdot)}\Phi.
+\end{equation*}
+Пусть $ \sup $ достигается, пусть $ \left\lbrace \lambda^0(\cdot),l^0 \right\rbrace $ --- максимизатор, пусть $ u^* $ - оптимальное управление, тогда $ (u^*,\left\lbrace \lambda^0(\cdot),l^0 \right\rbrace) $ --- седловая точка.
+\begin{equation*}
+\Phi[l,\lambda(\cdot),u^*(\cdot)]\leqslant\Phi[l^0,\lambda^0(\cdot),u^*(\cdot)]\leqslant\Phi[l^0,\lambda^0(\cdot),u(\cdot)];
+\end{equation*}
+второе неравенство дает нам Принцип Максимума Понтрягина:
+\begin{equation*}
+\left<-B^T(t)\psi^0(t),u^*(t)\right> - h(t,u^*(t)) = \max_{u\in \mathcal{P}}\left[\left<-B^T(t)\psi^0(t),u(t)\right> - h(t,u(t))\right].
+\end{equation*}
+Здесь принцип максимума --- необходимое условие. Выясним, при каких условиях он будет являться и достаточным. Запишем функцию $\Phi$, интегрируя систему в обратном времени:
+\begin{equation*}
+\Phi[l,\lambda(\cdot),u^*(\cdot)]=\int\limits_{t_0}^{t_1}\left[ \left< x^*(t),\lambda(t) \right> -g^*(t,\lambda(t)) + h(t,u^*(t)) \right] dt + \left< l,x^*(t_1) \right> - \varphi^*(l);
+\end{equation*}
+здесь $x^*(t)$ --- оптимальная траектория.
+\par Пусть
+\begin{equation}\label{l^0}
+l^0 \in \Argmax \left[ \left< l,x^*(t_1) \right> - \varphi^*(l) \right];
+\end{equation}
+\begin{equation}\label{lam^0}
+\lambda^0(t) \in \Argmax \left[  \left< x^*(t),\lambda(t) \right> -g^*(t,\lambda(t)) \right].
+\end{equation}
+Вспомним, что такое субдифференциал:
+\begin{equation*}
+	\begin{array}{c}
+	v \in \partial \varphi(x^*(t_1))\\
+	\Updownarrow \\
+	\varphi(y) \geqslant \varphi(x^*(t_1)) + \left< v,y-x^*(t_1) \right> \\
+	\Updownarrow \\
+	\left< v,x^*(t_1) \right> - \varphi(x^*(t_1)) \geqslant \left< v,y \right> - \varphi(y),~\forall y \\
+	\Updownarrow \\
+	\left< v,x^*(t_1) \right> - \varphi(x^*(t_1)) \geqslant \varphi^*(v) \\
+	\Updownarrow \\
+	\left< v,x^*(t_1) \right> - \varphi^*(v)\geqslant \varphi(x^(t_1));
+	\end{array}
+\end{equation*}
+отсюда и из теоремы Фенхеля--Моро для функции $ \varphi $ сразу получаем, что $ \eqref{l^0}\Leftrightarrow l^0\in\partial\varphi(x^*(t_1)) $. Аналогично, $ \eqref{lam^0}\Leftrightarrow \lambda^0(t)\in\partial g(t,x^*(t)) $. То есть, для существования максимизатора $ (l^0,\lambda^0(\cdot)) $ необходимо и достаточно, чтобы субдифференциалы $ \partial \varphi(x^*(t_1)) $ и $ \partial g(t,x*(t)) $ были не пусты.
+\par Если функции $ \varphi $ и $ g $ дифференцируемы по $x$ и строго выпуклы, то соответствующие субдифференциалы состоят из единственных точек, и мы получаем условия трансверсальности  на правом конце:
+\begin{equation*}
+l^0= \nabla \varphi(x^*(t_1));
+\end{equation*}
+\begin{equation*}
+\lambda^0(t)=\nabla_x g(t,x^*(t)).
+\end{equation*}
+Эти условия вместе с Принципом Максимума Понтрягина являются критерием оптимальности.
